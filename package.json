@@ -1,0 +1,24 @@
+{
+  "name": "r-bank",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skup5/R-Bank.git"
+  },
+  "author": "Skup5",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skup5/R-Bank/issues"
+  },
+  "homepage": "https://github.com/skup5/R-Bank#readme",
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-pug": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}
