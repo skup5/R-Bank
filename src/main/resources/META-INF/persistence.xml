@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="org.danekja.edu.pia"  transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
+
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+
+            <property name="hibernate.connection.password" value="pia"/>
+            <property name="hibernate.connection.username" value="pia"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://students.kiv.zcu.cz:3306/pia"/>
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+            <property name="hibernate.validator.apply_to_ddl" value="true" />
+
+            <property name="connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider"/>
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="20"/>
+            <property name="hibernate.c3p0.timeout" value="300"/>
+            <property name="hibernate.c3p0.max_statements" value="50"/>
+            <property name="hibernate.c3p0.idle_test_period" value="300"/>
+
+        </properties>
+    </persistence-unit>
+</persistence>
