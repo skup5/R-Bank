@@ -1,4 +1,4 @@
-pugPath = "src/main/pug/"
+pugPath = "./src/main/pug/"
 
 module.exports = (grunt) ->
   grunt.initConfig
@@ -7,21 +7,16 @@ module.exports = (grunt) ->
     pug:
       compile:
         options:
-          data:
-            debug: false
-            pretty: true
+          pretty: true
         files: 
           "src/main/webapp/index.html" : pugPath+"index.pug"
 
     #WATCH
     watch:
       pug:
-        files: [pugPath]
+        files: [pugPath+"*.pug"]
         tasks: ["pug"]
-        options:
-          spawn: false
 
   grunt.loadNpmTasks "grunt-contrib-pug"
   grunt.loadNpmTasks "grunt-contrib-watch"
-  grunt.registerTask "default", ["pug"]
-  grunt.registerTask "watch", ["default", "watch"]
+  grunt.registerTask "default", ["pug", "watch"]

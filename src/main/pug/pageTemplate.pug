@@ -1,0 +1,38 @@
+mixin css(paths)
+    each item in paths
+        link(rel="stylesheet" type="text/css" href=item)
+
+mixin script(paths)
+    each item in paths
+        script(type="text/javascript" src=item)
+
+doctype html
+html(lang="cs")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width initial-scale=1")
+        block css
+        block title
+            title NLP Demos
+    body
+        // HEADER
+        .navbar.navbar-inverse.navbar-fixed-top
+            .container
+                .navbar-header
+                    button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse")
+                        - for (var x = 0; x < 3; x++)
+                        span.icon-bar
+                    block navbar-brand
+
+                .collapse.navbar-collapse#header-navbar-collapse
+                    block navbar-nav
+
+        // CONTENT
+        block content
+
+    <!--[if lt IE 9]>
+    script(src="//html5shim.googlecode.com/svn/trunk/html5.js")
+    script(src="//code.jquery.com/jquery-1.12.1.min.js")
+    <![endif]-->
+
+    block script
