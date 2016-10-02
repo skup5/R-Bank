@@ -1,3 +1,5 @@
+- var useInverseTheme = true;
+
 mixin css(paths)
     each item in paths
         link(rel="stylesheet" type="text/css" href=item)
@@ -11,21 +13,38 @@ html(lang="cs")
     head
         meta(charset="utf-8")
         meta(name="viewport" content="width=device-width initial-scale=1")
+        +css(["css/bootstrap.min.css","css/bootstrap-theme.css","css/font-awesome.min.css"])
         block css
         block title
-            title NLP Demos
+
     body
         // HEADER
-        .navbar.navbar-inverse.navbar-fixed-top
+        #navbar.navbar.navbar-fixed-top(class=useInverseTheme?"navbar-inverse":"")
             .container
                 .navbar-header
                     button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse")
                         - for (var x = 0; x < 3; x++)
-                        span.icon-bar
-                    block navbar-brand
+                            span.icon-bar
+                    a(class="navbar-brand" href="#") R-bank
 
                 .collapse.navbar-collapse#header-navbar-collapse
-                    block navbar-nav
+                    ul.nav.navbar-nav
+                        li.dropdown
+                            a(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false")
+                                | Dropdown&nbsp;
+                                span.caret
+                            ul.dropdown-menu
+                                - for (var i=1; i<=5; i++)
+                                    li: a(href="#") Item#{i}
+
+                    ul.nav.navbar-nav.navbar-right
+                        li#user.navbar-text Jméno Příjmení
+                        li#account.navbar-text disponibilní zůstatek &nbsp;
+                            span#account_value 000 Kč
+                        li
+                            .navbar-text Motiv
+                            button(type="button" class="navbar-btn btn" class=useInverseTheme?"btn-default":"btn-inverse" id="theme_switch"
+                                   title=useInverseTheme?"Přepnout na světlý":"Přepnout na tmavý") &nbsp;&nbsp;
 
         // CONTENT
         block content
@@ -34,5 +53,13 @@ html(lang="cs")
     script(src="//html5shim.googlecode.com/svn/trunk/html5.js")
     script(src="//code.jquery.com/jquery-1.12.1.min.js")
     <![endif]-->
-
+    +script(["js/jquery.min.js","js/bootstrap.min.js"])
     block script
+    script.
+        var btn = $("#theme_switch")
+        btn.on("click", function () {
+            var navbar = $("#navbar").toggleClass("navbar-inverse")
+            //var label = navbar.hasClass("navbar-inverse") ? "Světlý motiv" : "Tmavý motiv"
+            //btn.text(label)
+            btn.toggleClass("btn-default btn-inverse")
+        })

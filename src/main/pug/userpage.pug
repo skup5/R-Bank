@@ -1,3 +1,19 @@
-//
-   Created by Roman on 29.9.2016.
+extends pageTemplate
 
+block title
+    title R-Bank
+
+block content
+    .container
+        .row
+            .col-sm-3.col-md-2.sidebar
+                - for(var i=0;i<3;i++)
+                    ul.nav.nav-sidebar
+                        - for(var j=1;j<=3;j++)
+                            if j == 1
+                                li.active
+                                    a(href='#')
+                                        | Overview
+                                        span.sr-only (current)
+                            else
+                                li: a(href="#") Item#{j}

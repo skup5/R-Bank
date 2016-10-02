@@ -10,6 +10,7 @@ module.exports = (grunt) ->
           pretty: true
         files: 
           "src/main/webapp/index.html" : pugPath+"index.pug"
+          "src/main/webapp/userpage.html" : pugPath+"userpage.pug"
 
     #WATCH
     watch:
