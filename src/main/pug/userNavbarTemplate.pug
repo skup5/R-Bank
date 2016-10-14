@@ -1,0 +1,10 @@
+//li#user Jméno Příjmení
+li.dropdown
+    a#user(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false")
+        | Jméno Příjmení
+        span.caret
+    +bsDropdownMenu(
+        {url:"#", label:"Nastavení"}, {url:"#", label:"Odhlásit"}
+    )
+li#account.navbar-text disponibilní zůstatek &nbsp;
+    span#account_value 000 Kč

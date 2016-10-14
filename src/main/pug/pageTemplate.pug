@@ -8,6 +8,12 @@ mixin script(paths)
     each item in paths
         script(type="text/javascript" src=item)
 
+mixin bsDropdownMenu(...items)
+    ul.dropdown-menu
+        each item in items
+            li: a(href=item.url) #{item.label}
+
+
 doctype html
 html(lang="cs")
     head
@@ -19,8 +25,8 @@ html(lang="cs")
 
     body
         // HEADER
-        #navbar.navbar.navbar-fixed-top(class=useInverseTheme?"navbar-inverse":"")
-            .container
+        header#navbar.navbar.navbar-fixed-top(class=useInverseTheme?"navbar-inverse":"")
+            nav.container
                 .navbar-header
                     button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse")
                         - for (var x = 0; x < 3; x++)
@@ -29,22 +35,15 @@ html(lang="cs")
 
                 .collapse.navbar-collapse#header-navbar-collapse
                     ul.nav.navbar-nav
-                        li.dropdown
-                            a(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false")
-                                | Dropdown&nbsp;
-                                span.caret
-                            ul.dropdown-menu
-                                - for (var i=1; i<=5; i++)
-                                    li: a(href="#") Item#{i}
+                        block leftNavbar
 
                     ul.nav.navbar-nav.navbar-right
-                        li#user.navbar-text Jméno Příjmení
-                        li#account.navbar-text disponibilní zůstatek &nbsp;
-                            span#account_value 000 Kč
-                        li
-                            .navbar-text Motiv
-                            button(type="button" class="navbar-btn btn" class=useInverseTheme?"btn-default":"btn-inverse" id="theme_switch"
-                                   title=useInverseTheme?"Přepnout na světlý":"Přepnout na tmavý") &nbsp;&nbsp;
+                        block rightNavbar
+                            li
+                                .navbar-text Motiv
+                                button(type="button" class="navbar-btn btn" class=useInverseTheme ? "btn-default" : "btn-inverse" id="theme_switch"
+                                title="Změnit motiv") &nbsp;&nbsp;
+
 
         // CONTENT
         block content
@@ -62,4 +61,5 @@ html(lang="cs")
             //var label = navbar.hasClass("navbar-inverse") ? "Světlý motiv" : "Tmavý motiv"
             //btn.text(label)
             btn.toggleClass("btn-default btn-inverse")
+
         })

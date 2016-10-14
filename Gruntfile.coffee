@@ -1,4 +1,4 @@
-pugPath = "./src/main/pug/"
+pugPath = "src/main/pug/"
 
 module.exports = (grunt) ->
   grunt.initConfig

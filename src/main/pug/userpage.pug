@@ -3,17 +3,34 @@ extends pageTemplate
 block title
     title R-Bank
 
+block prepend rightNavbar
+    include userNavbarTemplate
+
 block content
     .container
         .row
-            .col-sm-3.col-md-2.sidebar
-                - for(var i=0;i<3;i++)
+            nav.col-sm-3.col-md-2.sidebar
+                //- for(var i=0;i<3;i++)
                     ul.nav.nav-sidebar
-                        - for(var j=1;j<=3;j++)
-                            if j == 1
+                        - for(var j=1;j<=2;j++)
+                            if i == 0 && j == 1
                                 li.active
                                     a(href='#')
-                                        | Overview
+                                        | Active
                                         span.sr-only (current)
                             else
                                 li: a(href="#") Item#{j}
+                ul.nav.nav-sidebar
+                    li
+                        a(href="#" data-toggle="collapse" data-target="#menuItem1")
+                            | Informace o účtu&nbsp;
+                            span.fa.fa-arrow-circle-down
+                        ul#menuItem1.nav.collapse.nav-sidebar-items
+                            li.active: a(href='#') Vše
+                            li: a(href='#') Příjmy
+                    li
+                        a(href="#" data-toggle="collapse" data-target="#menuItem2")
+                            | Platby&nbsp;
+                            span.fa.fa-arrow-circle-down
+
+            main.col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main

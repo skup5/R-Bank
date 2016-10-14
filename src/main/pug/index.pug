@@ -5,10 +5,4 @@ block title
 
 block content
     .container
-        form.form-signin
-            h2.form-signin-heading Please sign in
-            label(for="inputEmail" class="sr-only") Email address
-            input(type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="")
-            label(for="inputPassword" class="sr-only") Password
-            input(type="password" id="inputPassword" class="form-control" placeholder="Password" required="")
-            button.btn.btn-lg.btn-primary.btn-block(type="submit") Sign in
+        include loginFormTemplate
