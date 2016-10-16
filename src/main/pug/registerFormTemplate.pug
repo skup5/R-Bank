@@ -1,0 +1,30 @@
+form.form-horizontal.form(autocomplete="on")
+    h2.form-signin-heading Nový účet
+    .form-group
+        label.control-label.col-sm-5(for="inputFirstName") Jméno
+        .col-sm-7: input(type="text" id="inputFirstName" class="form-control" placeholder="jméno" required autofocus)
+    .form-group
+        label.control-label.col-sm-5(for="inputLastName") Příjmení
+        .col-sm-7: input(type="text" id="inputLastName" class="form-control" placeholder="příjmení" required)
+    .form-group
+        label.control-label.col-sm-5(for="inputEmail") Emailová adresa
+        .col-sm-7: input(type="email" id="inputEmail" class="form-control" placeholder="e@mail.com" required)
+    .form-group
+        label.control-label.col-sm-5(for="inputPhoneNumber") Kontaktní telefon
+        .col-sm-1
+            p.form-control-static +420
+        .col-sm-6
+            input.form-control(type="text" id="inputPhoneNumber" placeholder="123456789" required pattern="\\d{9}")
+    .form-group
+        label.control-label.col-sm-5(for="inputPassword") Heslo
+        .col-sm-7: input(type="password" id="inputPassword" class="form-control" placeholder="heslo" required
+                         pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                         title="Heslo musí mít minimálně 8 znaků. Musí obsahovat alespoň jedno velké a jedno malé písmeno a jednu číslici")
+    .form-group
+        .checkbox.col-sm-offset-5.col-sm-7
+            label
+                input(type='checkbox' required)
+                | Souhlasím s uchováním údajů
+    .form-group
+        .col-sm-offset-5.col-sm-7
+            button.btn.btn-lg.btn-primary.btn-block(type="submit") Odeslat

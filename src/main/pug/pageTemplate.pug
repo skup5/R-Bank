@@ -1,5 +1,3 @@
-- var useInverseTheme = true;
-
 mixin css(paths)
     each item in paths
         link(rel="stylesheet" type="text/css" href=item)
@@ -19,13 +17,13 @@ html(lang="cs")
     head
         meta(charset="utf-8")
         meta(name="viewport" content="width=device-width initial-scale=1")
-        +css(["css/bootstrap.min.css","css/bootstrap-theme.css","css/font-awesome.min.css"])
+        +css(["css/bootstrap.min.css","css/bootstrap-theme.css","css/font-awesome.min.css","css/style.css"])
         block css
         block title
 
     body
         // HEADER
-        header#navbar.navbar.navbar-fixed-top(class=useInverseTheme?"navbar-inverse":"")
+        header#navbar.navbar.navbar-fixed-top.navbar-default
             nav.container
                 .navbar-header
                     button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse")
@@ -39,10 +37,6 @@ html(lang="cs")
 
                     ul.nav.navbar-nav.navbar-right
                         block rightNavbar
-                            li
-                                .navbar-text Motiv
-                                button(type="button" class="navbar-btn btn" class=useInverseTheme ? "btn-default" : "btn-inverse" id="theme_switch"
-                                title="Změnit motiv") &nbsp;&nbsp;
 
 
         // CONTENT
@@ -52,14 +46,5 @@ html(lang="cs")
     script(src="//html5shim.googlecode.com/svn/trunk/html5.js")
     script(src="//code.jquery.com/jquery-1.12.1.min.js")
     <![endif]-->
-    +script(["js/jquery.min.js","js/bootstrap.min.js"])
+    +script(["js/jquery.min.js","js/bootstrap.min.js","js/script.js"])
     block script
-    script.
-        var btn = $("#theme_switch")
-        btn.on("click", function () {
-            var navbar = $("#navbar").toggleClass("navbar-inverse")
-            //var label = navbar.hasClass("navbar-inverse") ? "Světlý motiv" : "Tmavý motiv"
-            //btn.text(label)
-            btn.toggleClass("btn-default btn-inverse")
-
-        })
