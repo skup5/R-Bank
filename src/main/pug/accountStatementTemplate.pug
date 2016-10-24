@@ -1,0 +1,51 @@
+.page-header: h1: .small Výpis účtu
+//.table-responsive
+//    table.table.table-striped
+//        thead: tr
+//            each head in ["datum","protiúčet","VS","typ transakce","částka","měna"]
+//                th= head
+//        tbody
+//            tr
+//                each val in [new Date().toLocaleDateString(), 123456789, 11111, "Došlá platba", 1000, "CZK"]
+//                    td= val
+//hr
+.table-responsive
+    table.table.table-row-striped.table-bordered
+        thead
+            tr
+                th(rowspan="2" scope="rowgroup") datum
+                th(rowspan="1" scope="rowgroup") název protiúčtu
+                th(colspan="2" scope="colgroup") VS
+                th(rowspan="2" scope="rowgroup") typ transakce
+                th(colspan="2" scope="colgroup") částka
+            tr
+                th(scope="row") číslo protiúčtu
+                th(scope="row") KS
+                th(scope="row") SS
+                th(scope="row") zůstatek
+        tbody
+            tr
+                td(rowspan="2" scope="rowgroup")= new Date().toLocaleDateString()
+                td(rowspan="1" scope="rowgroup") Firma s.r.o
+                td(colspan="2" scope="colgroup") 12
+                td(rowspan="2" scope="rowgroup") Došlá platba
+                td(colspan="2" scope="colgroup").success 1000,00 CZK
+            tr
+                td(scope="row") 123456789/0000
+                td(scope="row") 0138
+                td(scope="row")
+                td(scope="row") 1111,10 CZK
+            tr
+                -
+                    var date = new Date()
+                    date.setDate(date.getDate()-1)
+                td(rowspan="2" scope="rowgroup")= date.toLocaleDateString()
+                td(rowspan="1" scope="rowgroup")
+                td(colspan="2" scope="colgroup") 12345
+                td(rowspan="2" scope="rowgroup") Transakce platební kartou
+                td(colspan="2" scope="colgroup").danger -500,00 CZK
+            tr
+                td(scope="row")
+                td(scope="row") 1178
+                td(scope="row") 1234567890
+                td(scope="row") 11,10 CZK

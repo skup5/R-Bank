@@ -1,5 +1,5 @@
 form.form-horizontal.form(autocomplete="on")
-    h2.form-signin-heading Nový účet
+    h2: .small.form-signin-heading Nový účet
     .form-group
         label.control-label.col-sm-5(for="inputFirstName") Jméno
         .col-sm-7: input(type="text" id="inputFirstName" class="form-control" placeholder="jméno" required autofocus)
@@ -11,10 +11,11 @@ form.form-horizontal.form(autocomplete="on")
         .col-sm-7: input(type="email" id="inputEmail" class="form-control" placeholder="e@mail.com" required)
     .form-group
         label.control-label.col-sm-5(for="inputPhoneNumber") Kontaktní telefon
-        .col-sm-1
-            p.form-control-static +420
-        .col-sm-6
-            input.form-control(type="text" id="inputPhoneNumber" placeholder="123456789" required pattern="\\d{9}")
+        .col-sm-7: .row
+            .col-xs-3.col-sm-3
+                p.form-control-static +420
+            .col-xs-9.col-sm-9
+                input.form-control(type="text" id="inputPhoneNumber" placeholder="123456789" required pattern="\\d{9}")
     .form-group
         label.control-label.col-sm-5(for="inputPassword") Heslo
         .col-sm-7: input(type="password" id="inputPassword" class="form-control" placeholder="heslo" required

@@ -9,7 +9,10 @@ mixin script(paths)
 mixin bsDropdownMenu(...items)
     ul.dropdown-menu
         each item in items
-            li: a(href=item.url) #{item.label}
+            li: a(href=item.url)
+                if item.icon
+                    span(class=item.icon)
+                |#{item.label}
 
 
 doctype html
@@ -29,7 +32,9 @@ html(lang="cs")
                     button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse")
                         - for (var x = 0; x < 3; x++)
                             span.icon-bar
-                    a(class="navbar-brand" href="#") R-bank
+                    a(class="navbar-brand" href="#")
+                        span.fa.fa-university
+                        |R-bank
 
                 .collapse.navbar-collapse#header-navbar-collapse
                     ul.nav.navbar-nav
@@ -42,9 +47,13 @@ html(lang="cs")
         // CONTENT
         block content
 
-    <!--[if lt IE 9]>
-    script(src="//html5shim.googlecode.com/svn/trunk/html5.js")
-    script(src="//code.jquery.com/jquery-1.12.1.min.js")
-    <![endif]-->
-    +script(["js/jquery.min.js","js/bootstrap.min.js","js/script.js"])
-    block script
+        footer.footer
+            .container
+                block footer
+                    p.text-muted.text-center
+                        //span.glyphicon.glyphicon-copyright-mark
+                        span.fa.fa-copyright
+                        |Roman Zeleník
+
+        +script(["js/jquery.min.js","js/bootstrap.min.js","js/script.js"])
+        block script

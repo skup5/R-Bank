@@ -3,6 +3,11 @@ extends pageTemplate
 block title
     title R-Bank
 
+block prepend rightNavbar
+    include defaultNavbarTemplate
+
 block content
-    .container
-        include loginFormTemplate
+    .container: .row
+        main.main
+            .page-header: h1: .small Registrace
+            include registerFormTemplate
