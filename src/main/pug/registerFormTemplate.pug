@@ -1,31 +1,72 @@
+.page-header: h1: .small Nový účet
 form.form-horizontal.form(autocomplete="on")
-    h2: .small.form-signin-heading Nový účet
-    .form-group
-        label.control-label.col-sm-5(for="inputFirstName") Jméno
-        .col-sm-7: input(type="text" id="inputFirstName" class="form-control" placeholder="jméno" required autofocus)
-    .form-group
-        label.control-label.col-sm-5(for="inputLastName") Příjmení
-        .col-sm-7: input(type="text" id="inputLastName" class="form-control" placeholder="příjmení" required)
-    .form-group
-        label.control-label.col-sm-5(for="inputEmail") Emailová adresa
-        .col-sm-7: input(type="email" id="inputEmail" class="form-control" placeholder="e@mail.com" required)
-    .form-group
-        label.control-label.col-sm-5(for="inputPhoneNumber") Kontaktní telefon
-        .col-sm-7: .row
-            .col-xs-3.col-sm-3
-                p.form-control-static +420
-            .col-xs-9.col-sm-9
-                input.form-control(type="text" id="inputPhoneNumber" placeholder="123456789" required pattern="\\d{9}")
-    .form-group
-        label.control-label.col-sm-5(for="inputPassword") Heslo
-        .col-sm-7: input(type="password" id="inputPassword" class="form-control" placeholder="heslo" required
-                         pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                         title="Heslo musí mít minimálně 8 znaků. Musí obsahovat alespoň jedno velké a jedno malé písmeno a jednu číslici")
-    .form-group
-        .checkbox.col-sm-offset-5.col-sm-7
-            label
-                input(type='checkbox' required)
-                | Souhlasím s uchováním údajů
-    .form-group
-        .col-sm-offset-5.col-sm-7
-            button.btn.btn-lg.btn-primary.btn-block(type="submit") Odeslat
+    span.help-block#helpText
+        span.required-input
+        |Povinná položka
+    fieldset
+        legend.form-signin-heading Osobní údaje
+        //h2: .small.form-signin-heading Nový účet
+        .form-group
+            label.control-label.col-sm-5.required-input(for="inputName") Jméno
+            .col-sm-7: input(type="text" id="inputName" class="form-control" placeholder="jméno" required autofocus
+                        pattern="([^\\s])")
+        .form-group
+            label.control-label.col-sm-5.required-input(for="inputSurname") Příjmení
+            .col-sm-7: input(type="text" id="inputSurname" class="form-control" placeholder="příjmení" required
+                        pattern="([^\\s])")
+        .form-group
+            label.control-label.col-sm-5.required-input(for="inputPersonalNo") Rodné číslo
+            .col-sm-7: input(type="text" id="inputPersonalNo" class="form-control" placeholder="##########" required
+                        pattern="\\d{10}" maxlength=10)
+    fieldset
+        legend.form-signin-heading Kontaktní údaje
+        .form-group
+            label.control-label.col-sm-5(for="inputStreet") Ulice
+            .col-sm-7: input(type="text" id="inputStreet" class="form-control" placeholder="název ulice")
+        .form-group
+            label.control-label.col-sm-5(for="inputBuildNo") Č. popisné
+            .col-sm-7: input(type="number" id="inputBuildNo" class="form-control" placeholder="####" min=1 max=9999)
+        .form-group
+            label.control-label.col-sm-5(for="inputCity") Město
+            .col-sm-7: input(type="text" id="inputCity" class="form-control" placeholder="název města")
+        .form-group
+            label.control-label.col-sm-5(for="inputZipCode") PSČ
+            .col-sm-7: input(type="text" id="inputZipCode" class="form-control" placeholder="#####"
+                        pattern="\\d{5}" maxlength=5)
+        .form-group
+            label.control-label.col-sm-5.required-input(for="inputEmail") Emailová adresa
+            .col-sm-7: input(type="email" id="inputEmail" class="form-control" placeholder="e@mail.com" required)
+        .form-group
+            label.control-label.col-sm-5(for="inputPhoneNumber") Kontaktní telefon
+            .col-sm-7: .row
+                .col-xs-3.col-sm-3
+                    p.form-control-static +420
+                .col-xs-9.col-sm-9
+                    input.form-control(type="text" id="inputPhoneNumber" placeholder="123456789"
+                    pattern="\\d{9}" maxlength=9)
+    fieldset
+        legend.form-signin-heading Bankovní účet
+        .form-group
+            label.control-label.col-sm-5.required-input(for="inputCardNo") Číslo karty
+            .col-sm-7: .input-group
+                input(type="text" id="inputCardNo" class="form-control" placeholder="################" required
+                        pattern="\\d{16}" maxlength=16)
+                span.input-group-btn: button.btn.btn-primary(type="button" id="btnCardNo" data-toggle="tooltip" data-placement="right"
+                    title="Generovat"): span.fa.fa-random.fa-only.fa-flip-horizontal
+        .form-group
+            label.control-label.col-sm-5.required-input(for="inputBankAccountNo") Číslo účtu
+            .col-sm-7: .input-group
+                input(type="text" id="inputBankAccountNo" class="form-control" placeholder="#########" required
+                        pattern="\\d{9}" maxlength=9)
+                span.input-group-btn: button.btn.btn-primary(type="button" id="btnBankAccountNo" data-toggle="tooltip" data-placement="right"
+                    title="Generovat"): span.fa.fa-random.fa-only.fa-flip-horizontal
+    fieldset
+        legend
+        .form-group
+            .checkbox.col-sm-offset-5.col-sm-7
+                label.required-input
+                    input(type='checkbox' required)
+                    | Nejsem robot
+        .form-group
+            .col-sm-offset-5.col-sm-7
+                button.btn.btn-lg.btn-primary.btn-block(type="submit") Odeslat

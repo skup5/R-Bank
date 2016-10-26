@@ -32,6 +32,7 @@ module.exports = (grunt) ->
         src: [
           "index.pug"
           "userpage.pug"
+          "adminpage.pug"
         ]
         dest: webappPath
         ext: ".html"

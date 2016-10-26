@@ -7,25 +7,24 @@ block prepend rightNavbar
     include userNavbarTemplate
 
 block content
-    .container
-        .row
-            .col-lg-3.col-md-3.col-sm-3.col-xs-3: nav.sidebar
-                ul.nav.nav-sidebar
-                    li
-                        a.nav-menu.collapsed(href="#" data-toggle="collapse" data-target="#menuItem1")
-                            | Informace o účtu&nbsp;
-                        ul#menuItem1.nav.collapse.nav-sidebar-items
-                            li.active: a(href='#') Vše
-                            li: a(href='#') Příjmy
-                            li: a(href='#') Výdaje
-                    li
-                        a.nav-menu.collapsed(href="#" data-toggle="collapse" data-target="#menuItem2")
-                            | Platby&nbsp;
-                        ul#menuItem2.nav.collapse.nav-sidebar-items
-                            li: a(href='#') Jednorázový příkaz
-                            li: a(href='#') Hromadný příkaz
-                            li: a(href='#') Vzory příkazů
+    .row
+        .col-lg-3.col-md-3.col-sm-3.col-xs-3: nav.sidebar
+            ul.nav.nav-sidebar
+                li
+                    a.nav-menu.collapsed(href="#" data-toggle="collapse" data-target="#menuItem1")
+                        | Informace o účtu&nbsp;
+                    ul#menuItem1.nav.collapse.nav-sidebar-items
+                        li.active: a(href='#') Vše
+                        li: a(href='#') Příjmy
+                        li: a(href='#') Výdaje
+                li
+                    a.nav-menu.collapsed(href="#" data-toggle="collapse" data-target="#menuItem2")
+                        | Platby&nbsp;
+                    ul#menuItem2.nav.collapse.nav-sidebar-items
+                        li: a(href='#') Jednorázový příkaz
+                        li: a(href='#') Hromadný příkaz
+                        li: a(href='#') Vzory příkazů
 
-            //main.main.col-lg-9.col-lg-offset-3.col-md-9.col-md-offset-3.col-sm-9.col-sm-offset-3.col-xs-9.col-xs-offset-3
-            .col-lg-9.col-md-9.col-sm-9.col-xs-9: main.main
-                include accountStatementTemplate
+        //main.main.col-lg-9.col-lg-offset-3.col-md-9.col-md-offset-3.col-sm-9.col-sm-offset-3.col-xs-9.col-xs-offset-3
+        .col-lg-9.col-md-9.col-sm-9.col-xs-9: main.main
+            include accountStatementTemplate

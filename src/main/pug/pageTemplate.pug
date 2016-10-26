@@ -25,35 +25,38 @@ html(lang="cs")
         block title
 
     body
-        // HEADER
-        header#navbar.navbar.navbar-fixed-top.navbar-default
-            nav.container
-                .navbar-header
-                    button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse")
-                        - for (var x = 0; x < 3; x++)
-                            span.icon-bar
-                    a(class="navbar-brand" href="#")
-                        span.fa.fa-university
-                        |R-bank
+        #wrapper
+            // HEADER
+            header#navbar.navbar.navbar-fixed-top.navbar-default
+                nav.container
+                    .navbar-header
+                        button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse")
+                            - for (var x = 0; x < 3; x++)
+                                span.icon-bar
+                        a(class="navbar-brand" href="#")
+                            span.fa.fa-building
+                            |R-bank
 
-                .collapse.navbar-collapse#header-navbar-collapse
-                    ul.nav.navbar-nav
-                        block leftNavbar
+                    .collapse.navbar-collapse#header-navbar-collapse
+                        ul.nav.navbar-nav
+                            block leftNavbar
 
-                    ul.nav.navbar-nav.navbar-right
-                        block rightNavbar
+                        ul.nav.navbar-nav.navbar-right
+                            block rightNavbar
 
 
-        // CONTENT
-        block content
-
-        footer.footer
+            // CONTENT
             .container
-                block footer
-                    p.text-muted.text-center
-                        //span.glyphicon.glyphicon-copyright-mark
-                        span.fa.fa-copyright
-                        |Roman Zeleník
+                block content
+
+            // FOOTER
+            footer.footer
+                .container
+                    block footer
+                        p.text-muted.text-center
+                            //span.glyphicon.glyphicon-copyright-mark
+                            span.fa.fa-copyright
+                            |Roman Zeleník
 
         +script(["js/jquery.min.js","js/bootstrap.min.js","js/script.js"])
         block script

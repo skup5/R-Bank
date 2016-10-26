@@ -1,12 +1,10 @@
 form.form-horizontal.form-signin
     h2.form-signin-heading Přihlaste se
     .form-group
-        label(for="inputEmail" class="sr-only") Emailová adresa
-        .input-group
-            input(type="email" id="inputEmail" class="form-control" placeholder="email" required autofocus)
-            span.input-group-addon @
+        label(for="inputUserNo" class="sr-only") Identifikační číslo
+        input(type="text" id="inputUserNo" class="form-control" placeholder="id" required autofocus)
     .form-group
-        label(for="inputPassword" class="sr-only") Heslo
-        input(type="password" id="inputPassword" class="form-control" placeholder="heslo" required)
+        label(for="inputPin" class="sr-only") Pin
+        input(type="text" id="inputPin" class="form-control" placeholder="pin" required)
     .form-group
         button.btn.btn-lg.btn-primary.btn-block(type="submit") Přihlásit
