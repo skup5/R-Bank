@@ -1,0 +1,9 @@
+extends pageTemplate
+
+block css
+    - var path = "../../../css/"
+    +css([path+"bootstrap.min.css",path+"bootstrap-theme.min.css",path+"font-awesome.min.css",path+"style.css"])
+
+block script
+    -var path = "../../../js/"
+    +script([path+"jquery.min.js",path+"bootstrap.min.js",path+"script.js"])

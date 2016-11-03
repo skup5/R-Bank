@@ -1,4 +1,4 @@
-extends ../template/pageTemplate
+extends ../template/hiddenPageTemplate
 
 block title
     title R-Bank
@@ -11,12 +11,13 @@ block content
         .col-lg-3.col-md-3.col-sm-3.col-xs-3: nav.sidebar
             ul.nav.nav-sidebar
                 li: .nav-menu: ul.nav.nav-sidebar-items
-                li.active: a(href="#")
+                li: a(href="#")
                     span.fa.fa-user-plus
                     |Vytvořit účet
-                li: a(href="#")
+                li.active: a(href="#")
                     span.fa.fa-users
                     |Seznam účtů
 
         .col-lg-9.col-md-9.col-sm-9.col-xs-9: main.main
-            include ../template/registerFormTemplate
+            //include ../template/registerFormTemplate
+            include userListTemplate
