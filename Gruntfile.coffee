@@ -1,6 +1,7 @@
 pugPath = "src/main/pug/"
 coffeePath = "src/main/coffee/"
 webappPath = "src/main/webapp/"
+hiddenHtml = "WEB-INF/pages/"
 
 module.exports = (grunt) ->
   grunt.initConfig
@@ -23,24 +24,28 @@ module.exports = (grunt) ->
           "src/main/webapp/js/script.js" : [coffeePath+"*.coffee"]
     #PUG
     pug:
-      compile:
+      compileHidden:
         options:
           pretty: true
         expand: true
         flatten: false
         cwd: pugPath
         src: [
-          "index.pug"
-          "userpage.pug"
-          "adminpage.pug"
+          "user/userpage.pug"
+          "admin/adminpage.pug"
         ]
-        dest: webappPath
+        dest: webappPath+hiddenHtml
         ext: ".html"
+
+      compileVisible:
+        options: pretty: true
+        files:
+          "src/main/webapp/index.html" : pugPath+"index.pug"
 
     #WATCH
     watch:
       pug:
-        files: [pugPath+"*.pug"]
+        files: [pugPath+"*.pug", pugPath+"*/*.pug"]
         tasks: ["pug"]
         options: spawn: false
       coffee:
