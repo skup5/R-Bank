@@ -1,6 +1,5 @@
 body {
     padding-top: 50px;
-    background-color: #eff;
 }
 
 html, body {
@@ -54,11 +53,27 @@ html, body {
     margin-bottom: 60px;
 }
 
-.nav-sidebar .active > a, .nav-sidebar .active > a:hover, .nav-sidebar .active > a:focus {
+.nav-sidebar li a:hover, .nav-sidebar li a:hover:focus {
+    color: #fff;
+    background-color: #222;
+}
+
+.nav-sidebar li a:focus {
+    color: inherit;
+    background-color: inherit;
+}
+
+.nav-sidebar-items .active > a {
     color: #fff;
     /*background-color: #428bca;*/
     background-color: #3c3c3c;
 }
+
+.nav-sidebar-items li a:hover, .nav-sidebar-items li a:focus,
+.nav-sidebar-items .active > a:hover, .nav-sidebar-items .active > a:focus {
+    color: #fff;
+    background-color: #222;
+ }
 
 .nav-sidebar .nav-menu {
     padding: 10px 20px;
@@ -92,15 +107,6 @@ html, body {
     content: '\f0ab';
 }
 
-.nav li a.nav-menu:focus {
-    color: #3c3c3c;
-    background-color: transparent;
-}
-
-.navbar-default .navbar-toggle .icon-bar {
-    background-color: #9d9d9d;
-}
-
 .footer {
     position: absolute;
     bottom: 0;
@@ -117,24 +123,20 @@ html, body {
     border-radius: 4px 4px 0 0;
 }
 
+.footer, .footer a {
+    color: #ddd;
+}
+
+.footer a:hover {
+    color: #fff;
+}
+
 .footer > .container {
-    padding: 0 15px;
+    padding: 15px 15px 15px 0;
 }
 
 .footer .list-inline > li {
     vertical-align: text-top;
-}
-
-.container .text-muted {
-    margin: 16px 0;
-}
-
-.text-muted li, .text-muted a {
-    color: #9d9d9d;
-}
-
-.text-muted a:hover {
-    color: #fff;
 }
 
 span.caret {
