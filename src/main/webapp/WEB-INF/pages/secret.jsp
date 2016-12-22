@@ -11,6 +11,6 @@
     <title>Secret page</title>
 </head>
 <body>
-42
+${requestScope.secret}
 </body>
 </html>

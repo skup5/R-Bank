@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 /**
  * Wrapper around HttpSession providing authentication functionality.
  *
+ *
+ * IMPORTANT: THIS IS NOT USED IN THIS EXAMPLE, SPRING SECURITY IS USED INSTEAD
+ *
+ *
  * Date: 26.11.15
  *
  * @author Jakub Danek

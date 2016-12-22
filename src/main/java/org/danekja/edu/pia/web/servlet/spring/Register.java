@@ -1,4 +1,4 @@
-package org.danekja.edu.pia.web.servlet;
+package org.danekja.edu.pia.web.servlet.spring;
 
 import java.io.IOException;
 import java.util.Objects;

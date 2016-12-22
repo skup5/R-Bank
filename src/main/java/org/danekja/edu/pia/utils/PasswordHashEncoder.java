@@ -3,6 +3,7 @@ package org.danekja.edu.pia.utils;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @author Jakub Danek
  */
 @Component
-public class PasswordHashEncoder implements Encoder {
+public class PasswordHashEncoder implements Encoder, PasswordEncoder {
 
     @Override
     public String encode(String text) {
@@ -43,5 +44,15 @@ public class PasswordHashEncoder implements Encoder {
             //TODO log!
             return false;
         }
+    }
+
+    @Override
+    public String encode(CharSequence rawPassword) {
+        return encode(rawPassword.toString());
+    }
+
+    @Override
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        return validate(rawPassword.toString(), encodedPassword);
     }
 }

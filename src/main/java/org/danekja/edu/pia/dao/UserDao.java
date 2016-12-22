@@ -1,13 +1,14 @@
 package org.danekja.edu.pia.dao;
 
 import org.danekja.edu.pia.domain.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * Date: 26.11.15
  *
  * @author Jakub Danek
  */
-public interface UserDao extends GenericDao<User> {
+public interface UserDao extends GenericDao<User>, UserDetailsService {
 
     /**
      *

@@ -1,4 +1,4 @@
-package org.danekja.edu.pia.web.servlet;
+package org.danekja.edu.pia.web.servlet.spring;
 
 import java.io.IOException;
 
@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Servlet handling user login requests
  *
+ *
+ * IMPORTANT: THIS IS NOT USED IN THIS EXAMPLE, SPRING SECURITY IS USED INSTEAD
+ *
  * Date: 26.11.15
  *
  * @author Jakub Danek
  */
-@WebServlet("/login")
+//@WebServlet("/login") NOT USED
 public class Login extends AbstractServlet {
 
     private static final String USERNAME_PARAMETER = "username";
