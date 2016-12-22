@@ -1,4 +1,4 @@
-package org.danekja.edu.pia.domain;
+package org.zelenikr.pia.domain;
 
 import java.util.Collection;
 import java.util.Collections;

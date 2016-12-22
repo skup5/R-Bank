@@ -1,4 +1,4 @@
-package org.danekja.edu.pia.domain;
+package org.zelenikr.pia.domain;
 
 /**
  * Exception thrown when User object fails internal state validation.

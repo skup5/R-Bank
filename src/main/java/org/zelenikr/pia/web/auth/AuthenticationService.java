@@ -1,8 +1,8 @@
-package org.danekja.edu.pia.web.auth;
+package org.zelenikr.pia.web.auth;
 
 import javax.servlet.http.HttpSession;
 
-import org.danekja.edu.pia.manager.UserManager;
+import org.zelenikr.pia.manager.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

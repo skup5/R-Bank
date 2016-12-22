@@ -1,9 +1,9 @@
-package org.danekja.edu.pia.dao;
+package org.zelenikr.pia.dao;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-import org.danekja.edu.pia.domain.User;
+import org.zelenikr.pia.domain.User;
 import org.springframework.stereotype.Repository;
 
 /**

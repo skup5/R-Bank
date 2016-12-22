@@ -1,4 +1,4 @@
-package org.danekja.edu.pia.manager;
+package org.zelenikr.pia.manager;
 
 /**
  * Date: 29.11.16

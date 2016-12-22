@@ -1,7 +1,7 @@
-package org.danekja.edu.pia.manager;
+package org.zelenikr.pia.manager;
 
-import org.danekja.edu.pia.domain.User;
-import org.danekja.edu.pia.domain.UserValidationException;
+import org.zelenikr.pia.domain.User;
+import org.zelenikr.pia.domain.UserValidationException;
 
 /**
  * Date: 26.11.15

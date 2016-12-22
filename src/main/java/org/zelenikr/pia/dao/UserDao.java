@@ -1,6 +1,6 @@
-package org.danekja.edu.pia.dao;
+package org.zelenikr.pia.dao;
 
-import org.danekja.edu.pia.domain.User;
+import org.zelenikr.pia.domain.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**

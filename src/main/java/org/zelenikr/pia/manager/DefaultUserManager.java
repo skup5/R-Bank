@@ -1,11 +1,11 @@
-package org.danekja.edu.pia.manager;
+package org.zelenikr.pia.manager;
 
 import javax.transaction.Transactional;
 
-import org.danekja.edu.pia.dao.UserDao;
-import org.danekja.edu.pia.domain.User;
-import org.danekja.edu.pia.domain.UserValidationException;
-import org.danekja.edu.pia.utils.Encoder;
+import org.zelenikr.pia.dao.UserDao;
+import org.zelenikr.pia.domain.User;
+import org.zelenikr.pia.domain.UserValidationException;
+import org.zelenikr.pia.utils.Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

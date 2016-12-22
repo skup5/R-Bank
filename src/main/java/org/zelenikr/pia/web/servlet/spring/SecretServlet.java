@@ -1,4 +1,4 @@
-package org.danekja.edu.pia.web.servlet.spring;
+package org.zelenikr.pia.web.servlet.spring;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.danekja.edu.pia.manager.SecretManager;
+import org.zelenikr.pia.manager.SecretManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

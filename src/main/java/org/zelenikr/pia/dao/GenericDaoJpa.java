@@ -1,9 +1,9 @@
-package org.danekja.edu.pia.dao;
+package org.zelenikr.pia.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.danekja.edu.pia.domain.BaseObject;
+import org.zelenikr.pia.domain.BaseObject;
 
 /**
  * JPA implementation of the {@link GenericDao} interface.

@@ -1,4 +1,4 @@
-package org.danekja.edu.pia.utils;
+package org.zelenikr.pia.utils;
 
 /**
  * Date: 26.11.15

@@ -1,4 +1,4 @@
-package org.danekja.edu.pia.utils;
+package org.zelenikr.pia.utils;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;

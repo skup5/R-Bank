@@ -1,6 +1,6 @@
-package org.danekja.edu.pia.dao;
+package org.zelenikr.pia.dao;
 
-import org.danekja.edu.pia.domain.BaseObject;
+import org.zelenikr.pia.domain.BaseObject;
 
 /**
  * Common interface for all DAOs
