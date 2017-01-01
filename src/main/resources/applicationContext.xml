@@ -69,20 +69,20 @@
 
     <!-- Jade4J -->
 
-    <bean id="templateLoader" class="de.neuland.jade4j.spring.template.SpringTemplateLoader">
-        <property name="basePath" value="../pug/" />
-        <property name="suffix" value=".pug" />
-    </bean>
+    <!--<bean id="templateLoader" class="de.neuland.jade4j.spring.template.SpringTemplateLoader">-->
+        <!--<property name="basePath" value="../pug/" />-->
+        <!--<property name="suffix" value=".pug" />-->
+    <!--</bean>-->
 
-    <bean id="jadeConfiguration" class="de.neuland.jade4j.JadeConfiguration">
-        <property name="prettyPrint" value="true" />
-        <property name="caching" value="false" />
-        <property name="templateLoader" ref="templateLoader" />
-    </bean>
+    <!--<bean id="jadeConfiguration" class="de.neuland.jade4j.JadeConfiguration">-->
+        <!--<property name="prettyPrint" value="true" />-->
+        <!--<property name="caching" value="false" />-->
+        <!--<property name="templateLoader" ref="templateLoader" />-->
+    <!--</bean>-->
 
-    <bean id="viewResolver" class="de.neuland.jade4j.spring.view.JadeViewResolver">
-        <property name="configuration" ref="jadeConfiguration" />
-        <!-- rendering nice html formatted error pages for development -->
-        <property name="renderExceptions" value="true" />
-    </bean>
+    <!--<bean id="viewResolver" class="de.neuland.jade4j.spring.view.JadeViewResolver">-->
+        <!--<property name="configuration" ref="jadeConfiguration" />-->
+        <!--&lt;!&ndash; rendering nice html formatted error pages for development &ndash;&gt;-->
+        <!--<property name="renderExceptions" value="true" />-->
+    <!--</bean>-->
 </beans>

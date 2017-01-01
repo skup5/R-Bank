@@ -21,7 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author Jakub Danek
  */
 @Entity
-@Table(name = "danekja_exampleapp_simple_user")
+@Table(name = "zelenikr_rbank_user")
 public class User extends BaseObject implements UserDetails {
     /**
      * Login, unique
