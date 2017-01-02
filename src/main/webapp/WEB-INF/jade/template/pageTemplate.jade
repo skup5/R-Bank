@@ -14,14 +14,14 @@ mixin bsDropdownMenu(...items)
                     span(class=item.icon)
                 |#{item.label}
 
-
 doctype html
 html(lang="cs")
     head
         meta(charset="utf-8")
         meta(name="viewport" content="width=device-width initial-scale=1")
         block css
-            +css(["css/bootstrap.min.css","css/bootstrap-theme.min.css","css/font-awesome.min.css","css/style.css"])
+            - var classes = ["css/bootstrap.min.css","css/bootstrap-theme.min.css","css/font-awesome.min.css","css/style.css"]
+            +css(classes)
         block title
 
     body
@@ -31,7 +31,7 @@ html(lang="cs")
                 nav.container
                     .navbar-header
                         button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse")
-                            - for (var x = 0; x < 3; x++)
+                            each i in [1,2,3]
                                 span.icon-bar
                         a(class="navbar-brand" href="#")
                             span.fa.fa-building
@@ -75,4 +75,5 @@ html(lang="cs")
                                     |  +420 211 111 111
 
         block script
-            +script(["js/jquery.min.js","js/bootstrap.min.js","js/script.js"])
+            - var scripts = ["js/jquery.min.js","js/bootstrap.min.js","js/script.js"]
+            +script(scripts)

@@ -1,6 +1,6 @@
-pugPath = "src/main/pug/"
 coffeePath = "src/main/coffee/"
 webappPath = "src/main/webapp/"
+pugPath = webappPath + "WEB-INF/jade/"
 hiddenHtml = "WEB-INF/pages/"
 
 module.exports = (grunt) ->

@@ -5,13 +5,13 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation=
-           "http://www.springframework.org/schema/beans
+               "http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
      http://www.springframework.org/schema/context
      http://www.springframework.org/schema/context/spring-context-4.0.xsd
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
      http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd"
-       >
+>
 
     <context:annotation-config/>
     <context:component-scan base-package="org.zelenikr.pia.**.*"/>
@@ -31,9 +31,10 @@
 
     <!-- JPA and Transactions -->
 
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" destroy-method="destroy">
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+          destroy-method="destroy">
         <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml"/>
         <property name="jpaVendorAdapter" ref="hibernateVendorAdapter"/>
         <property name="packagesToScan" value="org.zelenikr.pia.**.domain"/>
@@ -67,22 +68,20 @@
 
     <security:global-method-security pre-post-annotations="enabled"/>
 
-    <!-- Jade4J -->
+    <!-- Jade template -->
 
-    <!--<bean id="templateLoader" class="de.neuland.jade4j.spring.template.SpringTemplateLoader">-->
-        <!--<property name="basePath" value="../pug/" />-->
-        <!--<property name="suffix" value=".pug" />-->
-    <!--</bean>-->
+    <bean id="jadeFileLoader" class="org.zelenikr.pia.web.template.JadeFileLoader">
+        <property name="basePath" value="/WEB-INF/jade/"/>
+    </bean>
 
-    <!--<bean id="jadeConfiguration" class="de.neuland.jade4j.JadeConfiguration">-->
-        <!--<property name="prettyPrint" value="true" />-->
-        <!--<property name="caching" value="false" />-->
-        <!--<property name="templateLoader" ref="templateLoader" />-->
-    <!--</bean>-->
+    <bean id="jadeRenderConfiguration" class="org.zelenikr.pia.web.template.JadeRenderConfiguration">
+        <constructor-arg ref="jadeFileLoader"/>
+        <property name="prettyPrint" value="false"/>
+        <property name="caching" value="false"/>
+    </bean>
 
-    <!--<bean id="viewResolver" class="de.neuland.jade4j.spring.view.JadeViewResolver">-->
-        <!--<property name="configuration" ref="jadeConfiguration" />-->
-        <!--&lt;!&ndash; rendering nice html formatted error pages for development &ndash;&gt;-->
-        <!--<property name="renderExceptions" value="true" />-->
-    <!--</bean>-->
+    <bean id="templateRender" class="org.zelenikr.pia.web.template.JadeRender">
+        <constructor-arg name="configuration" ref="jadeRenderConfiguration"/>
+    </bean>
+
 </beans>

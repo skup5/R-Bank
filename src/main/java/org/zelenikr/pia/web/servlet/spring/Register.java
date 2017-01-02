@@ -1,27 +1,27 @@
 package org.zelenikr.pia.web.servlet.spring;
 
-import java.io.IOException;
-import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.zelenikr.pia.domain.User;
+import org.zelenikr.pia.domain.UserValidationException;
+import org.zelenikr.pia.manager.UserManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.zelenikr.pia.domain.User;
-import org.zelenikr.pia.domain.UserValidationException;
-import org.zelenikr.pia.manager.UserManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Servlet handling user registration requests.
- *
+ * <p>
  * Date: 26.11.15
  *
  * @author Jakub Danek
  */
 @WebServlet("/register")
-public class Register extends AbstractServlet {
+public class Register extends TemplateServlet {
 
     private static final String USERNAME_PARAMETER = "username";
     private static final String PASSWORD_PARAMETER = "password";
@@ -47,7 +47,7 @@ public class Register extends AbstractServlet {
         String password = req.getParameter(PASSWORD_PARAMETER);
         String confirmPwd = req.getParameter(CONFIRM_PWD_PARAMETER);
 
-        if(!Objects.equals(password, confirmPwd)) {
+        if (!Objects.equals(password, confirmPwd)) {
             errorDispatch("The password and confirm password fields do not match!", req, resp);
             return;
         }
@@ -63,5 +63,13 @@ public class Register extends AbstractServlet {
     private void errorDispatch(String err, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute(ERROR_ATTRIBUTE, err);
         req.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected Map<String, Object> getTemplateVariables() {
+//        Map<String, Object> model = new HashMap<String, Object>();
+//        model.put("company", "zelenik");
+
+        return null;
     }
 }
