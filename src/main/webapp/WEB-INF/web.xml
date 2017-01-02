@@ -15,12 +15,13 @@
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.zelenikr.pia.web.filter.EncodingFilter</filter-class>
     </filter>
+
     <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
-        <filter-name>encodingFilter</filter-name>
+        <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
@@ -32,8 +33,14 @@
     </servlet>
 
     <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/css/*</url-pattern>
+        <url-pattern>/js/*</url-pattern>
+        <url-pattern>/fonts/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>home</servlet-name>
-        <url-pattern></url-pattern>
+        <url-pattern>/</url-pattern>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
     
