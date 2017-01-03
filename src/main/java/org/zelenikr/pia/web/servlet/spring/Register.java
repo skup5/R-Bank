@@ -46,6 +46,8 @@ public class Register extends TemplateServlet {
         String username = req.getParameter(USERNAME_PARAMETER);
         String password = req.getParameter(PASSWORD_PARAMETER);
         String confirmPwd = req.getParameter(CONFIRM_PWD_PARAMETER);
+        //TODO: fill missing info from form
+        String name = "name of user";
 
         if (!Objects.equals(password, confirmPwd)) {
             errorDispatch("The password and confirm password fields do not match!", req, resp);
@@ -53,8 +55,9 @@ public class Register extends TemplateServlet {
         }
 
         try {
-            userManager.register(new User(username, password));
-            resp.sendRedirect("");  //not perfect, user should get a message registration was successful!
+            userManager.register(new User(username, password, name));
+            //TODO: not perfect, user should get a message registration was successful!
+            resp.sendRedirect("");
         } catch (UserValidationException e) {
             errorDispatch(e.getMessage(), req, resp);
         }

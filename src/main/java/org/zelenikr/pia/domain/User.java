@@ -32,15 +32,20 @@ public class User extends BaseObject implements UserDetails {
      */
     private String password;
 
+    private String name;
+
+//    private String surname;
+
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, String name) {
         this.username = username;
         this.password = password;
+        this.name = name;
     }
 
-    /*
+   /*
     ########### API ##################
      */
 
@@ -108,6 +113,14 @@ public class User extends BaseObject implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

@@ -16,8 +16,10 @@ public interface ITemplateRender {
      * @param templateName
      * @param variables
      * @return
+     * @throws IOException
+     * @throws TemplateParserException
      */
-    String getHTMLCode(ServletContext context, String templateName, Map<String, Object> variables) throws IOException;
+    String getHTMLCode(ServletContext context, String templateName, Map<String, Object> variables) throws IOException, TemplateParserException;
 
     /**
      * Writes html into the writer
@@ -27,8 +29,9 @@ public interface ITemplateRender {
      * @param variables
      * @param writer
      * @throws IOException
+     * @throws TemplateParserException
      */
-    void renderTemplate(ServletContext context, String templateName, Map<String, Object> variables, Writer writer) throws IOException;
+    void renderTemplate(ServletContext context, String templateName, Map<String, Object> variables, Writer writer) throws IOException, TemplateParserException;
 
     /**
      *

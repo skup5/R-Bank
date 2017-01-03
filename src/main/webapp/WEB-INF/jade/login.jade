@@ -1,0 +1,10 @@
+extends template/pageTemplate
+
+block title
+    title R-Bank
+
+block prepend rightNavbar
+    include template/defaultNavbarTemplate
+
+block content
+    .row: main.main: .col-md-12: include template/loginFormTemplate

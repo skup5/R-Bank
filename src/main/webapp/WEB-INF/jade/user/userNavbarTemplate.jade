@@ -1,11 +1,14 @@
-//li#user Jméno Příjmení
 li.dropdown
     a#user(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false")
         span.fa.fa-user
         | Prokop Buben
         span.caret
-    +bsDropdownMenu(
-        {url:"#", icon:"fa fa-cog", label:"Nastavení"}, {url:"#", icon:"fa fa-times", label:"Odhlásit"}
-    )
+    ul.dropdown-menu(aria-labelledby="user")
+        li: a(href="#")
+                span.fa.fa-cog
+                | Nastavení
+        li: a(href="logout")
+                span.fa.fa-times
+                | Odhlásit
 li#account: .navbar-text disponibilní zůstatek &nbsp;
     span#account_value 1111,10 CZK

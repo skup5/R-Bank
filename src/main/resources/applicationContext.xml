@@ -52,10 +52,12 @@
 
     <security:http authentication-manager-ref="authManager">
         <!-- redirect to /secret/vip after login if no other secured page had been requested before-->
-        <security:form-login login-page="/" default-target-url="/secret/vip"/>
+        <security:form-login login-page="/login" default-target-url="/user"/>
         <security:intercept-url pattern="*" access="permitAll"/>
         <!-- user must be logged in to access any secret page -->
         <security:intercept-url pattern="/secret/*" access="isAuthenticated()"/>
+        <security:intercept-url pattern="/user" access="hasRole('ROLE_USER')" />
+        <security:csrf disabled="true"></security:csrf>
     </security:http>
 
     <security:authentication-manager id="authManager">
@@ -70,17 +72,17 @@
 
     <!-- Jade template -->
 
-    <bean id="jadeFileLoader" class="org.zelenikr.pia.web.template.JadeFileLoader">
+    <bean id="jadeFileLoader" class="org.zelenikr.pia.web.template.jade.JadeFileLoader">
         <property name="basePath" value="/WEB-INF/jade/"/>
     </bean>
 
-    <bean id="jadeRenderConfiguration" class="org.zelenikr.pia.web.template.JadeRenderConfiguration">
+    <bean id="jadeRenderConfiguration" class="org.zelenikr.pia.web.template.jade.JadeRenderConfiguration">
         <constructor-arg ref="jadeFileLoader"/>
         <property name="prettyPrint" value="false"/>
         <property name="caching" value="false"/>
     </bean>
 
-    <bean id="templateRender" class="org.zelenikr.pia.web.template.JadeRender">
+    <bean id="templateRender" class="org.zelenikr.pia.web.template.jade.JadeRender">
         <constructor-arg name="configuration" ref="jadeRenderConfiguration"/>
     </bean>
 

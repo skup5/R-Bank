@@ -45,24 +45,25 @@ module.exports = (grunt) ->
           "src/main/webapp/index.html": pugPath + "index.pug"
 #JADE
     jade:
-      compileHidden:
-        options:
-          pretty: true
-        expand: true
-        flatten: false
-        cwd: jadePath
-        src: [
-          "user/userpage.jade"
-          "admin/adminpage.jade"
-        ]
-        dest: webappPath + hiddenHtml
-        ext: ".html"
+#      compileHidden:
+#        options:
+#          pretty: true
+#        expand: true
+#        flatten: false
+#        cwd: jadePath
+#        src: [
+#          "user/userpage.jade"
+#          "admin/adminpage.jade"
+#        ]
+#        dest: webappPath + hiddenHtml
+#        ext: ".html"
 
       compileVisible:
         options:
           pretty: true
         files:
           "src/main/webapp/index.html": jadePath + "index.jade"
+          "src/main/webapp/userpage.html": jadePath + "user/userpage.jade"
 #WATCH
     watch:
       pug:

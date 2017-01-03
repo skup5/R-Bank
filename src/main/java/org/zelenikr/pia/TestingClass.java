@@ -1,5 +1,11 @@
 package org.zelenikr.pia;
 
+import org.zelenikr.pia.utils.PasswordHash;
+import org.zelenikr.pia.utils.PasswordHashEncoder;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 /**
  * @author Roman Zelenik
  */
@@ -20,5 +26,12 @@ public class TestingClass {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }*/
+
+      printHash("1234");
+    }
+
+    static void printHash(String s) {
+        System.out.println(new PasswordHashEncoder().encode(s));
+
     }
 }

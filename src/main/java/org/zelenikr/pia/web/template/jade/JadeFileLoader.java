@@ -1,4 +1,4 @@
-package org.zelenikr.pia.web.template;
+package org.zelenikr.pia.web.template.jade;
 
 import de.neuland.jade4j.template.TemplateLoader;
 import org.apache.commons.io.FilenameUtils;
