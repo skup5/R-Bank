@@ -5,6 +5,10 @@
          version="3.1">
     <display-name>KIV-PIA R-Bank</display-name>
 
+    <welcome-file-list>
+        <welcome-file>home</welcome-file>
+    </welcome-file-list>
+    
     <!--Filter-->
 
     <filter>
@@ -43,16 +47,9 @@
         <servlet-name>user</servlet-name>
         <servlet-class>org.zelenikr.pia.web.servlet.spring.User</servlet-class>
     </servlet>
-
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>/css/*</url-pattern>
-        <url-pattern>/js/*</url-pattern>
-        <url-pattern>/fonts/*</url-pattern>
-    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>home</servlet-name>
-        <url-pattern>/</url-pattern>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
