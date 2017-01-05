@@ -46,6 +46,7 @@ public class Register extends TemplateServlet {
         String username = req.getParameter(USERNAME_PARAMETER);
         String password = req.getParameter(PASSWORD_PARAMETER);
         String confirmPwd = req.getParameter(CONFIRM_PWD_PARAMETER);
+
         //TODO: fill missing info from form
         String name = "name of user";
 
@@ -55,7 +56,7 @@ public class Register extends TemplateServlet {
         }
 
         try {
-            userManager.register(new User(username, password, name));
+            userManager.register(new User(username, password));
             //TODO: not perfect, user should get a message registration was successful!
             resp.sendRedirect("");
         } catch (UserValidationException e) {

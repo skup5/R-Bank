@@ -1,12 +1,10 @@
 package org.zelenikr.pia.domain;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,14 +12,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * Entity representing application User.
- *
- * Date: 26.11.15
+ * Entity representing application user.
  *
  * @author Jakub Danek
  */
 @Entity
 @Table(name = "zelenikr_rbank_user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseObject implements UserDetails {
     /**
      * Login, unique
@@ -31,31 +28,48 @@ public class User extends BaseObject implements UserDetails {
      * Secret for signing-in
      */
     private String password;
-
-    private String name;
-
-//    private String surname;
+    /**
+     * Granted authority role
+     */
+    private Set<Role> roles;
 
     public User() {
+        this.roles = new LinkedHashSet<>();
     }
 
-    public User(String username, String password, String name) {
+    public User(String username, String password) {
+        this();
         this.username = username;
         this.password = password;
-        this.name = name;
     }
 
-   /*
+    /*
     ########### API ##################
      */
 
     /**
      * Validates that user instance is currently in a valid state.
+     *
      * @throws UserValidationException in case the instance is not in valid state.
      */
     public void validate() throws UserValidationException {
-        if(StringUtils.isBlank(username)) throw new UserValidationException("Username is a required field");
-        if(StringUtils.isBlank(password)) throw new UserValidationException("Password is a required field");
+        validateUsername();
+        validatePassword();
+    }
+
+    private void validateUsername() throws UserValidationException {
+        if (StringUtils.isBlank(username)) throw new UserValidationException("Username is a required field");
+        if (username.length() != 8) throw new UserValidationException("Username must be 8 chars long");
+        if (!StringUtils.isAlphanumeric(username))
+            throw new UserValidationException("Username can contain only alphanumeric chars");
+
+    }
+
+    private void validatePassword() throws UserValidationException {
+        if (StringUtils.isBlank(password)) throw new UserValidationException("Password is a required field");
+        if (password.length() != 4) throw new UserValidationException("Password must be 4 digits");
+        if (!StringUtils.isNumeric(password))
+            throw new UserValidationException("Password can contain only digits");
     }
 
     /*
@@ -65,7 +79,14 @@ public class User extends BaseObject implements UserDetails {
     @Override
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+        Set<Role> roles = getRoles();
+        Set<SimpleGrantedAuthority> authorities = new LinkedHashSet<>(roles.size());
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        System.out.println("User.getAuthorities roles=" + roles.iterator().next());
+        return authorities;
+//        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -96,7 +117,7 @@ public class User extends BaseObject implements UserDetails {
     ########### MAPPINGS #####################
      */
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     @Override
     public String getUsername() {
         return username;
@@ -106,6 +127,7 @@ public class User extends BaseObject implements UserDetails {
         this.username = username;
     }
 
+    @Column(nullable = false)
     @Override
     public String getPassword() {
         return password;
@@ -115,13 +137,25 @@ public class User extends BaseObject implements UserDetails {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    /**
+     * ManyToMany association between user and his roles.
+     * <p>
+     * -- Role may be attached to multiple users, User may have multiple roles
+     * thus the ManyToMany
+     *
+     * @return
+     */
+    @ManyToMany
+    @JoinTable(name = "zelenikr_rbank_user_roles", joinColumns = @JoinColumn(name = "user", referencedColumnName = "username"),
+            inverseJoinColumns = @JoinColumn(name = "role", referencedColumnName = "id"))
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -130,18 +164,21 @@ public class User extends BaseObject implements UserDetails {
 
         User user = (User) o;
 
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
         return !(username != null ? !username.equals(user.username) : user.username != null);
-
     }
 
     @Override
     public int hashCode() {
-        return username != null ? username.hashCode() : 0;
+        int result = username != null ? username.hashCode() : 0;
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("User{");
+        final StringBuilder sb = new StringBuilder(getClass().getSimpleName());
+        sb.append("{");
         sb.append("username='").append(username).append('\'');
         sb.append('}');
         return sb.toString();

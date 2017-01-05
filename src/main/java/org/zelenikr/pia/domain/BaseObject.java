@@ -11,7 +11,7 @@ import javax.persistence.Transient;
  * @author Jakub Danek
  */
 @MappedSuperclass
-public class BaseObject {
+public abstract class BaseObject {
 
     private Long id;
 
@@ -33,4 +33,8 @@ public class BaseObject {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public abstract String toString();
+    public abstract boolean equals(Object o);
+    public abstract int hashCode();
 }
