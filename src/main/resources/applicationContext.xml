@@ -56,7 +56,7 @@
         <security:intercept-url pattern="*" access="permitAll"/>
         <!-- user must be logged in to access any secret page -->
         <security:intercept-url pattern="/secret/*" access="isAuthenticated()"/>
-        <security:intercept-url pattern="/user" access="hasRole('ROLE_USER')" />
+        <security:intercept-url pattern="/user" access="hasRole('ROLE_ADMIN')" />
         <security:csrf disabled="true"></security:csrf>
     </security:http>
 
