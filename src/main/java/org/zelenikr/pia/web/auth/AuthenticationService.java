@@ -29,24 +29,24 @@ public class AuthenticationService {
         this.userManager = userManager;
     }
 
-    /**
-     * Signs in the user, if username and password match
-     *
-     * @param session session associated with the request
-     * @param username provided username
-     * @param password provided password
-     * @return true if success, false otherwise
-     */
-    public boolean authenticate(HttpSession session, String username, String password) {
-        boolean authenticated = userManager.authenticate(username, password);
-
-        if(authenticated) {
-            session.setAttribute(USER, username);
-            return true;
-        }
-
-        return false;
-    }
+//    /**
+//     * Signs in the user, if username and password match
+//     *
+//     * @param session session associated with the request
+//     * @param username provided username
+//     * @param password provided password
+//     * @return true if success, false otherwise
+//     */
+//    public boolean authenticate(HttpSession session, String username, String password) {
+//        boolean authenticated = userManager.authenticate(username, password);
+//
+//        if(authenticated) {
+//            session.setAttribute(USER, username);
+//            return true;
+//        }
+//
+//        return false;
+//    }
 
     /**
      *

@@ -1,13 +1,22 @@
 package org.zelenikr.pia.domain;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.zelenikr.pia.domain.exception.BankAccountValidationException;
+import org.zelenikr.pia.validation.BankAccountValidation;
+import org.zelenikr.pia.validation.Validable;
+
 import javax.persistence.*;
 
 /**
+ * Entity representing bank account.
+ *
  * @author Roman Zelenik
  */
 @Entity
 @Table(name = "zelenikr_rbank_bank_account")
-public class BankAccount extends BaseObject {
+public class BankAccount extends BaseObject implements Validable {
+
+    private BankAccountValidation bankAccountValidation;
 
     private Integer number;
     /**
@@ -15,17 +24,45 @@ public class BankAccount extends BaseObject {
      */
     private Integer sum;
     private Currency currency;
+    @Column(name = "credit_card")
     private CreditCard creditCard;
+    private Client owner;
 
     public BankAccount() {
     }
 
-    public BankAccount(Integer number, Integer sum, Currency currency, CreditCard creditCard) {
+    public BankAccount(Integer number, Integer sum) {
         this.number = number;
         this.sum = sum;
-        this.currency = currency;
-        this.creditCard = creditCard;
     }
+
+    /*
+    ########### API ##################
+     */
+
+    @Transient
+    @Autowired
+    public void setBankAccountValidation(BankAccountValidation bankAccountValidation) {
+        this.bankAccountValidation = bankAccountValidation;
+    }
+
+    /**
+     * @throws BankAccountValidationException in case the bank account is not in valid state.
+     */
+    @Override
+    public void validate() throws BankAccountValidationException {
+        validateNumber();
+    }
+
+    private void validateNumber() throws BankAccountValidationException {
+        if (number == null) throw new BankAccountValidationException("Account number is a required field");
+        if (number.toString().length() != bankAccountValidation.getBankAccountNumberLength())
+            throw new BankAccountValidationException("Account number must be " + bankAccountValidation.getBankAccountNumberLength() + " digits");
+    }
+
+    /*
+    ########### MAPPINGS #####################
+     */
 
     public Integer getNumber() {
         return number;
@@ -58,7 +95,6 @@ public class BankAccount extends BaseObject {
      * @return
      */
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "credit_card")
     public CreditCard getCreditCard() {
         return creditCard;
     }
@@ -67,6 +103,14 @@ public class BankAccount extends BaseObject {
         this.creditCard = creditCard;
     }
 
+    @ManyToOne
+    public Client getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Client owner) {
+        this.owner = owner;
+    }
 
     @Override
     public boolean equals(Object o) {

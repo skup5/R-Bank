@@ -2,7 +2,7 @@ package org.zelenikr.pia.web.servlet.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.User;
-import org.zelenikr.pia.domain.UserValidationException;
+import org.zelenikr.pia.validation.ValidationException;
 import org.zelenikr.pia.manager.UserManager;
 
 import javax.servlet.ServletException;
@@ -59,7 +59,7 @@ public class Register extends TemplateServlet {
             userManager.register(new User(username, password));
             //TODO: not perfect, user should get a message registration was successful!
             resp.sendRedirect("");
-        } catch (UserValidationException e) {
+        } catch (ValidationException e) {
             errorDispatch(e.getMessage(), req, resp);
         }
     }

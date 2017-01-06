@@ -4,7 +4,8 @@ import javax.transaction.Transactional;
 
 import org.zelenikr.pia.dao.UserDao;
 import org.zelenikr.pia.domain.User;
-import org.zelenikr.pia.domain.UserValidationException;
+import org.zelenikr.pia.domain.exception.UserValidationException;
+import org.zelenikr.pia.validation.ValidationException;
 import org.zelenikr.pia.utils.Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,15 +28,15 @@ public class DefaultUserManager implements UserManager {
         this.encoder = encoder;
     }
 
-    @Override
-    public boolean authenticate(String username, String password) {
-        User u = userDao.findByUsername(username);
-        System.out.println(u);
-        return u != null && encoder.validate(password, u.getPassword());
-    }
+//    @Override
+//    public boolean authenticate(String username, String password) {
+//        User u = userDao.findByUsername(username);
+//        System.out.println(u);
+//        return u != null && encoder.validate(password, u.getPassword());
+//    }
 
     @Override
-    public void register(User newUser) throws UserValidationException {
+    public void register(User newUser) throws ValidationException {
         if(!newUser.isNew()) {
             throw new RuntimeException("User already exists, use save method for updates!");
         }

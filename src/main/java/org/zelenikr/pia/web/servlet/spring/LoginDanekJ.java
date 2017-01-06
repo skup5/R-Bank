@@ -29,22 +29,22 @@ public class LoginDanekJ extends AbstractServlet {
 
     private AuthenticationService authService;
 
-    @Autowired
-    public void setAuthService(AuthenticationService authService) {
-        this.authService = authService;
-    }
+//    @Autowired
+//    public void setAuthService(AuthenticationService authService) {
+//        this.authService = authService;
+//    }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter(USERNAME_PARAMETER);
-        String password = req.getParameter(PASSWORD_PARAMETER);
-
-        boolean authenticated = authService.authenticate(req.getSession(), username, password);
-        if(authenticated) {
-            resp.sendRedirect("secret/vip");
-        } else {
-            req.setAttribute(ERR_ATTRIBUTE, "Invalid credentials!");
-            req.getRequestDispatcher("/").forward(req, resp);
-        }
-    }
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        String username = req.getParameter(USERNAME_PARAMETER);
+//        String password = req.getParameter(PASSWORD_PARAMETER);
+//
+//        boolean authenticated = authService.authenticate(req.getSession(), username, password);
+//        if(authenticated) {
+//            resp.sendRedirect("secret/vip");
+//        } else {
+//            req.setAttribute(ERR_ATTRIBUTE, "Invalid credentials!");
+//            req.getRequestDispatcher("/").forward(req, resp);
+//        }
+//    }
 }

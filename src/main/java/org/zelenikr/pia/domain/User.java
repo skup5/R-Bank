@@ -7,19 +7,32 @@ import java.util.Set;
 import javax.persistence.*;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.zelenikr.pia.domain.exception.UserValidationException;
+import org.zelenikr.pia.validation.UserValidation;
+import org.zelenikr.pia.validation.Validable;
+import org.zelenikr.pia.validation.ValidationException;
 
 /**
- * Entity representing application user.
+ * Entity representing application user, who can sign in and sign out.
  *
  * @author Jakub Danek
  */
 @Entity
 @Table(name = "zelenikr_rbank_user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User extends BaseObject implements UserDetails {
+public class User extends BaseObject implements UserDetails, Validable {
+
+//    @Value("${validation.user.username.length}")
+//    private static int VALID_USERNAME_LENGTH;
+//    @Value("${validation.user.password.length}")
+//    private static int VALID_PASSWORD_LENGTH;
+
+    private UserValidation userValidation;
+
     /**
      * Login, unique
      */
@@ -47,19 +60,27 @@ public class User extends BaseObject implements UserDetails {
     ########### API ##################
      */
 
+    @Transient
+    @Autowired
+    public void setUserValidation(UserValidation userValidation) {
+        this.userValidation = userValidation;
+    }
+
     /**
      * Validates that user instance is currently in a valid state.
      *
-     * @throws UserValidationException in case the instance is not in valid state.
+     * @throws UserValidationException in case the user is not in valid state.
      */
-    public void validate() throws UserValidationException {
+    @Override
+    public void validate() throws ValidationException {
         validateUsername();
         validatePassword();
     }
 
     private void validateUsername() throws UserValidationException {
         if (StringUtils.isBlank(username)) throw new UserValidationException("Username is a required field");
-        if (username.length() != 8) throw new UserValidationException("Username must be 8 chars long");
+        if (username.length() != userValidation.getUserNameLength())
+            throw new UserValidationException("Username must be " + userValidation.getUserNameLength() + " chars long");
         if (!StringUtils.isAlphanumeric(username))
             throw new UserValidationException("Username can contain only alphanumeric chars");
 
@@ -67,7 +88,8 @@ public class User extends BaseObject implements UserDetails {
 
     private void validatePassword() throws UserValidationException {
         if (StringUtils.isBlank(password)) throw new UserValidationException("Password is a required field");
-        if (password.length() != 4) throw new UserValidationException("Password must be 4 digits");
+        if (password.length() != userValidation.getPasswordLength())
+            throw new UserValidationException("Password must be " + userValidation.getPasswordLength() + " digits");
         if (!StringUtils.isNumeric(password))
             throw new UserValidationException("Password can contain only digits");
     }
@@ -145,7 +167,7 @@ public class User extends BaseObject implements UserDetails {
      *
      * @return
      */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "zelenikr_rbank_user_roles", joinColumns = @JoinColumn(name = "user", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(name = "role", referencedColumnName = "id"))
     public Set<Role> getRoles() {

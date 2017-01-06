@@ -1,14 +1,25 @@
 package org.zelenikr.pia.domain;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.zelenikr.pia.domain.exception.CreditCardValidationException;
+import org.zelenikr.pia.validation.CreditCardValidation;
+import org.zelenikr.pia.validation.Validable;
+import org.zelenikr.pia.validation.ValidationException;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
+ * Entity representing credit card.
+ *
  * @author Roman Zelenik
  */
 @Entity
 @Table(name = "zelenikr_rbank_credit_card")
-public class CreditCard extends BaseObject {
+public class CreditCard extends BaseObject implements Validable{
+
+    private CreditCardValidation creditCardValidation;
 
     private Integer number;
     private Integer pin;
@@ -22,6 +33,35 @@ public class CreditCard extends BaseObject {
         this.number = number;
         this.pin = pin;
     }
+
+    /*
+    ########### API ##################
+     */
+
+    @Transient
+    @Autowired
+    public void setCreditCardValidation(CreditCardValidation creditCardValidation) {
+        this.creditCardValidation = creditCardValidation;
+    }
+
+    /**
+     *
+     * @throws CreditCardValidationException in case the credit card is not in valid state.
+     */
+    @Override
+    public void validate() throws ValidationException {
+        validateNumber();
+    }
+
+    private void validateNumber() throws CreditCardValidationException {
+        if (number == null) throw new CreditCardValidationException("Credit card number is a required field");
+        if (number.toString().length() != creditCardValidation.getCreditCardNumberLength())
+            throw new CreditCardValidationException("Credit card number must be " + creditCardValidation.getCreditCardNumberLength() + " digits");
+    }
+
+    /*
+    ########### MAPPINGS #####################
+     */
 
     public Integer getNumber() {
         return number;

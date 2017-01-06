@@ -16,10 +16,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="org.zelenikr.pia.**.*"/>
 
-    <!--
-     Replaces all ${placeholders} with values from property files listed in "locations" property
-     E.g. postservice.url in apiaryPostServiceClient.
-    -->
+    <!-- Properties -->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
         <property name="locations">
