@@ -9,7 +9,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,13 +29,15 @@ public abstract class TemplateServlet extends AbstractServlet {
         this.templateRender.setSharedVariables(defaults);
     }
 
-    protected abstract Map<String, Object> getTemplateVariables();
-
-    protected String getTemplate(String name) throws IOException, TemplateParserException {
-        return templateRender.getHTMLCode(getServletContext(), name, getTemplateVariables());
+    protected Map<String, Object> emptyVariables(){
+        return Collections.emptyMap();
     }
 
-    protected void renderTemplate(String name, Writer writer) throws IOException, TemplateParserException {
-        templateRender.renderTemplate(getServletContext(), name, getTemplateVariables(), writer);
+    protected String getTemplate(String name, Map<String, Object> variables) throws IOException, TemplateParserException {
+        return templateRender.getHTMLCode(getServletContext(), name, variables);
+    }
+
+    protected void renderTemplate(String name, Map<String, Object> variables, Writer writer) throws IOException, TemplateParserException {
+        templateRender.renderTemplate(getServletContext(), name, variables, writer);
     }
 }

@@ -20,7 +20,7 @@ public class User extends TemplateServlet {
         log("User.doGet()");
         try {
             resp.setContentType("text/html");
-            renderTemplate("user/userpage", resp.getWriter());
+            renderTemplate("user/userpage", emptyVariables(), resp.getWriter());
 
 //            Enumeration<String> attr = req.getSession().getAttributeNames();
 //            while(attr.hasMoreElements()) System.out.println(attr.nextElement());
@@ -32,8 +32,4 @@ public class User extends TemplateServlet {
         }
     }
 
-    @Override
-    protected Map<String, Object> getTemplateVariables() {
-        return null;
-    }
 }

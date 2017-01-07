@@ -17,15 +17,11 @@ public class Login extends TemplateServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             resp.setContentType("text/html");
-            renderTemplate("login", resp.getWriter());
+            renderTemplate("login", emptyVariables(), resp.getWriter());
         } catch (TemplateParserException e) {
 //            throw new ServletException("Chyba při načítání požadované stránky");
             throw new ServletException(e);
         }
     }
 
-    @Override
-    protected Map<String, Object> getTemplateVariables() {
-        return null;
-    }
 }

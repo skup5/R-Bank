@@ -69,11 +69,4 @@ public class Register extends TemplateServlet {
         req.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(req, resp);
     }
 
-    @Override
-    protected Map<String, Object> getTemplateVariables() {
-//        Map<String, Object> model = new HashMap<String, Object>();
-//        model.put("company", "zelenik");
-
-        return null;
-    }
 }

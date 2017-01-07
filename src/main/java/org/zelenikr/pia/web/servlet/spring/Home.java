@@ -17,15 +17,11 @@ public class Home extends TemplateServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             resp.setContentType("text/html");
-            renderTemplate("index", resp.getWriter());
+            renderTemplate("index", emptyVariables(), resp.getWriter());
         } catch (TemplateParserException e) {
 //            throw new ServletException("Chyba při načítání požadované stránky");
             throw new ServletException(e);
         }
     }
 
-    @Override
-    protected Map<String, Object> getTemplateVariables() {
-        return null;
-    }
 }
