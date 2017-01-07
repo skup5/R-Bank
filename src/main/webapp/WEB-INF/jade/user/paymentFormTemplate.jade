@@ -14,9 +14,9 @@ form.form-horizontal.form
                 option(value="czkAccount") Účet 123456789(CZK)
                 option(value="usdAccount") Účet 456123789(USD)
     .form-group
-        label.control-label.col-sm-5.required-input(for="inputOffset") Příjemce
+        label.control-label.col-sm-5.required-input(for="inputOffset1") Příjemce
         .col-sm-7
-            input(type="text" id="inputOffset1" class="form-control text-right" placeholder="" required
+            input(type="text" id="inputOffset1" class="form-control text-right" placeholder=""
                     pattern="\\d{6}" maxlength=6)
             span.form-control-static -
             input(type="text" id="inputOffset2" class="form-control text-right" placeholder="" required
@@ -29,15 +29,19 @@ form.form-horizontal.form
         label.control-label.col-sm-5.required-input(for="inputAmount") Částka
         .col-sm-7: input(type="text" id="inputAmount" class="form-control text-right" placeholder="" required)
     .form-group
-        label.control-label.col-sm-5.required-input(for="inputConstSymbol") Konstantní symbol
-        .col-sm-7: input(type="text" id="inputConstSymbol" class="form-control text-right" placeholder="" required
+        label.control-label.col-sm-5(for="inputConstSymbol") Konstantní symbol
+        .col-sm-7: input(type="text" id="inputConstSymbol" class="form-control text-right" placeholder=""
                     pattern="\\d{4}" maxlength=4)
     .form-group
-        label.control-label.col-sm-5.required-input(for="inputVariableSymbol") Variabilní symbol
-        .col-sm-7: input(type="text" id="inputVariableSymbol" class="form-control text-right" placeholder="" required)
+        label.control-label.col-sm-5(for="inputVariableSymbol") Variabilní symbol
+        .col-sm-7: input(type="text" id="inputVariableSymbol" class="form-control text-right" placeholder="")
     .form-group
-        label.control-label.col-sm-5.required-input(for="inputSpecificSymbol") Specifický symbol
-        .col-sm-7: input(type="text" id="inputSpecificSymbol" class="form-control text-right" placeholder="" required)
+        label.control-label.col-sm-5(for="inputSpecificSymbol") Specifický symbol
+        .col-sm-7: input(type="text" id="inputSpecificSymbol" class="form-control text-right" placeholder="")
+    .form-group
+        label.control-label.col-sm-5(for="inputMessage") Zpráva pro příjemce (i plátce)
+        .col-sm-7: input(type="text" id="inputMessage" class="form-control text-right" placeholder=""
+                    maxlength=255)
     .form-group
             .col-sm-offset-5.col-sm-7
                 button.btn.btn-lg.btn-primary.btn-block(type="submit") Zaplatit

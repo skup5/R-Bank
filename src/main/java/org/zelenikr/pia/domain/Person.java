@@ -27,13 +27,11 @@ public class Person extends User {
     /**
      * Personal identification number
      */
-    protected Integer personalIdNumber;
+    protected String personalIdNumber;
 
     protected String email;
-    /**
-     * Phone number without prefix (like "777666555")
-     */
-    protected Integer phoneNumber;
+
+    protected String phoneNumber;
 
     private Address address;
 
@@ -41,7 +39,7 @@ public class Person extends User {
         super();
     }
 
-    public Person(String username, String password, String name, String surname, int personalIdNumber, int phoneNumber, String email) {
+    public Person(String username, String password, String name, String surname, String personalIdNumber, String phoneNumber, String email) {
         super(username, password);
         this.email = email;
         this.surname = surname;
@@ -86,12 +84,14 @@ public class Person extends User {
     }
 
     private void validatePersonalIdNumber() throws PersonValidationException {
-        if (personalIdNumber == null)
+        if (StringUtils.isBlank(personalIdNumber))
             throw new PersonValidationException("Personal identification number is required field");
-        if (personalIdNumber.toString().length() < personValidation.getPersonIdNoMinLength() ||
-                personalIdNumber.toString().length() > personValidation.getPersonIdNoMaxLength())
+        if (personalIdNumber.length() < personValidation.getPersonIdNoMinLength() ||
+                personalIdNumber.length() > personValidation.getPersonIdNoMaxLength())
             throw new PersonValidationException("Personal identification number's length must be in the interval <"
                     + personValidation.getPersonIdNoMinLength() + ";" + personValidation.getPersonIdNoMaxLength() + ">");
+        if (!StringUtils.isNumeric(personalIdNumber))
+            throw new PersonValidationException("Personal identification number must be a positive numeric value");
     }
 
     private void validateEmail() throws PersonValidationException {
@@ -122,12 +122,12 @@ public class Person extends User {
         this.surname = surname;
     }
 
-    @Column(name = "personal_id_number", nullable = false)
-    public Integer getPersonalIdNumber() {
+    @Column(nullable = false)
+    public String getPersonalIdNumber() {
         return personalIdNumber;
     }
 
-    public void setPersonalIdNumber(Integer personalIdNumber) {
+    public void setPersonalIdNumber(String personalIdNumber) {
         this.personalIdNumber = personalIdNumber;
     }
 
@@ -140,15 +140,19 @@ public class Person extends User {
         this.email = email;
     }
 
-    @Column(name = "phone_number")
-    public Integer getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Integer phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * ManyToOne association between persons and address.
+     *
+     * @return
+     */
     @ManyToOne
     public Address getAddress() {
         return address;

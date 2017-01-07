@@ -1,5 +1,6 @@
 package org.zelenikr.pia.domain;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.exception.CreditCardValidationException;
 import org.zelenikr.pia.validation.CreditCardValidation;
@@ -18,20 +19,18 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "zelenikr_rbank_credit_card")
-public class CreditCard extends BaseObject implements Validable{
+public class CreditCard extends BaseObject implements Validable {
 
     private CreditCardValidation creditCardValidation;
 
-    private Integer number;
+    private String creditCardNumber;
     private Integer pin;
-//    private Date validity;
-
 
     public CreditCard() {
     }
 
-    public CreditCard(Integer number, Integer pin) {
-        this.number = number;
+    public CreditCard(String creditCardNumber, Integer pin) {
+        this.creditCardNumber = creditCardNumber;
         this.pin = pin;
     }
 
@@ -46,18 +45,22 @@ public class CreditCard extends BaseObject implements Validable{
     }
 
     /**
+     * Validates that credit card instance is currently in a valid state.
      *
      * @throws CreditCardValidationException in case the credit card is not in valid state.
      */
     @Override
     public void validate() throws ValidationException {
-        validateNumber();
+        validateCreditCardNumber();
     }
 
-    private void validateNumber() throws CreditCardValidationException {
-        if (number == null) throw new CreditCardValidationException("Credit card number is a required field");
-        if (number.toString().length() != creditCardValidation.getCreditCardNumberLength())
+    private void validateCreditCardNumber() throws CreditCardValidationException {
+        if (StringUtils.isBlank(creditCardNumber))
+            throw new CreditCardValidationException("Credit card number is a required field");
+        if (creditCardNumber.length() != creditCardValidation.getCreditCardNumberLength())
             throw new CreditCardValidationException("Credit card number must be " + creditCardValidation.getCreditCardNumberLength() + " digits");
+        if (!StringUtils.isNumeric(creditCardNumber))
+            throw new CreditCardValidationException("Credit card number must be a positive numeric value");
     }
 
     /*
@@ -65,14 +68,15 @@ public class CreditCard extends BaseObject implements Validable{
      */
 
     @Column(unique = true, nullable = false)
-    public Integer getNumber() {
-        return number;
+    public String getCreditCardNumber() {
+        return creditCardNumber;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setCreditCardNumber(String creditCardNumber) {
+        this.creditCardNumber = creditCardNumber;
     }
 
+    @Column(precision = 4)
     public Integer getPin() {
         return pin;
     }
@@ -88,13 +92,14 @@ public class CreditCard extends BaseObject implements Validable{
 
         CreditCard that = (CreditCard) o;
 
-        if (number != null ? !number.equals(that.number) : that.number != null) return false;
+        if (creditCardNumber != null ? !creditCardNumber.equals(that.creditCardNumber) : that.creditCardNumber != null)
+            return false;
         return pin != null ? pin.equals(that.pin) : that.pin == null;
     }
 
     @Override
     public int hashCode() {
-        int result = number != null ? number.hashCode() : 0;
+        int result = creditCardNumber != null ? creditCardNumber.hashCode() : 0;
         result = 31 * result + (pin != null ? pin.hashCode() : 0);
         return result;
     }
@@ -102,7 +107,7 @@ public class CreditCard extends BaseObject implements Validable{
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("CreditCard{");
-        sb.append("number=").append(number);
+        sb.append("number=").append(creditCardNumber);
         sb.append(", pin=").append(pin);
         sb.append('}');
         return sb.toString();

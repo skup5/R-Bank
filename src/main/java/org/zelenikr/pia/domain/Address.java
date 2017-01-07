@@ -17,13 +17,13 @@ public class Address extends BaseObject {
     private Integer houseNumber;
     private String street;
     private String city;
-    private Integer zipCode;
+    private String zipCode;
     private Set<Person> persons;
 
     public Address() {
     }
 
-    public Address(Integer houseNumber, String street, String city, Integer zipCode) {
+    public Address(Integer houseNumber, String street, String city, String zipCode) {
         this.houseNumber = houseNumber;
         this.street = street;
         this.city = city;
@@ -58,11 +58,11 @@ public class Address extends BaseObject {
         this.city = city;
     }
 
-    public Integer getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(Integer zipCode) {
+    public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 

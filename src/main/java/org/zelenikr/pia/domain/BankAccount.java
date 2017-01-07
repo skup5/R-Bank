@@ -1,11 +1,14 @@
 package org.zelenikr.pia.domain;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.exception.BankAccountValidationException;
 import org.zelenikr.pia.validation.BankAccountValidation;
 import org.zelenikr.pia.validation.Validable;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Set;
 
 /**
  * Entity representing bank account.
@@ -18,21 +21,25 @@ public class BankAccount extends BaseObject implements Validable {
 
     private BankAccountValidation bankAccountValidation;
 
-    private Integer number;
+    private String accountNumber;
     /**
      * Account balance
      */
-    private Integer sum;
+    private BigDecimal sum;
+
     private Currency currency;
-    @Column(name = "credit_card")
+
     private CreditCard creditCard;
+
     private Client owner;
+
+    private Set<SinglePaymentOrder> singlePaymentOrders;
 
     public BankAccount() {
     }
 
-    public BankAccount(Integer number, Integer sum) {
-        this.number = number;
+    public BankAccount(String accountNumber, BigDecimal sum) {
+        this.accountNumber = accountNumber;
         this.sum = sum;
     }
 
@@ -47,17 +54,20 @@ public class BankAccount extends BaseObject implements Validable {
     }
 
     /**
+     * Validates that bank account instance is currently in a valid state.
+     *
      * @throws BankAccountValidationException in case the bank account is not in valid state.
      */
     @Override
     public void validate() throws BankAccountValidationException {
-        validateNumber();
+        validateAccountNumber();
     }
 
-    private void validateNumber() throws BankAccountValidationException {
-        if (number == null) throw new BankAccountValidationException("Account number is a required field");
-        if (number.toString().length() != bankAccountValidation.getBankAccountNumberLength())
+    private void validateAccountNumber() throws BankAccountValidationException {
+        if (StringUtils.isBlank(accountNumber)) throw new BankAccountValidationException("Account number is a required field");
+        if (accountNumber.length() != bankAccountValidation.getBankAccountNumberLength())
             throw new BankAccountValidationException("Account number must be " + bankAccountValidation.getBankAccountNumberLength() + " digits");
+        if (!StringUtils.isNumeric(accountNumber)) throw new BankAccountValidationException("Account number must be a positive numeric value");
     }
 
     /*
@@ -65,19 +75,20 @@ public class BankAccount extends BaseObject implements Validable {
      */
 
     @Column(unique = true, nullable = false)
-    public Integer getNumber() {
-        return number;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setAccountNumber(String number) {
+        this.accountNumber = number;
     }
 
-    public Integer getSum() {
+    @Column(scale = 2)
+    public BigDecimal getSum() {
         return sum;
     }
 
-    public void setSum(Integer sum) {
+    public void setSum(BigDecimal sum) {
         this.sum = sum;
     }
 
@@ -104,6 +115,11 @@ public class BankAccount extends BaseObject implements Validable {
         this.creditCard = creditCard;
     }
 
+    /**
+     * ManyToOne association between bank accounts and client.
+     *
+     * @return
+     */
     @ManyToOne
     public Client getOwner() {
         return owner;
@@ -113,6 +129,20 @@ public class BankAccount extends BaseObject implements Validable {
         this.owner = owner;
     }
 
+    /**
+     * OneToMany association between bank account and single payment orders.
+     *
+     * @return
+     */
+    @OneToMany(mappedBy = "clientAccount")
+    public Set<SinglePaymentOrder> getSinglePaymentOrders() {
+        return singlePaymentOrders;
+    }
+
+    public void setSinglePaymentOrders(Set<SinglePaymentOrder> singlePaymentOrders) {
+        this.singlePaymentOrders = singlePaymentOrders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -120,18 +150,18 @@ public class BankAccount extends BaseObject implements Validable {
 
         BankAccount that = (BankAccount) o;
 
-        return number != null ? number.equals(that.number) : that.number == null;
+        return accountNumber != null ? accountNumber.equals(that.accountNumber) : that.accountNumber == null;
     }
 
     @Override
     public int hashCode() {
-        return number != null ? number.hashCode() : 0;
+        return accountNumber != null ? accountNumber.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("BankAccount{");
-        sb.append("number=").append(number);
+        sb.append("number=").append(accountNumber);
         sb.append(", sum=").append(sum);
         sb.append(", currency=").append(currency);
         sb.append('}');

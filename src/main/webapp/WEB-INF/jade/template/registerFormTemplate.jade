@@ -54,6 +54,9 @@ form.form-horizontal.form(autocomplete="on")
                 span.input-group-btn: button.btn.btn-primary(type="button" id="btnCardNo" data-toggle="tooltip" data-placement="right"
                     title="Generovat"): span.fa.fa-random.fa-only.fa-flip-horizontal
         .form-group
+            label.control-label.col-sm-5.required-input(for="inputCardPinNo") Pin karty
+            .col-sm-7
+        .form-group
             label.control-label.col-sm-5.required-input(for="inputBankAccountNo") Číslo účtu
             .col-sm-7: .input-group
                 input(type="text" id="inputBankAccountNo" class="form-control" placeholder="#########" required
