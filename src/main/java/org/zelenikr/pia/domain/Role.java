@@ -1,5 +1,6 @@
 package org.zelenikr.pia.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -23,6 +24,7 @@ public class Role extends BaseObject {
         this.name = name;
     }
 
+    @Column(unique = true, nullable = false)
     public String getName() {
         return name;
     }

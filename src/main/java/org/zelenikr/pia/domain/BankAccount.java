@@ -64,6 +64,7 @@ public class BankAccount extends BaseObject implements Validable {
     ########### MAPPINGS #####################
      */
 
+    @Column(unique = true, nullable = false)
     public Integer getNumber() {
         return number;
     }

@@ -6,6 +6,7 @@ import org.zelenikr.pia.validation.CreditCardValidation;
 import org.zelenikr.pia.validation.Validable;
 import org.zelenikr.pia.validation.ValidationException;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -63,6 +64,7 @@ public class CreditCard extends BaseObject implements Validable{
     ########### MAPPINGS #####################
      */
 
+    @Column(unique = true, nullable = false)
     public Integer getNumber() {
         return number;
     }

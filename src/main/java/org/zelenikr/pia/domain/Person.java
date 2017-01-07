@@ -104,6 +104,7 @@ public class Person extends User {
     ########### MAPPINGS #####################
      */
 
+    @Column(nullable = false)
     public String getName() {
         return name;
     }
@@ -112,6 +113,7 @@ public class Person extends User {
         this.name = name;
     }
 
+    @Column(nullable = false)
     public String getSurname() {
         return surname;
     }
@@ -120,7 +122,7 @@ public class Person extends User {
         this.surname = surname;
     }
 
-    @Column(name = "personal_id_number")
+    @Column(name = "personal_id_number", nullable = false)
     public Integer getPersonalIdNumber() {
         return personalIdNumber;
     }
@@ -129,6 +131,7 @@ public class Person extends User {
         this.personalIdNumber = personalIdNumber;
     }
 
+    @Column(nullable = false)
     public String getEmail() {
         return email;
     }
