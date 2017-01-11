@@ -1,12 +1,13 @@
 package org.zelenikr.pia.dao;
 
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.zelenikr.pia.domain.User;
 import org.springframework.stereotype.Repository;
+import org.zelenikr.pia.domain.User;
+
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 /**
  * Date: 26.11.15
@@ -33,8 +34,13 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
         }
     }
 
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return findByUsername(username);
+        User user = findByUsername(username);
+        if (user == null)
+            throw new UsernameNotFoundException(username);
+        user.getRoles().size();
+        return user;
     }
 }

@@ -3,7 +3,7 @@ package org.zelenikr.pia.domain;
 import org.apache.commons.lang3.time.DateUtils;
 import org.zelenikr.pia.domain.exception.SinglePaymentOrderValidationException;
 import org.zelenikr.pia.validation.Validable;
-import org.zelenikr.pia.validation.ValidationException;
+import org.zelenikr.pia.validation.exception.ValidationException;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

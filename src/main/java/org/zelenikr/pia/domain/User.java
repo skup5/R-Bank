@@ -53,6 +53,10 @@ public class User extends BaseObject implements UserDetails {
     ########### API ##################
      */
 
+    public String displayName(){
+        return getUsername();
+    }
+
 //    @Transient
 //    @Autowired
 //    public void setUserValidation(UserValidator userValidation) {
@@ -97,11 +101,10 @@ public class User extends BaseObject implements UserDetails {
         Set<Role> roles = getRoles();
         Set<SimpleGrantedAuthority> authorities = new LinkedHashSet<>(roles.size());
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            authorities.add(new SimpleGrantedAuthority(role.getType().name()));
         }
-        System.out.println("User.getAuthorities roles=" + roles.iterator().next());
+        //System.out.println("User.getAuthorities roles=" + roles.iterator().next());
         return authorities;
-//        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -155,12 +158,12 @@ public class User extends BaseObject implements UserDetails {
     /**
      * ManyToMany association between user and his roles.
      * <p>
-     * -- Role may be attached to multiple users, User may have multiple roles
+     * -- Role may be attached to multiple users, Client may have multiple roles
      * thus the ManyToMany
      *
      * @return
      */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "zelenikr_rbank_user_roles", joinColumns = @JoinColumn(name = "user", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(name = "role", referencedColumnName = "id"))
     public Set<Role> getRoles() {

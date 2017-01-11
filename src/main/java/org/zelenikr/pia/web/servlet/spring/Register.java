@@ -1,16 +1,17 @@
 package org.zelenikr.pia.web.servlet.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.zelenikr.pia.domain.RoleType;
 import org.zelenikr.pia.domain.User;
-import org.zelenikr.pia.validation.ValidationException;
 import org.zelenikr.pia.manager.UserManager;
+import org.zelenikr.pia.validation.exception.ValidationException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -56,7 +57,11 @@ public class Register extends TemplateServlet {
         }
 
         try {
-            userManager.register(new User(username, password));
+            ArrayList<RoleType> roles = new ArrayList();
+            roles.add(RoleType.ROLE_ADMIN);
+            roles.add(RoleType.ROLE_CLIENT);
+            userManager.register(new User(username, password), roles);
+//            userManager.register(userManager.create());
             //TODO: not perfect, user should get a message registration was successful!
             resp.sendRedirect("");
         } catch (ValidationException e) {

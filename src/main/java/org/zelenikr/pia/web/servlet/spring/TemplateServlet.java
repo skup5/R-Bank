@@ -22,6 +22,7 @@ import java.util.Map;
 public abstract class TemplateServlet extends AbstractServlet {
 
     protected static final String DISPLAY_NAME_PARAMETER = "displayName";
+    protected static final String DISPLAY_NAME_URL = "displayNameUrl";
 
     @Autowired
     private ITemplateRender templateRender;
@@ -34,7 +35,7 @@ public abstract class TemplateServlet extends AbstractServlet {
         this.templateRender.setSharedVariables(defaults);
     }
 
-    protected Map<String, Object> emptyVariables(){
+    protected Map<String, Object> emptyVariables() {
         return Collections.emptyMap();
     }
 
@@ -53,13 +54,24 @@ public abstract class TemplateServlet extends AbstractServlet {
      * @return
      */
     protected Map<String, Object> createVariablesFromAttributes(HttpServletRequest request) {
+        //log("createVariablesFromAttributes");
         String name;
         Map<String, Object> variables = new HashedMap();
         Enumeration<String> attributeNames = request.getAttributeNames();
         while (attributeNames.hasMoreElements()) {
             name = attributeNames.nextElement();
             variables.put(name, request.getAttribute(name));
+            //System.out.println(name+":"+request.getAttribute(name));
         }
         return variables;
+    }
+
+    /**
+     * The name of the logged in user or null, if the user isn't logged in
+     *
+     * @return
+     */
+    protected String getDisplayName(HttpServletRequest request) {
+        return (String) request.getSession().getAttribute(DISPLAY_NAME_PARAMETER);
     }
 }

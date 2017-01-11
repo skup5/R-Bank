@@ -4,7 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.zelenikr.pia.domain.User;
-import org.zelenikr.pia.domain.exception.UserValidationException;
+import org.zelenikr.pia.validation.exception.UserValidationException;
+import org.zelenikr.pia.validation.exception.ValidationException;
 
 /**
  * @author Roman Zelenik

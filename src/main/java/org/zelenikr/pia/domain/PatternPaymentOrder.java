@@ -3,7 +3,7 @@ package org.zelenikr.pia.domain;
 import org.apache.commons.lang3.StringUtils;
 import org.zelenikr.pia.domain.exception.PatternPaymentOrderValidationException;
 import org.zelenikr.pia.validation.Validable;
-import org.zelenikr.pia.validation.ValidationException;
+import org.zelenikr.pia.validation.exception.ValidationException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

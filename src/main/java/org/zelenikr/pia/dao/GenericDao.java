@@ -4,12 +4,13 @@ import org.zelenikr.pia.domain.BaseObject;
 
 /**
  * Common interface for all DAOs
- *
+ * <p>
  * Date: 26.11.15
  *
  * @author Jakub Danek
  */
 public interface GenericDao<T extends BaseObject> {
+
 
     T save(T value);
 
@@ -17,4 +18,18 @@ public interface GenericDao<T extends BaseObject> {
 
     void remove(T toRemove);
 
+    /**
+     * Starts new transaction
+     */
+    void beginTransaction();
+
+    /**
+     * Commits existing transaction
+     */
+    void commitTransaction();
+
+    /**
+     * Rollbacks existing transaction
+     */
+    void rollbackTransaction();
 }

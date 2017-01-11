@@ -1,6 +1,6 @@
 package org.zelenikr.pia.domain.exception;
 
-import org.zelenikr.pia.validation.ValidationException;
+import org.zelenikr.pia.validation.exception.ValidationException;
 
 /**
  * Exception thrown when CreditCard object fails internal state validation.

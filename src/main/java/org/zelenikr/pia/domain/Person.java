@@ -5,7 +5,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.exception.PersonValidationException;
 import org.zelenikr.pia.validation.PersonValidation;
-import org.zelenikr.pia.validation.ValidationException;
+import org.zelenikr.pia.validation.exception.ValidationException;
 
 import javax.persistence.*;
 
@@ -51,6 +51,11 @@ public class Person extends User {
     /*
     ########### API ##################
      */
+
+    @Override
+    public String displayName() {
+        return getName()+" "+getSurname();
+    }
 
     @Transient
     @Autowired

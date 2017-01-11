@@ -1,11 +1,13 @@
 form.form-horizontal.form-signin(action="login" method="post")
     h2.form-signin-heading Přihlaste se
     .form-group
-        label(for="inputUserNo" class="sr-only") Identifikační číslo
-        input(type="text" name="username" id="inputUserNo" class="form-control" placeholder="id" required autofocus)
+        label(for="inputUserNo") Identifikační číslo
+        input(type="text" name="username" id="inputUserNo" class="form-control" placeholder="id" required autofocus
+        maxlength=8 pattern="[a-zA-Z0-9]{8}")
     .form-group
-        label(for="inputPin" class="sr-only") Pin
-        input(type="password" name="password" id="inputPin" class="form-control" placeholder="pin" required)
+        label(for="inputPin") Pin
+        input(type="password" name="password" id="inputPin" class="form-control" placeholder="pin" required
+        maxlength=4 pattern="\\d{4}")
     .form-group
-        input(type="hidden" name="_csrf")
+        //-input(type="hidden" name="_csrf")
         button.btn.btn-lg.btn-primary.btn-block(type="submit") Přihlásit

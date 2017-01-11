@@ -1,13 +1,13 @@
 package org.zelenikr.pia.dao;
 
+import org.zelenikr.pia.domain.BaseObject;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.zelenikr.pia.domain.BaseObject;
-
 /**
  * JPA implementation of the {@link GenericDao} interface.
- *
+ * <p>
  * Date: 26.11.15
  *
  * @author Jakub Danek
@@ -28,7 +28,7 @@ public class GenericDaoJpa<T extends BaseObject> implements GenericDao<T> {
 
     @Override
     public T save(T value) {
-        if(value.isNew()) {
+        if (value.isNew()) {
             em.persist(value);
             return value;
         } else {
@@ -43,8 +43,23 @@ public class GenericDaoJpa<T extends BaseObject> implements GenericDao<T> {
 
     @Override
     public void remove(T toRemove) {
-        if(!toRemove.isNew()) {
+        if (!toRemove.isNew()) {
             em.remove(toRemove);
         }
+    }
+
+    @Override
+    public void beginTransaction() {
+        em.getTransaction().begin();
+    }
+
+    @Override
+    public void commitTransaction() {
+        em.getTransaction().commit();
+    }
+
+    @Override
+    public void rollbackTransaction() {
+        em.getTransaction().rollback();
     }
 }

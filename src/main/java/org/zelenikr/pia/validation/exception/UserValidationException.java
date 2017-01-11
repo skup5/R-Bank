@@ -1,10 +1,8 @@
-package org.zelenikr.pia.domain.exception;
-
-import org.zelenikr.pia.validation.ValidationException;
+package org.zelenikr.pia.validation.exception;
 
 /**
  * Exception thrown when User object fails internal state validation.
- *
+ * <p>
  * Date: 26.11.15
  *
  * @author Jakub Danek

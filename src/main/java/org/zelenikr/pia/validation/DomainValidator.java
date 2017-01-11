@@ -1,6 +1,7 @@
 package org.zelenikr.pia.validation;
 
 import org.zelenikr.pia.domain.BaseObject;
+import org.zelenikr.pia.validation.exception.ValidationException;
 
 /**
  * @author Roman Zelenik

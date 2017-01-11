@@ -1,8 +1,6 @@
 package org.zelenikr.pia.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Entity representing user role.
@@ -13,32 +11,23 @@ import javax.persistence.Table;
 @Table(name = "zelenikr_rbank_role")
 public class Role extends BaseObject {
 
-    //enum RoleType { ROLE_ADMIN, ROLE_CLIENT }
-
-    private String name;
+    private RoleType type;
 
     public Role() {
     }
 
-    public Role(String name) {
-        this.name = name;
+    public Role(RoleType type) {
+        this.type = type;
     }
 
+    @Enumerated(EnumType.STRING)
     @Column(unique = true, nullable = false)
-    public String getName() {
-        return name;
+    public RoleType getType(){
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Role{");
-        sb.append("name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
+    public void setType(RoleType type) {
+        this.type = type;
     }
 
     @Override
@@ -48,12 +37,20 @@ public class Role extends BaseObject {
 
         Role role = (Role) o;
 
-        return !(name != null ? !name.equals(role.name) : role.name != null);
-
+        return type == role.type;
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return type != null ? type.hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Role{");
+        sb.append("type=").append(type);
+        sb.append('}');
+        return sb.toString();
+    }
+
 }

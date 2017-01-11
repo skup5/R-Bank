@@ -1,3 +1,7 @@
-li: a(href="login")
-    span.fa.fa-user
-    |Přihlásit
+li
+    a(href=displayNameUrl)
+        span.fa.fa-user
+        if displayName
+            |#{displayName}
+        else
+            |Přihlásit

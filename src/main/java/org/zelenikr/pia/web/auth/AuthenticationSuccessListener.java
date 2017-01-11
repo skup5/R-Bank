@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.zelenikr.pia.domain.User;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,11 +20,9 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
 
     @Override
     public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
-//        if(event instanceof InteractiveAuthenticationSuccessEvent) {
-        UserDetails userDetails = (UserDetails) event.getAuthentication().getPrincipal();
-        httpSession.setAttribute(DISPLAY_NAME_PARAMETER, userDetails.getUsername());
-        System.out.println("AuthenticationSuccessListener.onAuthenticationSuccess");
-//        }
+        User user = (User) event.getAuthentication().getPrincipal();
+        httpSession.setAttribute(DISPLAY_NAME_PARAMETER, user.displayName());
+        //System.out.println("AuthenticationSuccessListener.onAuthenticationSuccess");
     }
 
 }

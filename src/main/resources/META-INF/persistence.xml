@@ -5,6 +5,8 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <properties>
+            <!-- WARNING - the following line clean the whole database on each application start!!! -->
+            <!--<property name="hibernate.hbm2ddl.auto" value="create"/>-->
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
 

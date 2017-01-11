@@ -1,4 +1,4 @@
-package org.zelenikr.pia.validation;
+package org.zelenikr.pia.validation.exception;
 
 /**
  * Exception thrown when object fails internal state validation.

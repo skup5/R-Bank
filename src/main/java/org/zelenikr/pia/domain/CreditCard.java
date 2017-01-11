@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.exception.CreditCardValidationException;
 import org.zelenikr.pia.validation.CreditCardValidation;
 import org.zelenikr.pia.validation.Validable;
-import org.zelenikr.pia.validation.ValidationException;
+import org.zelenikr.pia.validation.exception.ValidationException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -20,8 +20,8 @@ public class Client extends Person {
         super();
     }
 
-    public Client(String username, String password, String name, String surname, String personalIdNumber, String phoneNumber, String email) {
-        super(username, password, name, surname, personalIdNumber, phoneNumber, email);
+    public Client(String name, String surname, String personalIdNumber, String phoneNumber, String email) {
+        super("", "", name, surname, personalIdNumber, phoneNumber, email);
     }
 
     /*
