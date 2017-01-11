@@ -21,6 +21,8 @@ import java.util.Map;
  */
 public abstract class TemplateServlet extends AbstractServlet {
 
+    protected static final String DISPLAY_NAME_PARAMETER = "displayName";
+
     @Autowired
     private ITemplateRender templateRender;
 

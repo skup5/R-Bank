@@ -16,8 +16,10 @@ public class Home extends TemplateServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            log("Home.doGet()");
             resp.setContentType("text/html");
             renderTemplate("index", emptyVariables(), resp.getWriter());
+            System.out.println(req.getSession().getAttribute(DISPLAY_NAME_PARAMETER));
         } catch (TemplateParserException e) {
 //            throw new ServletException("Chyba při načítání požadované stránky");
             throw new ServletException(e);

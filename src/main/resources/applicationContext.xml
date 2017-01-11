@@ -49,7 +49,7 @@
 
     <security:http authentication-manager-ref="authManager">
         <!-- redirect to /secret/vip after login if no other secured page had been requested before-->
-        <security:form-login login-page="/login" default-target-url="/user"/>
+        <security:form-login  login-page="/login" default-target-url="/user"/>
         <security:intercept-url pattern="*" access="permitAll"/>
         <!-- user must be logged in to access any secret page -->
         <security:intercept-url pattern="/secret/*" access="isAuthenticated()"/>
@@ -66,6 +66,8 @@
     </security:authentication-manager>
 
     <security:global-method-security pre-post-annotations="enabled"/>
+
+    <bean id="authSuccessListener" class="org.zelenikr.pia.web.auth.AuthenticationSuccessListener"/>
 
     <!-- Jade template -->
 

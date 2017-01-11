@@ -26,6 +26,7 @@ public class User extends TemplateServlet {
 //            while(attr.hasMoreElements()) System.out.println(attr.nextElement());
             SecurityContext context = (SecurityContext) req.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
             System.out.println(context);
+            System.out.println(req.getSession().getAttribute(DISPLAY_NAME_PARAMETER));
         } catch (TemplateParserException e) {
 //            throw new ServletException("Chyba při načítání požadované stránky");
             throw new ServletException(e);
