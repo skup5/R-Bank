@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import org.zelenikr.pia.dao.UserDao;
 import org.zelenikr.pia.domain.User;
 import org.zelenikr.pia.domain.exception.UserValidationException;
+import org.zelenikr.pia.validation.UserValidator;
 import org.zelenikr.pia.validation.ValidationException;
 import org.zelenikr.pia.utils.Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,13 @@ import org.springframework.stereotype.Service;
 public class DefaultUserManager implements UserManager {
 
     private UserDao userDao;
+    private UserValidator userValidator;
     private Encoder encoder;
 
     @Autowired
-    public DefaultUserManager(UserDao userDao, Encoder encoder) {
+    public DefaultUserManager(UserDao userDao, UserValidator userValidator, Encoder encoder) {
         this.userDao = userDao;
+        this.userValidator = userValidator;
         this.encoder = encoder;
     }
 
@@ -41,7 +44,7 @@ public class DefaultUserManager implements UserManager {
             throw new RuntimeException("User already exists, use save method for updates!");
         }
 
-        newUser.validate();
+        userValidator.validate(newUser);
 
         User existinCheck = userDao.findByUsername(newUser.getUsername());
         if(existinCheck != null) {

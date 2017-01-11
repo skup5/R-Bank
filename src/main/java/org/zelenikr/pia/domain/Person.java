@@ -63,9 +63,9 @@ public class Person extends User {
      *
      * @throws PersonValidationException in case the person is not in valid state.
      */
-    @Override
+    //@Override
     public void validate() throws ValidationException {
-        super.validate();
+       // super.validate();
         validateName();
         validateSurname();
         validatePersonalIdNumber();
