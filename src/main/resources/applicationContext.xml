@@ -48,12 +48,15 @@
     <!-- Security -->
 
     <security:http authentication-manager-ref="authManager">
-        <!-- redirect to /secret/vip after login if no other secured page had been requested before-->
-        <security:form-login  login-page="/login" default-target-url="/user"/>
+        <security:form-login
+                login-page="/login" default-target-url="/home" />
+
         <security:intercept-url pattern="*" access="permitAll"/>
-        <!-- user must be logged in to access any secret page -->
         <security:intercept-url pattern="/secret/*" access="isAuthenticated()"/>
-        <security:intercept-url pattern="/user" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/client" access="hasRole('ROLE_CLIENT')" />
+        <security:intercept-url pattern="/client/*" access="hasRole('ROLE_CLIENT')" />
+        <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')" />
         <security:csrf disabled="true"></security:csrf>
     </security:http>
 
