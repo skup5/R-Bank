@@ -49,14 +49,16 @@
 
     <security:http authentication-manager-ref="authManager">
         <security:form-login
-                login-page="/login" default-target-url="/home" />
+                login-page="/login"
+                authentication-success-handler-ref="authSuccessHandler"/>
 
         <security:intercept-url pattern="*" access="permitAll"/>
         <security:intercept-url pattern="/secret/*" access="isAuthenticated()"/>
-        <security:intercept-url pattern="/client" access="hasRole('ROLE_CLIENT')" />
-        <security:intercept-url pattern="/client/*" access="hasRole('ROLE_CLIENT')" />
-        <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
-        <security:intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/client" access="hasRole('ROLE_CLIENT')"/>
+        <security:intercept-url pattern="/client/*" access="hasRole('ROLE_CLIENT')"/>
+        <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/view/*" access="denyAll"/>
         <security:csrf disabled="true"></security:csrf>
     </security:http>
 
@@ -71,6 +73,7 @@
     <security:global-method-security pre-post-annotations="enabled"/>
 
     <bean id="authSuccessListener" class="org.zelenikr.pia.web.auth.AuthenticationSuccessListener"/>
+    <bean id="authSuccessHandler" class="org.zelenikr.pia.web.auth.DefaultAuthenticationSuccessHandler"/>
 
     <!-- Jade template -->
 
@@ -80,7 +83,7 @@
 
     <bean id="jadeRenderConfiguration" class="org.zelenikr.pia.web.template.jade.JadeRenderConfiguration">
         <constructor-arg ref="jadeFileLoader"/>
-        <property name="prettyPrint" value="false"/>
+        <property name="prettyPrint" value="true"/>
         <property name="caching" value="false"/>
     </bean>
 

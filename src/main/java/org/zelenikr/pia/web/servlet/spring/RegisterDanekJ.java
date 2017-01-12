@@ -22,7 +22,7 @@ import java.util.Objects;
  * @author Jakub Danek
  */
 @WebServlet("/register")
-public class Register extends TemplateServlet {
+public class RegisterDanekJ extends AbstractServlet {
 
     private static final String USERNAME_PARAMETER = "username";
     private static final String PASSWORD_PARAMETER = "password";

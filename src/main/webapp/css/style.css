@@ -15,6 +15,16 @@ html, body {
     padding-bottom: 60px;
 }
 
+.main {
+    margin-left: 20px;
+}
+
+.main .well {
+    padding-bottom: 20px;
+}
+
+/*  Form    */
+
 .form, .form-signin {
     max-width: 460px;
     /*padding: 15px;*/
@@ -24,7 +34,7 @@ html, body {
 .form-signin {
     padding: 15px;
     margin: 0 auto;
-    max-width: 330px;
+    min-width: 330px;
 }
 
 .form-signin input {
@@ -35,6 +45,22 @@ html, body {
     text-align: center;
 }
 
+.form .required-input::after {
+    font-family: "FontAwesome";
+    font-size: 50%;
+    vertical-align: top;
+    padding-left: 0.5em;
+    color: red;
+    content: '\f069';
+}
+
+.form .help-block .required-input {
+    padding-left: 0;
+    padding-right: 0.5em;
+}
+
+/*  Sidebar */
+
 .sidebar {
     position: fixed;
     top: 50px;
@@ -43,10 +69,6 @@ html, body {
     background-color: #f5f5f5;
     border-right: 1px solid #eee;
     padding: 20px 5px 0 5px;
-}
-
-.main {
-    margin-left: 20px;
 }
 
 .nav-sidebar {
@@ -73,7 +95,7 @@ html, body {
 .nav-sidebar-items .active > a:hover, .nav-sidebar-items .active > a:focus {
     color: #fff;
     background-color: #222;
- }
+}
 
 .nav-sidebar .nav-menu {
     padding: 10px 20px;
@@ -82,6 +104,18 @@ html, body {
 .nav-sidebar-items li {
     padding-left: 10px;
 }
+
+.nav-menu[data-toggle="collapse"]:before {
+    font-family: "FontAwesome";
+    padding-right: 0.5em;
+    content: '\f0a9';
+}
+
+.nav-menu[data-toggle="collapse"].collapsed:before {
+    content: '\f0ab';
+}
+
+/*  Navbar  */
 
 .navbar-brand {
     text-shadow: none;
@@ -97,15 +131,23 @@ html, body {
     margin-left: 15px;
 }
 
-.nav-menu[data-toggle="collapse"]:before {
-    font-family: "FontAwesome";
-    padding-right: 0.5em;
-    content: '\f0a9';
+/*  Table   */
+
+.table > thead > tr > th {
+    vertical-align: middle;
+    /*text-align: center;*/
 }
 
-.nav-menu[data-toggle="collapse"].collapsed:before {
-    content: '\f0ab';
+.table-row-striped > tbody tr:nth-child(4n+1), .table-row-striped > tbody tr:nth-child(4n+2) {
+    background-color: #f5f5f5;
 }
+
+table > tbody > tr:hover {
+    /*color: inherit;*/
+    /*text-decoration: underline;*/
+}
+
+/*  Footer  */
 
 .footer {
     position: absolute;
@@ -139,6 +181,16 @@ html, body {
     vertical-align: text-top;
 }
 
+/*  Panel   */
+
+.panel-footer .label-date {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1em;
+}
+
+/*  Icons  */
+
 span.caret {
     margin-left: 0.5em;
 }
@@ -151,48 +203,3 @@ span.fa-only {
     padding-right: 0;
 }
 
-.table > thead > tr > th {
-    vertical-align: middle;
-    /*text-align: center;*/
-}
-
-.table-row-striped > tbody tr:nth-child(4n+1), .table-row-striped > tbody tr:nth-child(4n+2) {
-    background-color: #f5f5f5;
-}
-
-/*.form .form-group:has(input.form-control:required)::before {*/
-    /*font-family: "FontAwesome";*/
-    /*padding-left: 0.5em;*/
-    /*color: darkred;*/
-    /*content: '\f069';*/
-/*}*/
-
-
-.form .required-input::after {
-    font-family: "FontAwesome";
-    font-size: 50%;
-    vertical-align: top;
-    padding-left: 0.5em;
-    color: red;
-    content: '\f069';
-}
-
-.form .help-block .required-input {
-    padding-left: 0;
-    padding-right: 0.5em;
-}
-
-.panel-footer .label-date {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 1em;
-}
-
-.main .well {
-    padding-bottom: 20px;
-}
-
-table > tbody > tr:hover {
-    /*color: inherit;*/
-    /*text-decoration: underline;*/
-}

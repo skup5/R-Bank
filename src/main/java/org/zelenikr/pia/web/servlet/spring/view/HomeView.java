@@ -1,36 +1,42 @@
 package org.zelenikr.pia.web.servlet.spring.view;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.zelenikr.pia.domain.RoleType;
 import org.zelenikr.pia.web.servlet.spring.TemplateServlet;
 import org.zelenikr.pia.web.template.TemplateParserException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.Map;
 
 /**
+ * View servlet responsible for rendering home page (like index)
+ *
  * @author Roman Zelenik
  */
-public class Home extends TemplateServlet {
+@WebServlet(name = "home", value = "/home")
+public class HomeView extends TemplateServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doPost(req,resp);
+        doPost(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            log("Home.do*()");
-            String displayNameUrl = getDisplayNameUrl();
+            log("HomeView.do*()");
+            String url;
+//            Map<String, Object> vars = createVariablesFromParameters(req);
+            Map<String, Object> vars = emptyVariables();
+            vars.put(DISPLAY_NAME_PARAMETER, getDisplayName(req));
+            if ((url = getDisplayNameUrl(req)) == null)
+                url = "login";
+            vars.put(DISPLAY_NAME_URL_PARAMETER, url);
 
-            req.setAttribute(DISPLAY_NAME_PARAMETER, getDisplayName(req));
-            req.setAttribute(DISPLAY_NAME_URL, displayNameUrl);
             resp.setContentType("text/html");
-            renderTemplate("index", createVariablesFromAttributes(req), resp.getWriter());
+            renderTemplate("index", vars, resp.getWriter());
             //System.out.println(getDisplayName(req));
         } catch (TemplateParserException e) {
 //            throw new ServletException("Chyba při načítání požadované stránky");
@@ -38,11 +44,4 @@ public class Home extends TemplateServlet {
         }
     }
 
-    private String getDisplayNameUrl(){
-        String url = "login";
-        Collection authoritires = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        if(authoritires.contains(RoleType.ROLE_ADMIN.name())) url="admin";
-        if(authoritires.contains(RoleType.ROLE_CLIENT.name())) url="client";
-        return url;
-    }
 }

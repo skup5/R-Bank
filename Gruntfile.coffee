@@ -13,16 +13,16 @@ module.exports = (grunt) ->
         options:
           bare: true
           join: true
-# expand: true
-# flatten: false
-# cwd: coffeePath
-# src: [
-#   "*.coffee"
-# ]
-# dest: webappPath+"js/"
-# ext: ".js"
-        files:
-          "src/main/webapp/js/script.js": [coffeePath + "*.coffee"]
+        expand: true
+        flatten: false
+        cwd: coffeePath
+        src: [
+          "*.coffee"
+        ]
+        dest: webappPath+"js/"
+        ext: ".js"
+#        files:
+#          "src/main/webapp/js/script.js": [coffeePath + "*.coffee"]
 #PUG
     pug:
       compileHidden:
@@ -45,18 +45,18 @@ module.exports = (grunt) ->
           "src/main/webapp/index.html": pugPath + "index.pug"
 #JADE
     jade:
-#      compileHidden:
-#        options:
-#          pretty: true
-#        expand: true
-#        flatten: false
-#        cwd: jadePath
-#        src: [
-#          "user/userpage.jade"
-#          "admin/adminpage.jade"
-#        ]
-#        dest: webappPath + hiddenHtml
-#        ext: ".html"
+      compileHidden:
+        options:
+          pretty: true
+        expand: true
+        flatten: false
+        cwd: jadePath
+        src: [
+          #"user/userpage.jade"
+          "admin/*.jade"
+        ]
+        dest: webappPath + hiddenHtml
+        ext: ".html"
 
       compileVisible:
         options:

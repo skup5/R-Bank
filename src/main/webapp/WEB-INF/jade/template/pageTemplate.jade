@@ -6,13 +6,11 @@ mixin script(paths)
     each item in paths
         script(type="text/javascript" src=item)
 
-mixin bsDropdownMenu(items)
-    ul.dropdown-menu
-        each item in items
-            li: a(href=item.url)
-                if item.icon
-                    span(class=item.icon)
-                |#{item.label}
+mixin dismiss-alert(type, msg)
+    .alert.alert-dismissable.fade.in(class=type role="alert")
+        button.close(type="button" data-dismiss="alert" aria-label="Zavřít")
+            span(aria-hidden) &times;
+        |#{msg}
 
 doctype html
 html(lang="cs")
@@ -20,7 +18,8 @@ html(lang="cs")
         meta(charset="utf-8")
         meta(name="viewport" content="width=device-width initial-scale=1")
         block css
-            - var classes = ["css/bootstrap.min.css","css/bootstrap-theme.min.css","css/font-awesome.min.css","css/style.css"]
+            - var path = "/r-bank/css/"
+            - var classes = [path+"bootstrap.min.css", path+"bootstrap-theme.min.css", path+"font-awesome.min.css", path+"style.css"]
             +css(classes)
         block title
 
@@ -75,5 +74,6 @@ html(lang="cs")
                                     |  +420 211 111 111
 
         block script
-            - var scripts = ["js/jquery.min.js","js/bootstrap.min.js","js/script.js"]
+            - var path = "/r-bank/js/"
+            - var scripts = [path+"jquery.min.js", path+"bootstrap.min.js", path+"script.js"]
             +script(scripts)

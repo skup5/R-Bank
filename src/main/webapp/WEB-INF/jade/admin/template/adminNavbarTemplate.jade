@@ -1,0 +1,12 @@
+li.dropdown
+    a#admin(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false")
+        span.fa.fa-user
+        if displayName
+            |#{displayName}
+        else
+            |Admin
+        span.caret
+    ul.dropdown-menu(aria-labelledby="admin")
+        li: a(href="../logout")
+            span.fa.fa-times
+            |Odhlásit

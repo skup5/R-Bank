@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +20,10 @@ import java.util.Map;
  */
 public abstract class TemplateServlet extends AbstractServlet {
 
+    protected static final String ERROR_ATTRIBUTE = "err";
+    protected static final String TEMPLATE_ATTRIBUTE = "templateName";
     protected static final String DISPLAY_NAME_PARAMETER = "displayName";
-    protected static final String DISPLAY_NAME_URL = "displayNameUrl";
+    protected static final String DISPLAY_NAME_URL_PARAMETER = "displayNameUrl";
 
     @Autowired
     private ITemplateRender templateRender;
@@ -35,8 +36,13 @@ public abstract class TemplateServlet extends AbstractServlet {
         this.templateRender.setSharedVariables(defaults);
     }
 
+    /**
+     * Creates empty variables map.
+     *
+     * @return
+     */
     protected Map<String, Object> emptyVariables() {
-        return Collections.emptyMap();
+        return new HashMap<>();
     }
 
     protected String getTemplate(String name, Map<String, Object> variables) throws IOException, TemplateParserException {
@@ -48,30 +54,45 @@ public abstract class TemplateServlet extends AbstractServlet {
     }
 
     /**
-     * Request attributes to template variables
+     * Create template variables from request parameters.
      *
      * @param request
      * @return
      */
-    protected Map<String, Object> createVariablesFromAttributes(HttpServletRequest request) {
-        //log("createVariablesFromAttributes");
+    protected Map<String, Object> createVariablesFromParameters(HttpServletRequest request) {
+        //log("createVariablesFromParameters");
         String name;
+        String[] paramArray;
         Map<String, Object> variables = new HashedMap();
-        Enumeration<String> attributeNames = request.getAttributeNames();
-        while (attributeNames.hasMoreElements()) {
-            name = attributeNames.nextElement();
-            variables.put(name, request.getAttribute(name));
-            //System.out.println(name+":"+request.getAttribute(name));
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            name = parameterNames.nextElement();
+            paramArray = request.getParameterValues(name);
+            if (paramArray.length == 1)
+                variables.put(name, paramArray[0]);
+            else
+                variables.put(name, paramArray);
+//            System.out.println(name+":"+request.getParameter(name));
         }
         return variables;
     }
 
     /**
-     * The name of the logged in user or null, if the user isn't logged in
+     * The name of the logged in user or null, if the user isn't logged in.
      *
-     * @return
+     * @return display name value from session or null
      */
     protected String getDisplayName(HttpServletRequest request) {
         return (String) request.getSession().getAttribute(DISPLAY_NAME_PARAMETER);
+    }
+
+    /**
+     * Url of user home page.
+     *
+     * @param request
+     * @return display name url value from session or null
+     */
+    protected String getDisplayNameUrl(HttpServletRequest request) {
+        return (String) request.getSession().getAttribute(DISPLAY_NAME_URL_PARAMETER);
     }
 }

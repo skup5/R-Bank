@@ -6,14 +6,18 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.zelenikr.pia.web.servlet.spring.AbstractServlet;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Servlet handling user logout requests.
+ *
  * @author Roman Zelenik
  */
-public class Logout extends AbstractServlet {
+@WebServlet("/logout")
+public class LogoutController extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
