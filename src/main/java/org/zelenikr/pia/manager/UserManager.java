@@ -14,15 +14,6 @@ import java.util.List;
  */
 public interface UserManager {
 
-//    /**
-//     * Method for authentication of user's credentials.
-//     *
-//     * @param username provided login
-//     * @param password provided password
-//     * @return true if username and password are a match, false otherwise
-//     */
-//    boolean authenticate(String username, String password);
-
     /**
      * Method for registering a new user.
      *

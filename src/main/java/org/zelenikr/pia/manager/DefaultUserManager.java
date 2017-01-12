@@ -7,9 +7,9 @@ import org.zelenikr.pia.dao.UserDao;
 import org.zelenikr.pia.domain.Role;
 import org.zelenikr.pia.domain.RoleType;
 import org.zelenikr.pia.domain.User;
-import org.zelenikr.pia.validation.exception.UserValidationException;
 import org.zelenikr.pia.utils.Encoder;
 import org.zelenikr.pia.validation.UserValidator;
+import org.zelenikr.pia.validation.exception.UserValidationException;
 import org.zelenikr.pia.validation.exception.ValidationException;
 
 import javax.transaction.Transactional;
@@ -29,23 +29,16 @@ public class DefaultUserManager implements UserManager {
 
     private UserDao userDao;
     private UserValidator userValidator;
-    private RoleDao roleDao;
+    private RoleManager roleManager;
     private Encoder encoder;
 
     @Autowired
-    public DefaultUserManager(UserDao userDao, UserValidator userValidator, RoleDao roleDao, Encoder encoder) {
+    public DefaultUserManager(UserDao userDao, UserValidator userValidator, RoleManager roleManager, Encoder encoder) {
         this.userDao = userDao;
         this.userValidator = userValidator;
-        this.roleDao = roleDao;
+        this.roleManager = roleManager;
         this.encoder = encoder;
     }
-
-//    @Override
-//    public boolean authenticate(String username, String password) {
-//        Client u = userDao.findByUsername(username);
-//        System.out.println(u);
-//        return u != null && encoder.validate(password, u.getPassword());
-//    }
 
     @Override
     public void register(User newUser, List<RoleType> roles) throws ValidationException {
@@ -64,7 +57,7 @@ public class DefaultUserManager implements UserManager {
             throw new UserValidationException("User must have at least one role.");
         }
 
-        Set<Role> userRoles = saveRoles(roles);
+        Set<Role> userRoles = roleManager.saveRoles(roles);
         //for (Role role : userRoles) System.out.println("[" + role.getId() + "] " + role);
 
         newUser.setPassword(encoder.encode(newUser.getPassword()));
@@ -83,14 +76,5 @@ public class DefaultUserManager implements UserManager {
         return newUser;
     }
 
-    private Set<Role> saveRoles(Collection<RoleType> roleTypes) {
-        Role role;
-        Set<Role> roles = new LinkedHashSet<>(roleTypes.size());
-        for (RoleType type : roleTypes) {
-            role = new Role(type);
-            roleDao.save(role);
-            roles.add(role);
-        }
-        return roles;
-    }
+
 }

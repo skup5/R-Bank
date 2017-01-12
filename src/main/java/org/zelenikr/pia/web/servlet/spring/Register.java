@@ -59,7 +59,7 @@ public class Register extends TemplateServlet {
         try {
             ArrayList<RoleType> roles = new ArrayList();
             roles.add(RoleType.ROLE_ADMIN);
-            roles.add(RoleType.ROLE_CLIENT);
+//            roles.add(RoleType.ROLE_CLIENT);
             userManager.register(new User(username, password), roles);
 //            userManager.register(userManager.create());
             //TODO: not perfect, user should get a message registration was successful!
