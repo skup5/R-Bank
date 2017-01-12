@@ -1,6 +1,5 @@
 package org.zelenikr.pia.web.servlet.spring.view;
 
-import org.zelenikr.pia.web.servlet.spring.TemplateServlet;
 import org.zelenikr.pia.web.template.TemplateParserException;
 
 import javax.servlet.ServletException;
@@ -16,7 +15,7 @@ import java.util.Map;
  * @author Roman Zelenik
  */
 @WebServlet(name = "home", value = "/home")
-public class HomeView extends TemplateServlet {
+public class HomeView extends AbstractView {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -181,6 +181,15 @@ table > tbody > tr:hover {
     vertical-align: text-top;
 }
 
+/*  Alert   */
+
+.alert-modal {
+    position: fixed;
+    top: auto;
+    left: 50%;
+    z-index: 1050;
+}
+
 /*  Panel   */
 
 .panel-footer .label-date {

@@ -2,6 +2,7 @@ package org.zelenikr.pia.web.servlet.spring;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.zelenikr.pia.web.servlet.spring.view.AbstractView;
 import org.zelenikr.pia.web.template.Helpers;
 import org.zelenikr.pia.web.template.ITemplateRender;
 import org.zelenikr.pia.web.template.TemplateParserException;
@@ -19,11 +20,6 @@ import java.util.Map;
  * @author Roman Zelenik
  */
 public abstract class TemplateServlet extends AbstractServlet {
-
-    protected static final String ERROR_ATTRIBUTE = "err";
-    protected static final String TEMPLATE_ATTRIBUTE = "templateName";
-    protected static final String DISPLAY_NAME_PARAMETER = "displayName";
-    protected static final String DISPLAY_NAME_URL_PARAMETER = "displayNameUrl";
 
     @Autowired
     private ITemplateRender templateRender;
@@ -77,22 +73,4 @@ public abstract class TemplateServlet extends AbstractServlet {
         return variables;
     }
 
-    /**
-     * The name of the logged in user or null, if the user isn't logged in.
-     *
-     * @return display name value from session or null
-     */
-    protected String getDisplayName(HttpServletRequest request) {
-        return (String) request.getSession().getAttribute(DISPLAY_NAME_PARAMETER);
-    }
-
-    /**
-     * Url of user home page.
-     *
-     * @param request
-     * @return display name url value from session or null
-     */
-    protected String getDisplayNameUrl(HttpServletRequest request) {
-        return (String) request.getSession().getAttribute(DISPLAY_NAME_URL_PARAMETER);
-    }
 }

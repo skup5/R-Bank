@@ -15,6 +15,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  */
 public abstract class AbstractServlet extends HttpServlet {
 
+    protected static final String ERROR_ATTRIBUTE = "err";
+
     protected AutowireCapableBeanFactory ctx;
 
     @Override

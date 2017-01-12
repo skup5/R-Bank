@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Roman Zelenik
  */
 @WebServlet("/view/adminView")
-public class AdministrationView extends TemplateServlet {
+public class AdministrationView extends AbstractView {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

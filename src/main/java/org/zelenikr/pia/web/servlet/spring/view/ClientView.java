@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Roman Zelenik
  */
 @WebServlet("/client")
-public class ClientView extends TemplateServlet {
+public class ClientView extends AbstractView {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

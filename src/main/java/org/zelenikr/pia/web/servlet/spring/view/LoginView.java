@@ -1,6 +1,5 @@
 package org.zelenikr.pia.web.servlet.spring.view;
 
-import org.zelenikr.pia.web.servlet.spring.TemplateServlet;
 import org.zelenikr.pia.web.template.TemplateParserException;
 
 import javax.servlet.ServletException;
@@ -16,7 +15,7 @@ import java.util.Collections;
  * @author Roman Zelenik
  */
 @WebServlet("/login")
-public class LoginView extends TemplateServlet {
+public class LoginView extends AbstractView {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

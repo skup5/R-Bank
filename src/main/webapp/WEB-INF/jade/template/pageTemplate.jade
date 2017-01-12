@@ -7,10 +7,10 @@ mixin script(paths)
         script(type="text/javascript" src=item)
 
 mixin dismiss-alert(type, msg)
-    .alert.alert-dismissable.fade.in(class=type role="alert")
+    .alert.alert-dismissable.alert-modal.fade.in(class=type role="alert")
         button.close(type="button" data-dismiss="alert" aria-label="Zavřít")
             span(aria-hidden) &times;
-        |#{msg}
+        | #{msg}
 
 doctype html
 html(lang="cs")
@@ -34,7 +34,7 @@ html(lang="cs")
                                 span.icon-bar
                         a(class="navbar-brand" href="home")
                             span.fa.fa-building
-                            |R-bank
+                            | R-bank
 
                     .collapse.navbar-collapse#header-navbar-collapse
                         ul.nav.navbar-nav
@@ -56,12 +56,12 @@ html(lang="cs")
                             ul.list-inline.top
                                 li
                                     span.fa.fa-copyright
-                                    |R-Bank 2016
+                                    | R-Bank 2016
                                 li: a(href="#") Kontakty
                                 li
                                     span(data-toggle="tooltip" data-placement="top" title="Infolinka")
                                         span.fa.fa-phone
-                                        |800 111 111
+                                        | 800 111 111
                                 //-li: a(href="#") Seznam poboček
                                 //-li: address.text-left
                                     strong R-Bank, a. s.
