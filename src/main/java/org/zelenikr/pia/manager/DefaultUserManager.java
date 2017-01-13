@@ -2,6 +2,7 @@ package org.zelenikr.pia.manager;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.zelenikr.pia.dao.UserDao;
 import org.zelenikr.pia.domain.Role;
@@ -20,6 +21,7 @@ import java.util.Set;
  *
  * @author Jakub Danek
  */
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @Service
 @Transactional
 public class DefaultUserManager implements UserManager {

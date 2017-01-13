@@ -1,16 +1,10 @@
 package org.zelenikr.pia.domain;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.zelenikr.pia.domain.exception.CreditCardValidationException;
-import org.zelenikr.pia.validation.CreditCardValidation;
 import org.zelenikr.pia.validation.Validable;
-import org.zelenikr.pia.validation.exception.ValidationException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * Entity representing credit card.
@@ -19,9 +13,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "zelenikr_rbank_credit_card")
-public class CreditCard extends BaseObject implements Validable {
-
-    private CreditCardValidation creditCardValidation;
+public class CreditCard extends BaseObject {
 
     private String creditCardNumber;
     private Integer pin;
@@ -34,34 +26,6 @@ public class CreditCard extends BaseObject implements Validable {
         this.pin = pin;
     }
 
-    /*
-    ########### API ##################
-     */
-
-    @Transient
-    @Autowired
-    public void setCreditCardValidation(CreditCardValidation creditCardValidation) {
-        this.creditCardValidation = creditCardValidation;
-    }
-
-    /**
-     * Validates that credit card instance is currently in a valid state.
-     *
-     * @throws CreditCardValidationException in case the credit card is not in valid state.
-     */
-    @Override
-    public void validate() throws ValidationException {
-        validateCreditCardNumber();
-    }
-
-    private void validateCreditCardNumber() throws CreditCardValidationException {
-        if (StringUtils.isBlank(creditCardNumber))
-            throw new CreditCardValidationException("Credit card number is a required field");
-        if (creditCardNumber.length() != creditCardValidation.getCreditCardNumberLength())
-            throw new CreditCardValidationException("Credit card number must be " + creditCardValidation.getCreditCardNumberLength() + " digits");
-        if (!StringUtils.isNumeric(creditCardNumber))
-            throw new CreditCardValidationException("Credit card number must be a positive numeric value");
-    }
 
     /*
     ########### MAPPINGS #####################

@@ -1,6 +1,7 @@
 package org.zelenikr.pia.manager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.zelenikr.pia.dao.RoleDao;
 import org.zelenikr.pia.domain.Role;
@@ -14,6 +15,7 @@ import java.util.Set;
 /**
  * @author Roman Zelenik
  */
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @Service
 @Transactional
 public class DefaultRoleManager implements RoleManager {

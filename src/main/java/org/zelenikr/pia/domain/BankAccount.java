@@ -59,6 +59,7 @@ public class BankAccount extends BaseObject {
     }
 
     @Embedded
+    @Enumerated
     public Currency getCurrency() {
         return currency;
     }
