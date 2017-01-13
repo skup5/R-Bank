@@ -1,5 +1,6 @@
 package org.zelenikr.pia.web.servlet.spring.controller.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.manager.ClientManager;
 import org.zelenikr.pia.web.servlet.spring.controller.AbstractController;
 
@@ -12,7 +13,7 @@ public class AbstractAdminController extends AbstractController {
 
     private ClientManager clientManager;
 
-    //@Autowired
+    @Autowired
     public void setClientManager(ClientManager clientManager) {
         this.clientManager = clientManager;
     }

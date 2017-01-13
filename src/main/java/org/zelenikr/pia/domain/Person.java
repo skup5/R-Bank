@@ -1,13 +1,9 @@
 package org.zelenikr.pia.domain;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.routines.EmailValidator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.zelenikr.pia.domain.exception.PersonValidationException;
-import org.zelenikr.pia.validation.PersonValidation;
-import org.zelenikr.pia.validation.exception.ValidationException;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 /**
@@ -19,9 +15,7 @@ import javax.persistence.*;
 @Table(name = "zelenikr_rbank_person")
 public class Person extends User {
 
-    private PersonValidation personValidation;
-
-    protected String name;
+     protected String name;
 
     protected String surname;
     /**
@@ -39,8 +33,8 @@ public class Person extends User {
         super();
     }
 
-    public Person(String username, String password, String name, String surname, String personalIdNumber, String phoneNumber, String email) {
-        super(username, password);
+    public Person(String name, String surname, String personalIdNumber, String phoneNumber, String email) {
+        super();
         this.email = email;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
@@ -55,54 +49,6 @@ public class Person extends User {
     @Override
     public String displayName() {
         return getName()+" "+getSurname();
-    }
-
-    @Transient
-    @Autowired
-    public void setPersonValidation(PersonValidation personValidation) {
-        this.personValidation = personValidation;
-    }
-
-    /**
-     * Validates that person instance is currently in a valid state.
-     *
-     * @throws PersonValidationException in case the person is not in valid state.
-     */
-    //@Override
-    public void validate() throws ValidationException {
-       // super.validate();
-        validateName();
-        validateSurname();
-        validatePersonalIdNumber();
-        validateEmail();
-    }
-
-    private void validateName() throws PersonValidationException {
-        if (StringUtils.isBlank(name)) throw new PersonValidationException("Name is a required field");
-        if (!StringUtils.isAlpha(name)) throw new PersonValidationException("Name can contain only Unicode letters");
-    }
-
-    private void validateSurname() throws PersonValidationException {
-        if (StringUtils.isBlank(surname)) throw new PersonValidationException("Surname is a required field");
-        if (!StringUtils.isAlpha(surname))
-            throw new PersonValidationException("Surname can contain only Unicode letters");
-    }
-
-    private void validatePersonalIdNumber() throws PersonValidationException {
-        if (StringUtils.isBlank(personalIdNumber))
-            throw new PersonValidationException("Personal identification number is required field");
-        if (personalIdNumber.length() < personValidation.getPersonIdNoMinLength() ||
-                personalIdNumber.length() > personValidation.getPersonIdNoMaxLength())
-            throw new PersonValidationException("Personal identification number's length must be in the interval <"
-                    + personValidation.getPersonIdNoMinLength() + ";" + personValidation.getPersonIdNoMaxLength() + ">");
-        if (!StringUtils.isNumeric(personalIdNumber))
-            throw new PersonValidationException("Personal identification number must be a positive numeric value");
-    }
-
-    private void validateEmail() throws PersonValidationException {
-        if (personalIdNumber == null) throw new PersonValidationException("Email is required field");
-        if (!EmailValidator.getInstance().isValid(email))
-            throw new PersonValidationException("Email is invalid");
     }
 
     /*

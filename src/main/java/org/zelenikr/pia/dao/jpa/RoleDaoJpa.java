@@ -1,6 +1,7 @@
-package org.zelenikr.pia.dao;
+package org.zelenikr.pia.dao.jpa;
 
 import org.springframework.stereotype.Repository;
+import org.zelenikr.pia.dao.RoleDao;
 import org.zelenikr.pia.domain.Role;
 import org.zelenikr.pia.domain.RoleType;
 import org.zelenikr.pia.domain.User;

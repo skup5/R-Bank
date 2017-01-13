@@ -1,11 +1,11 @@
-package org.zelenikr.pia.validation;
+package org.zelenikr.pia.validation.configurable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.zelenikr.pia.domain.User;
+import org.zelenikr.pia.validation.UserValidator;
 import org.zelenikr.pia.validation.exception.UserValidationException;
-import org.zelenikr.pia.validation.exception.ValidationException;
 
 /**
  * @author Roman Zelenik
@@ -28,13 +28,8 @@ public class ConfigurableUserValidator implements UserValidator {
         return passwordLength;
     }
 
-    /**
-     * Validates that user instance is currently in a valid state.
-     *
-     * @throws UserValidationException in case the user is not in valid state.
-     */
     @Override
-    public void validate(User user) throws ValidationException {
+    public void validate(User user) throws UserValidationException {
         validateUsername(user.getUsername());
         validatePassword(user.getPassword());
     }

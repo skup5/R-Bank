@@ -1,5 +1,6 @@
-package org.zelenikr.pia.dao;
+package org.zelenikr.pia.dao.jpa;
 
+import org.zelenikr.pia.dao.GenericDao;
 import org.zelenikr.pia.domain.BaseObject;
 
 import javax.persistence.EntityManager;

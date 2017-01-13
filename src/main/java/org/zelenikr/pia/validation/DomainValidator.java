@@ -4,6 +4,8 @@ import org.zelenikr.pia.domain.BaseObject;
 import org.zelenikr.pia.validation.exception.ValidationException;
 
 /**
+ * Interface for all domain object validators.
+ *
  * @author Roman Zelenik
  */
 public interface DomainValidator<T extends BaseObject> {

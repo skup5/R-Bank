@@ -1,8 +1,8 @@
 package org.zelenikr.pia.manager;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.zelenikr.pia.dao.RoleDao;
 import org.zelenikr.pia.dao.UserDao;
 import org.zelenikr.pia.domain.Role;
 import org.zelenikr.pia.domain.RoleType;
@@ -10,11 +10,8 @@ import org.zelenikr.pia.domain.User;
 import org.zelenikr.pia.utils.Encoder;
 import org.zelenikr.pia.validation.UserValidator;
 import org.zelenikr.pia.validation.exception.UserValidationException;
-import org.zelenikr.pia.validation.exception.ValidationException;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -41,20 +38,20 @@ public class DefaultUserManager implements UserManager {
     }
 
     @Override
-    public void register(User newUser, List<RoleType> roles) throws ValidationException {
+    public void register(User newUser, List<RoleType> roles) throws UserValidationException {
         if (!newUser.isNew()) {
             throw new RuntimeException("User already exists, use save method for updates!");
         }
 
         userValidator.validate(newUser);
 
-        User existinCheck = userDao.findByUsername(newUser.getUsername());
-        if (existinCheck != null) {
+
+        if (!hasUniqueUsername(newUser)) {
             throw new UserValidationException("Username already taken!");
         }
 
         if (roles.isEmpty()) {
-            throw new UserValidationException("User must have at least one role.");
+            throw new UserValidationException("User must have at least one role!");
         }
 
         Set<Role> userRoles = roleManager.saveRoles(roles);
@@ -71,10 +68,15 @@ public class DefaultUserManager implements UserManager {
     }
 
     @Override
-    public User create() {
-        User newUser = new User();
-        return newUser;
+    public User generateUser() {
+        return new User(
+                RandomStringUtils.randomAlphanumeric(userValidator.getUserNameLength()),
+                RandomStringUtils.randomNumeric(userValidator.getPasswordLength())
+        );
     }
 
-
+    @Override
+    public boolean hasUniqueUsername(User uniqueUser) {
+        return userDao.findByUsername(uniqueUser.getUsername()) == null;
+    }
 }

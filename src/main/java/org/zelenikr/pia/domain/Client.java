@@ -21,7 +21,7 @@ public class Client extends Person {
     }
 
     public Client(String name, String surname, String personalIdNumber, String phoneNumber, String email) {
-        super("", "", name, surname, personalIdNumber, phoneNumber, email);
+        super(name, surname, personalIdNumber, phoneNumber, email);
     }
 
     /*

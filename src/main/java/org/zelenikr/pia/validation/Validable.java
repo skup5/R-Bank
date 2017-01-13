@@ -5,6 +5,7 @@ import org.zelenikr.pia.validation.exception.ValidationException;
 /**
  * @author Roman Zelenik
  */
+@Deprecated
 public interface Validable {
     /**
      * Validates the instance.

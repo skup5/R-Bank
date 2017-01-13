@@ -1,8 +1,9 @@
-package org.zelenikr.pia.dao;
+package org.zelenikr.pia.dao.jpa;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
+import org.zelenikr.pia.dao.UserDao;
 import org.zelenikr.pia.domain.User;
 
 import javax.persistence.NoResultException;

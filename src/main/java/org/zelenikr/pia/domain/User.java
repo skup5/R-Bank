@@ -19,13 +19,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseObject implements UserDetails {
 
-//    @Value("${validation.user.username.length}")
-//    private static int VALID_USERNAME_LENGTH;
-//    @Value("${validation.user.password.length}")
-//    private static int VALID_PASSWORD_LENGTH;
-
-//    private UserValidator userValidation;
-
     /**
      * Login, unique
      */
@@ -56,40 +49,6 @@ public class User extends BaseObject implements UserDetails {
     public String displayName(){
         return getUsername();
     }
-
-//    @Transient
-//    @Autowired
-//    public void setUserValidation(UserValidator userValidation) {
-//        this.userValidation = userValidation;
-//    }
-
-//    /**
-//     * Validates that user instance is currently in a valid state.
-//     *
-//     * @throws UserValidationException in case the user is not in valid state.
-//     */
-//    @Override
-//    public void validate() throws ValidationException {
-//        validateUsername();
-//        validatePassword();
-//    }
-//
-//    private void validateUsername() throws UserValidationException {
-//        if (StringUtils.isBlank(username)) throw new UserValidationException("Username is a required field");
-//        if (username.length() != userValidation.getUserNameLength())
-//            throw new UserValidationException("Username must be " + userValidation.getUserNameLength() + " chars long");
-//        if (!StringUtils.isAlphanumeric(username))
-//            throw new UserValidationException("Username can contain only alphanumeric chars");
-//
-//    }
-//
-//    private void validatePassword() throws UserValidationException {
-//        if (StringUtils.isBlank(password)) throw new UserValidationException("Password is a required field");
-//        if (password.length() != userValidation.getPasswordLength())
-//            throw new UserValidationException("Password must be " + userValidation.getPasswordLength() + " digits");
-//        if (!StringUtils.isNumeric(password))
-//            throw new UserValidationException("Password can contain only digits");
-//    }
 
     /*
     ########### Spring Security ##################
