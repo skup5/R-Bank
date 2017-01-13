@@ -9,11 +9,13 @@ block prepend rightNavbar
 block content
     .row
         main.main
-            .page-header.text-center: h1
-                span.fa.fa-building
-                |R-Bank
-                br
-                small Internetové bankovnictví
+            .page-header.text-center
+                h1
+                    a.header-link(href="/r-bank/home")
+                        span.fa.fa-building
+                        |R-Bank
+                        br
+                        small Internetové bankovnictví
             .col-md-6.col-lg-8
                 .page-header: h2 Aktuality
                 .row
@@ -51,9 +53,14 @@ block content
                 .panel.panel-info
                     .panel-heading Bezpečnostní doporučení
                     .panel-body
-                        p Dodržujte zásady bezpečného užívání elektronického bankovnictví.
+                        p: strong Dodržujte zásady bezpečného užívání elektronického bankovnictví.
                         |Mezi nejdůležitější patří:
                         ul
                             li pravidelně aktualizujte operační systém a internetový prohlížeč,
                             li používejte a pravidelně aktualizujte antivirový program a firewall,
                             li chraňte také svůj mobilní telefon.
+                .panel.panel-info
+                    .panel-heading Bezpečnostní doporučení
+                    .panel-body
+                        p: strong Aktualizujte si svůj prohlížeč Internet Explorer
+                        p Dne 12. ledna 2016 ukončila společnost Microsoft podporu svého internetového prohlížeče Internet Explorer pro verze 10 a starší. Všechny tyto starší verze prohlížeče Internet Explorer přestal Microsoft bezpečnostně podporovat.

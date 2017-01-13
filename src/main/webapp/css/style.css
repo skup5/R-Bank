@@ -23,6 +23,11 @@ html, body {
     padding-bottom: 20px;
 }
 
+.header-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
 /*  Form    */
 
 .form, .form-signin {
@@ -133,9 +138,13 @@ html, body {
 
 /*  Table   */
 
-.table > thead > tr > th {
+.table > thead > tr > th, .table > tbody > tr > td {
     vertical-align: middle;
     /*text-align: center;*/
+}
+
+.table > tbody > tr > td.money {
+    text-align: right;
 }
 
 .table-row-striped > tbody tr:nth-child(4n+1), .table-row-striped > tbody tr:nth-child(4n+2) {
