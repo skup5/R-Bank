@@ -1,11 +1,5 @@
 package org.zelenikr.pia.domain;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.zelenikr.pia.domain.exception.BankAccountValidationException;
-import org.zelenikr.pia.validation.BankAccountValidation;
-import org.zelenikr.pia.validation.Validable;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -17,9 +11,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "zelenikr_rbank_bank_account")
-public class BankAccount extends BaseObject implements Validable {
-
-    private BankAccountValidation bankAccountValidation;
+public class BankAccount extends BaseObject {
 
     private String accountNumber;
     /**
@@ -43,32 +35,6 @@ public class BankAccount extends BaseObject implements Validable {
         this.sum = sum;
     }
 
-    /*
-    ########### API ##################
-     */
-
-    @Transient
-    @Autowired
-    public void setBankAccountValidation(BankAccountValidation bankAccountValidation) {
-        this.bankAccountValidation = bankAccountValidation;
-    }
-
-    /**
-     * Validates that bank account instance is currently in a valid state.
-     *
-     * @throws BankAccountValidationException in case the bank account is not in valid state.
-     */
-    @Override
-    public void validate() throws BankAccountValidationException {
-        validateAccountNumber();
-    }
-
-    private void validateAccountNumber() throws BankAccountValidationException {
-        if (StringUtils.isBlank(accountNumber)) throw new BankAccountValidationException("Account number is a required field");
-        if (accountNumber.length() != bankAccountValidation.getBankAccountNumberLength())
-            throw new BankAccountValidationException("Account number must be " + bankAccountValidation.getBankAccountNumberLength() + " digits");
-        if (!StringUtils.isNumeric(accountNumber)) throw new BankAccountValidationException("Account number must be a positive numeric value");
-    }
 
     /*
     ########### MAPPINGS #####################

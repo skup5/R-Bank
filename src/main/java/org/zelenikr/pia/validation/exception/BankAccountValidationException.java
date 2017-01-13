@@ -1,6 +1,4 @@
-package org.zelenikr.pia.domain.exception;
-
-import org.zelenikr.pia.validation.exception.ValidationException;
+package org.zelenikr.pia.validation.exception;
 
 /**
  * Exception thrown when BankAccount object fails internal state validation.
