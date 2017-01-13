@@ -90,7 +90,11 @@ public class DefaultClientManager implements ClientManager {
     }
 
     @Override
-    public void update(Client client) throws ClientValidationException {
-        throw new IllegalStateException("Not implemented yet");
+    public void save(Client client) throws ClientValidationException, UserValidationException, PersonValidationException {
+        if(client.isNew()){
+            throw new ClientValidationException("Client doesn't exist!");
+        }
+        clientValidator.validate(client);
+        clientDao.save(client);
     }
 }

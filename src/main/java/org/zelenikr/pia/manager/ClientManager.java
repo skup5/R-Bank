@@ -2,7 +2,6 @@ package org.zelenikr.pia.manager;
 
 import org.zelenikr.pia.domain.Address;
 import org.zelenikr.pia.domain.BankAccount;
-import org.zelenikr.pia.domain.BaseObject;
 import org.zelenikr.pia.domain.Client;
 import org.zelenikr.pia.validation.exception.ClientValidationException;
 import org.zelenikr.pia.validation.exception.PersonValidationException;
@@ -46,15 +45,15 @@ public interface ClientManager {
      *
      * @param client instance to be filled
      * @return updated instance
-     * @throws ClientValidationException if client doesn't exist
+     * @throws ClientValidationException if client doesn't exist yet or is not in valid state
      */
     Client loadDetails(Client client) throws ClientValidationException;
 
     /**
-     * Updates existing client data.
+     * Saves existing modified client data.
      *
      * @param client instance with modified client data, expected not-null value
-     * @throws ClientValidationException if client doesn't exist yet
+     * @throws ClientValidationException if client doesn't exist yet or is not in valid state
      */
-    void update(Client client) throws ClientValidationException;
+    void save(Client client) throws ClientValidationException, UserValidationException, PersonValidationException;
 }
