@@ -81,7 +81,7 @@ public class DefaultClientManager implements ClientManager {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public List<Client> getClients() {
-        throw new IllegalStateException("Not implemented yet");
+        return clientDao.findAll();
     }
 
     @Override

@@ -47,7 +47,7 @@ public abstract class AbstractPaymentOrder extends BaseObject {
         this.dueDate = dueDate;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public BankAccount getClientAccount() {
         return clientAccount;
     }

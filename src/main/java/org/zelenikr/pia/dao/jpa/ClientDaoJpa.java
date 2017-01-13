@@ -6,6 +6,8 @@ import org.zelenikr.pia.domain.Client;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Roman Zelenik
@@ -25,6 +27,16 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
             return q.getSingleResult();
         } catch (NoResultException e) {
             return null;
+        }
+    }
+
+    @Override
+    public List<Client> findAll() {
+        TypedQuery<Client> q = em.createQuery("SELECT c FROM Client c", Client.class);
+        try {
+            return q.getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
         }
     }
 }

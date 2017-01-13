@@ -86,7 +86,7 @@ public class BankAccount extends BaseObject {
      *
      * @return
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public Client getOwner() {
         return owner;
     }

@@ -1,9 +1,6 @@
 package org.zelenikr.pia.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -104,7 +101,7 @@ public class Person extends User {
      *
      * @return
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public Address getAddress() {
         return address;
     }

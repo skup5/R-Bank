@@ -2,6 +2,7 @@ package org.zelenikr.pia.validation.configurable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.zelenikr.pia.domain.BankAccount;
 import org.zelenikr.pia.validation.exception.BankAccountValidationException;
 import org.zelenikr.pia.validation.BankAccountValidator;
@@ -9,6 +10,7 @@ import org.zelenikr.pia.validation.BankAccountValidator;
 /**
  * @author Roman Zelenik
  */
+@Service
 public class ConfigurableBankAccountValidator implements BankAccountValidator {
 
     @Value("${validation.bankAccount.number.length}")
