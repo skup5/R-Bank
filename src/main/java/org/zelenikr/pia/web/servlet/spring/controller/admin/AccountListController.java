@@ -12,11 +12,15 @@ import java.io.IOException;
 @WebServlet("/admin/account-list")
 public class AccountListController extends AbstractAdminController {
 
-    private static final String TEMPLATE_VALUE = "admin/accountList";
+    private static final String TEMPLATE_PATH = "admin/accountList";
+
+    @Override
+    protected String getTemplatePath() {
+        return TEMPLATE_PATH;
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute(TEMPLATE_ATTRIBUTE, TEMPLATE_VALUE);
-        req.getRequestDispatcher(VIEW_NAME).forward(req,resp);
+        dispatch(req, resp);
     }
 }

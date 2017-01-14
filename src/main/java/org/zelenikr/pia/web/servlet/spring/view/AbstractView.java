@@ -1,13 +1,16 @@
 package org.zelenikr.pia.web.servlet.spring.view;
 
 import org.zelenikr.pia.web.servlet.spring.TemplateServlet;
+import org.zelenikr.pia.web.servlet.spring.controller.AbstractController;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * Abstract view for all views cooperating with {@link AbstractController} instances.
+ *
  * @author Roman Zelenik
  */
-public abstract class AbstractView extends TemplateServlet{
+public abstract class AbstractView extends TemplateServlet {
 
     protected static final String TEMPLATE_ATTRIBUTE = "templateName";
     protected static final String DISPLAY_NAME_PARAMETER = "displayName";
