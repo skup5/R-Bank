@@ -28,11 +28,11 @@ public class HomeView extends AbstractView {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            userManager.register(new User("Admin001", "1234"), Collections.singletonList(RoleType.ROLE_ADMIN));
-        } catch (UserValidationException e) {
-            throw new ServletException(e);
-        }
+//        try {
+//            userManager.register(new User("Admin001", "1234"), Collections.singletonList(RoleType.ROLE_ADMIN));
+//        } catch (UserValidationException e) {
+//            throw new ServletException(e);
+//        }
         doPost(req, resp);
     }
 

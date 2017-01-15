@@ -156,6 +156,11 @@ table > tbody > tr:hover {
     /*text-decoration: underline;*/
 }
 
+.table-responsive{
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+}
+
 /*  Footer  */
 
 .footer {
@@ -209,7 +214,7 @@ table > tbody > tr:hover {
 
 /*  Icons  */
 
-span.caret {
+span.caret, .btn .caret {
     margin-left: 0.5em;
 }
 

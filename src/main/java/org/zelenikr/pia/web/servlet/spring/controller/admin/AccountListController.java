@@ -19,6 +19,7 @@ import java.io.IOException;
 public class AccountListController extends AbstractAdminController {
 
     private static final String TEMPLATE_PATH = "admin/accountList";
+    private static final String CLIENTS_ATTRIBUTE = "clients";
 
     ClientGenerator clientGenerator;
 
@@ -35,28 +36,31 @@ public class AccountListController extends AbstractAdminController {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("doGet()");
-//        log("generating client...");
-//        Client client = clientGenerator.newClientAccount();
-//        log("client was generated");
-//        for (Client c : clientManager.getClients()) {
-//            try {
-//                log("loading client details...");
-//                c = clientManager.loadDetails(c);
-//            } catch (ClientValidationException e) {
-//                e.printStackTrace();
-//            }
-//            System.out.println(c);
-//            System.out.println("--Bank accounts--");
-//            for (BankAccount ba : c.getBankAccounts()) {
-//                System.out.println(ba);
-//            }
-//            System.out.println("----------------------------");
-//        }
-
-//        clientManager.delete(client);
-//        for (Client c : clientManager.getClients()) System.out.println("* " + c);
-
+        req.setAttribute(CLIENTS_ATTRIBUTE, clientManager.getClients());
 
         dispatch(req, resp);
+    }
+
+    private void clientTest() {
+        log("generating client...");
+        Client client = clientGenerator.newClientAccount();
+        log("client was generated");
+        for (Client c : clientManager.getClients()) {
+            try {
+                log("loading client details...");
+                c = clientManager.loadDetails(c);
+            } catch (ClientValidationException e) {
+                e.printStackTrace();
+            }
+            System.out.println(c);
+            System.out.println("--Bank accounts--");
+            for (BankAccount ba : c.getBankAccounts()) {
+                System.out.println(ba);
+            }
+            System.out.println("----------------------------");
+        }
+
+        clientManager.delete(client);
+        for (Client c : clientManager.getClients()) System.out.println("* " + c);
     }
 }

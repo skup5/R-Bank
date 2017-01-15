@@ -1,0 +1,38 @@
+mixin clientActions(clientID)
+    .dropdown
+        button.btn.btn-primary.dropdown-toggle(id='clientActions'+clientID type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+            | Vybrat
+            span.caret
+        ul.dropdown-menu.dropdown-menu-right(aria-labelledby='clientActions'+clientID)
+            li
+                a(href='#client-'+clientID)
+                    span.fa.fa-user
+                    |Zobrazit
+            li
+                a(href='#delete-'+clientID, onclick="return confirm('Smazat klienta číslo "+clientID+"?');")
+                    span.fa.fa-times.text-danger
+                    |Smazat
+
+
+.page-header
+    h1: small Seznam klientů
+.table-responsive
+    table.table.table-striped.table-hover
+        thead: tr
+            th Jméno
+            th Příjmení
+            th Rodné číslo
+            th.text-right Akce
+        tbody
+            //- -var clients = [1,2]
+            each client in clients
+                tr(onclick="window.location='#"+client.getId()+"';")
+                    //-tr(onclick="window.location='#" + client + "';")
+                    td= client.getName()
+                    td= client.getSurname()
+                    td= client.getPersonalIdNumber()
+                    td.text-right: +clientActions(client.getId())
+                   //- td
+                    td
+                    td
+                    td.text-right: +clientActions(client)
