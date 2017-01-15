@@ -17,7 +17,7 @@ public class AdminIndexController extends AbstractAdminController {
     private static final String INDEX_URL = "admin/account-list";
 
     @Override
-    protected String getTemplatePath() {
+    protected String getDefaultTemplatePath() {
         return "";
     }
 

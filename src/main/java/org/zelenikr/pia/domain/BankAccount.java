@@ -2,6 +2,7 @@ package org.zelenikr.pia.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -28,9 +29,11 @@ public class BankAccount extends BaseObject {
     private Set<SinglePaymentOrder> singlePaymentOrders;
 
     public BankAccount() {
+        this.singlePaymentOrders = new LinkedHashSet<>();
     }
 
     public BankAccount(String accountNumber, BigDecimal sum) {
+        this();
         this.accountNumber = accountNumber;
         this.sum = sum;
     }
@@ -88,6 +91,7 @@ public class BankAccount extends BaseObject {
      * @return
      */
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id",  insertable = false, updatable = false)
     public Client getOwner() {
         return owner;
     }

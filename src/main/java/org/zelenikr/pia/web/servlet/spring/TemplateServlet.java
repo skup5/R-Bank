@@ -1,8 +1,6 @@
 package org.zelenikr.pia.web.servlet.spring;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.zelenikr.pia.web.servlet.spring.view.AbstractView;
 import org.zelenikr.pia.web.template.Helpers;
 import org.zelenikr.pia.web.template.ITemplateRender;
 import org.zelenikr.pia.web.template.TemplateParserException;
@@ -17,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Abstract servlet for all servlets using templates rendering.
+ *
  * @author Roman Zelenik
  */
 public abstract class TemplateServlet extends AbstractServlet {
@@ -41,10 +41,28 @@ public abstract class TemplateServlet extends AbstractServlet {
         return new HashMap<>();
     }
 
+    /**
+     * Returns template like HTML code filled with variables.
+     *
+     * @param name      relative path
+     * @param variables
+     * @return filled HTML code
+     * @throws IOException
+     * @throws TemplateParserException
+     */
     protected String getTemplate(String name, Map<String, Object> variables) throws IOException, TemplateParserException {
         return templateRender.getHTMLCode(getServletContext(), name, variables);
     }
 
+    /**
+     * Generate HTML code filled with variables and writes it into the specific writer.
+     *
+     * @param name      relative path
+     * @param variables
+     * @param writer
+     * @throws IOException
+     * @throws TemplateParserException
+     */
     protected void renderTemplate(String name, Map<String, Object> variables, Writer writer) throws IOException, TemplateParserException {
         templateRender.renderTemplate(getServletContext(), name, variables, writer);
     }
@@ -59,7 +77,7 @@ public abstract class TemplateServlet extends AbstractServlet {
         //log("createVariablesFromParameters");
         String name;
         String[] paramArray;
-        Map<String, Object> variables = new HashedMap();
+        Map<String, Object> variables = new HashMap<>();
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             name = parameterNames.nextElement();

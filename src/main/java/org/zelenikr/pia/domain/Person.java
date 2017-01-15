@@ -97,11 +97,11 @@ public class Person extends User {
     }
 
     /**
-     * ManyToOne association between persons and address.
+     * OneToOne association between person and address.
      *
      * @return
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     public Address getAddress() {
         return address;
     }

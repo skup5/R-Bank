@@ -1,7 +1,5 @@
 package org.zelenikr.pia.domain;
 
-import org.zelenikr.pia.validation.Validable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;

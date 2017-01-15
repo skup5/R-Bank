@@ -1,6 +1,7 @@
 package org.zelenikr.pia.domain;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -18,10 +19,17 @@ public class Client extends Person {
 
     public Client() {
         super();
+        init();
     }
 
     public Client(String name, String surname, String personalIdNumber, String phoneNumber, String email) {
         super(name, surname, personalIdNumber, phoneNumber, email);
+        init();
+    }
+
+    private void init() {
+        this.bankAccounts = new LinkedHashSet<>();
+        this.paymentOrderPatterns = new LinkedHashSet<>();
     }
 
     /*
@@ -33,7 +41,8 @@ public class Client extends Person {
      *
      * @return
      */
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "owner_id")
     public Set<BankAccount> getBankAccounts() {
         return bankAccounts;
     }

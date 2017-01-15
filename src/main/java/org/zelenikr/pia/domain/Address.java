@@ -1,9 +1,7 @@
 package org.zelenikr.pia.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
 
 /**
  * Entity representing person's address.
@@ -18,7 +16,6 @@ public class Address extends BaseObject {
     private String street;
     private String city;
     private String zipCode;
-    private Set<Person> persons;
 
     public Address() {
     }
@@ -64,15 +61,6 @@ public class Address extends BaseObject {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
-    }
-
-    @OneToMany(mappedBy = "address")
-    public Set<Person> getPersons() {
-        return persons;
-    }
-
-    public void setPersons(Set<Person> persons) {
-        this.persons = persons;
     }
 
     @Override

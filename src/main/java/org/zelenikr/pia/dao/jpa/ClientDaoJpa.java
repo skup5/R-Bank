@@ -31,8 +31,16 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
     }
 
     @Override
+    public Client findByUsernameFully(String username) {
+//        throw new IllegalStateException("Not implemented yet");
+        Client client = findByUsername(username);
+        client.getBankAccounts().size();
+        return client;
+    }
+
+    @Override
     public List<Client> findAll() {
-        TypedQuery<Client> q = em.createQuery("SELECT c FROM Client c", Client.class);
+        TypedQuery<Client> q = em.createQuery("FROM Client", Client.class);
         try {
             return q.getResultList();
         } catch (NoResultException e) {

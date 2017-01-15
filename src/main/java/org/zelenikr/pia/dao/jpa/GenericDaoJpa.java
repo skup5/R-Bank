@@ -45,6 +45,7 @@ public class GenericDaoJpa<T extends BaseObject> implements GenericDao<T> {
     @Override
     public void remove(T toRemove) {
         if (!toRemove.isNew()) {
+            toRemove = findOne(toRemove.getId());
             em.remove(toRemove);
         }
     }

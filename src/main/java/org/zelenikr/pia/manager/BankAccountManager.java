@@ -1,6 +1,7 @@
 package org.zelenikr.pia.manager;
 
 import org.zelenikr.pia.domain.BankAccount;
+import org.zelenikr.pia.domain.Client;
 import org.zelenikr.pia.domain.CreditCard;
 import org.zelenikr.pia.validation.exception.BankAccountValidationException;
 
@@ -14,8 +15,9 @@ public interface BankAccountManager {
      *
      * @param newBankAccount instance with new bank account data, expected not-null value
      * @param creditCard     already created credit card, expected not-null value
+     * @param owner          already created client, expected not-null value
      */
-    void create(BankAccount newBankAccount, CreditCard creditCard) throws BankAccountValidationException;
+    void create(BankAccount newBankAccount, CreditCard creditCard, Client owner) throws BankAccountValidationException;
 
     /**
      * Saves existing modified bank account.
@@ -23,4 +25,11 @@ public interface BankAccountManager {
      * @param bankAccount already created bank account with modified data, expected not-null value
      */
     void save(BankAccount bankAccount);
+
+    /**
+     * Deletes bank account from data store, if exists.
+     *
+     * @param bankAccount bank account to delete
+     */
+    void delete(BankAccount bankAccount);
 }

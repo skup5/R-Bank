@@ -27,7 +27,11 @@ public class TestingClass {
             System.err.println(e.getMessage());
         }*/
 
-      printHash("1234");
+      //printHash("1234");
+        try{Integer.parseInt("asd");}
+        catch (NumberFormatException e){
+            System.err.println(e.getLocalizedMessage());
+        }
     }
 
     static void printHash(String s) {

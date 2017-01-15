@@ -1,5 +1,10 @@
 package org.zelenikr.pia.web.servlet.spring.view;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.zelenikr.pia.domain.RoleType;
+import org.zelenikr.pia.domain.User;
+import org.zelenikr.pia.manager.UserManager;
+import org.zelenikr.pia.validation.exception.UserValidationException;
 import org.zelenikr.pia.web.template.TemplateParserException;
 
 import javax.servlet.ServletException;
@@ -7,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -17,8 +23,16 @@ import java.util.Map;
 @WebServlet(name = "home", value = "/home")
 public class HomeView extends AbstractView {
 
+    @Autowired
+    private UserManager userManager;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            userManager.register(new User("Admin001", "1234"), Collections.singletonList(RoleType.ROLE_ADMIN));
+        } catch (UserValidationException e) {
+            throw new ServletException(e);
+        }
         doPost(req, resp);
     }
 

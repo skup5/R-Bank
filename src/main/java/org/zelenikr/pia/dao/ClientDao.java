@@ -10,6 +10,7 @@ import java.util.List;
 public interface ClientDao extends GenericDao<Client> {
 
     /**
+     * Returns client without association fields.
      *
      * @param username the requested username
      * @return client with the given username or null
@@ -17,6 +18,15 @@ public interface ClientDao extends GenericDao<Client> {
     Client findByUsername(String username);
 
     /**
+     * Returns client with all association fields.
+     *
+     * @param username the requested username
+     * @return client with the given username or null
+     */
+    Client findByUsernameFully(String username);
+
+    /**
+     * Returns list of clients without association fields.
      *
      * @return list of all client entities or empty list
      */

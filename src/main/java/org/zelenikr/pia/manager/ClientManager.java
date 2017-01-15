@@ -29,9 +29,8 @@ public interface ClientManager {
      * Deletes client with his bank accounts and payment archive.
      *
      * @param client client to remove
-     * @throws ClientValidationException if client doesn't exist
      */
-    void delete(Client client) throws ClientValidationException;
+    void delete(Client client);
 
     /**
      * Returns list of clients without detail informations.

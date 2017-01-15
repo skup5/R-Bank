@@ -14,4 +14,11 @@ public interface CreditCardManager {
      * @param newCreditCard instance with new credit card data, expected not-null value
      */
     void create(CreditCard newCreditCard) throws CreditCardValidationException;
+
+    /**
+     * Deletes credit card from data store, if exists.
+     *
+     * @param creditCard creditCard to delete
+     */
+    void delete(CreditCard creditCard);
 }

@@ -27,10 +27,25 @@ public class DefaultCreditCardManager implements CreditCardManager{
         this.creditCardValidator = creditCardValidator;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public void create(CreditCard newCreditCard) throws CreditCardValidationException {
         if (!newCreditCard.isNew()) {
             throw new RuntimeException("Credit card already exists, use save method for updates!");
         }
+
+        creditCardValidator.validate(newCreditCard);
+
+        if(creditCardDao.findByCardNumber(newCreditCard.getCreditCardNumber()) != null){
+            throw new CreditCardValidationException("Credit card number already taken!");
+        }
+
+        creditCardDao.save(newCreditCard);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Override
+    public void delete(CreditCard creditCard) {
+        creditCardDao.remove(creditCard);
     }
 }

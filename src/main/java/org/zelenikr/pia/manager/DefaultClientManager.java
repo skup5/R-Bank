@@ -40,11 +40,11 @@ public class DefaultClientManager implements ClientManager {
         if (!newClient.isNew()) {
             throw new RuntimeException("Client already exists, use save method for updates!");
         }
-        if (clientAddress.isNew()){
-            throw new RuntimeException("Client address has not been created. Create it before client registration.");
+        if (clientAddress.isNew()) {
+            throw new RuntimeException("Client's address has not been created. Create it before client registration.");
         }
         if (clientBankAccount.isNew()){
-            throw new RuntimeException("Client bank account has not been created. Create it before client registration.");
+            throw new RuntimeException("Client's bank account has not been created. Create it before client registration.");
         }
 
         User generatedUser = null;
@@ -74,8 +74,8 @@ public class DefaultClientManager implements ClientManager {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
-    public void delete(Client client) throws ClientValidationException {
-        throw new IllegalStateException("Not implemented yet");
+    public void delete(Client client) {
+        clientDao.remove(client);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -86,12 +86,12 @@ public class DefaultClientManager implements ClientManager {
 
     @Override
     public Client loadDetails(Client client) throws ClientValidationException {
-        throw new IllegalStateException("Not implemented yet");
+        return clientDao.findByUsernameFully(client.getUsername());
     }
 
     @Override
     public void save(Client client) throws ClientValidationException, UserValidationException, PersonValidationException {
-        if(client.isNew()){
+        if (client.isNew()) {
             throw new ClientValidationException("Client doesn't exist!");
         }
         clientValidator.validate(client);

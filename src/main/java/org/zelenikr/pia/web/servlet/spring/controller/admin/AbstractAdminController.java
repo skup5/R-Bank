@@ -3,6 +3,7 @@ package org.zelenikr.pia.web.servlet.spring.controller.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.manager.ClientManager;
 import org.zelenikr.pia.web.servlet.spring.controller.AbstractController;
+import org.zelenikr.pia.web.servlet.spring.view.AbstractView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import java.io.IOException;
 public abstract class AbstractAdminController extends AbstractController {
 
     protected static final String VIEW_NAME = "/view/adminView";
+    protected static final String COPY_PARAMETERS_ATTRIBUTE = "copyParams";
 
     protected ClientManager clientManager;
 
@@ -26,11 +28,11 @@ public abstract class AbstractAdminController extends AbstractController {
     }
 
     /**
-     * Page you want render from View. Expect not-null return value.
+     * Default page you want render from {@link AbstractView} instance. Expect not-null return value.
      *
      * @return default template path for View
      */
-    protected abstract String getTemplatePath();
+    protected abstract String getDefaultTemplatePath();
 
     /**
      * Forward with default template path.
@@ -41,7 +43,7 @@ public abstract class AbstractAdminController extends AbstractController {
      * @throws IOException
      */
     protected void dispatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        dispatch(getTemplatePath(), req, resp);
+        dispatch(getDefaultTemplatePath(), req, resp);
     }
 
     /**

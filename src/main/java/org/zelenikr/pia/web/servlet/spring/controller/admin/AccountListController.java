@@ -15,7 +15,7 @@ public class AccountListController extends AbstractAdminController {
     private static final String TEMPLATE_PATH = "admin/accountList";
 
     @Override
-    protected String getTemplatePath() {
+    protected String getDefaultTemplatePath() {
         return TEMPLATE_PATH;
     }
 
