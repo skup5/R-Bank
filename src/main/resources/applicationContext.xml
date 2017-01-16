@@ -21,7 +21,8 @@
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
         <property name="locations">
             <list>
-                <value>classpath:application.properties</value>
+                <value>classpath:META-INF/properties/db.properties</value>
+                <value>classpath:META-INF/properties/validation.properties</value>
             </list>
         </property>
     </bean>
@@ -30,8 +31,16 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${db.connection.driverClassName}"/>
+        <property name="url" value="${db.connection.url}"/>
+        <property name="username" value="${db.connection.username}"/>
+        <property name="password" value="${db.connection.password}"/>
+    </bean>
+
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           destroy-method="destroy">
+        <property name="dataSource" ref="dataSource"/>
         <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml"/>
         <property name="jpaVendorAdapter" ref="hibernateVendorAdapter"/>
         <property name="packagesToScan" value="org.zelenikr.pia.**.domain"/>
@@ -53,7 +62,6 @@
                 authentication-success-handler-ref="authSuccessHandler"/>
 
         <security:intercept-url pattern="*" access="permitAll"/>
-        <security:intercept-url pattern="/secret/*" access="isAuthenticated()"/>
         <security:intercept-url pattern="/client" access="hasRole('ROLE_CLIENT')"/>
         <security:intercept-url pattern="/client/*" access="hasRole('ROLE_CLIENT')"/>
         <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>

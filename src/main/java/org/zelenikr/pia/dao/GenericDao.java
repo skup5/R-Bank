@@ -11,25 +11,10 @@ import org.zelenikr.pia.domain.BaseObject;
  */
 public interface GenericDao<T extends BaseObject> {
 
-
     T save(T value);
 
     T findOne(Long id);
 
     void remove(T toRemove);
 
-    /**
-     * Starts new transaction
-     */
-    void beginTransaction();
-
-    /**
-     * Commits existing transaction
-     */
-    void commitTransaction();
-
-    /**
-     * Rollbacks existing transaction
-     */
-    void rollbackTransaction();
 }

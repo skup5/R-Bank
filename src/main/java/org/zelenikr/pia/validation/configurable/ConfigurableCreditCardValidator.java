@@ -1,9 +1,10 @@
-package org.zelenikr.pia.validation;
+package org.zelenikr.pia.validation.configurable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.zelenikr.pia.domain.CreditCard;
+import org.zelenikr.pia.validation.CreditCardValidator;
 import org.zelenikr.pia.validation.exception.CreditCardValidationException;
 
 /**
