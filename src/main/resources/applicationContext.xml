@@ -89,14 +89,14 @@
         <property name="basePath" value="/WEB-INF/jade/"/>
     </bean>
 
-    <bean id="jadeRenderConfiguration" class="org.zelenikr.pia.web.template.jade.JadeRenderConfiguration">
-        <constructor-arg ref="jadeFileLoader"/>
+    <bean id="jadeConfiguration" class="de.neuland.jade4j.JadeConfiguration">
+        <property name="templateLoader" ref="jadeFileLoader"/>
         <property name="prettyPrint" value="true"/>
         <property name="caching" value="false"/>
     </bean>
 
     <bean id="templateRender" class="org.zelenikr.pia.web.template.jade.JadeRender">
-        <constructor-arg name="configuration" ref="jadeRenderConfiguration"/>
+        <constructor-arg name="configuration" ref="jadeConfiguration"/>
     </bean>
 
 </beans>

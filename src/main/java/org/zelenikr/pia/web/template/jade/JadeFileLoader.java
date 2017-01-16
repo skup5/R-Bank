@@ -3,17 +3,17 @@ package org.zelenikr.pia.web.template.jade;
 import de.neuland.jade4j.template.TemplateLoader;
 import org.apache.commons.io.FilenameUtils;
 
-import javax.servlet.ServletContext;
 import java.io.*;
 
 /**
+ * Own implementation of jade4j.template.TemplateLoader.
+ *
  * @author Roman Zelenik
  */
 public class JadeFileLoader implements TemplateLoader {
 
     private String encoding = "UTF-8";
     private String basePath = "";
-    private ServletContext context;
 
     @Override
     public long getLastModified(String name) {
@@ -33,10 +33,6 @@ public class JadeFileLoader implements TemplateLoader {
         this.basePath = basePath;
     }
 
-    public void setContext(ServletContext context) {
-        this.context = context;
-    }
-
     public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
@@ -46,6 +42,6 @@ public class JadeFileLoader implements TemplateLoader {
     }
 
     private InputStream getInputStream(String name) {
-        return context.getResourceAsStream(FilenameUtils.concat(basePath, name));
+        return getClass().getClassLoader().getResourceAsStream(FilenameUtils.concat(basePath, name));
     }
 }

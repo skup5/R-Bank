@@ -2,7 +2,7 @@ package org.zelenikr.pia.web.servlet.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.web.template.Helpers;
-import org.zelenikr.pia.web.template.ITemplateRender;
+import org.zelenikr.pia.web.template.TemplateRender;
 import org.zelenikr.pia.web.template.TemplateParserException;
 
 import javax.servlet.ServletConfig;
@@ -22,7 +22,7 @@ import java.util.Map;
 public abstract class TemplateServlet extends AbstractServlet {
 
     @Autowired
-    private ITemplateRender templateRender;
+    private TemplateRender templateRender;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -51,7 +51,7 @@ public abstract class TemplateServlet extends AbstractServlet {
      * @throws TemplateParserException
      */
     protected String getTemplate(String name, Map<String, Object> variables) throws IOException, TemplateParserException {
-        return templateRender.getHTMLCode(getServletContext(), name, variables);
+        return templateRender.getHTMLCode(name, variables);
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class TemplateServlet extends AbstractServlet {
      * @throws TemplateParserException
      */
     protected void renderTemplate(String name, Map<String, Object> variables, Writer writer) throws IOException, TemplateParserException {
-        templateRender.renderTemplate(getServletContext(), name, variables, writer);
+        templateRender.renderTemplate(name, variables, writer);
     }
 
     /**
