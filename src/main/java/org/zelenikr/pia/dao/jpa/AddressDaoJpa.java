@@ -5,12 +5,14 @@ import org.zelenikr.pia.dao.AddressDao;
 import org.zelenikr.pia.domain.Address;
 
 /**
+ * JPA implementation of the {@link AddressDao} interface.
+ *
  * @author Roman Zelenik
  */
 @Repository
-public class AddressDaoJpa extends GenericDaoJpa<Address> implements AddressDao{
+public class AddressDaoJpa extends GenericDaoJpa<Address> implements AddressDao {
 
-    public AddressDaoJpa(){
+    public AddressDaoJpa() {
         super(Address.class);
     }
 }

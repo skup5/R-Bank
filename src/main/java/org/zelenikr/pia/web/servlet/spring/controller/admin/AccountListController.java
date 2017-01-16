@@ -1,5 +1,6 @@
 package org.zelenikr.pia.web.servlet.spring.controller.admin;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.BankAccount;
 import org.zelenikr.pia.domain.Client;
@@ -20,6 +21,9 @@ public class AccountListController extends AbstractAdminController {
 
     private static final String TEMPLATE_PATH = "admin/accountList";
     private static final String CLIENTS_ATTRIBUTE = "clients";
+    private static final String ACTION_PARAMETER = "action";
+    private static final String ACTION_DELETE = "delete";
+    private static final String CLIENT_PARAMETER = "client";
 
     ClientGenerator clientGenerator;
 
@@ -35,10 +39,55 @@ public class AccountListController extends AbstractAdminController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log("doGet()");
+        log("doGet(" + req.getRequestURL().toString() + ")");
+        String err = null;
+        String success = null;
+        String action = req.getParameter(ACTION_PARAMETER);
+
+        try {
+            if (action != null) {
+                success = doAction(req, action);
+            }
+        } catch (RuntimeException e) {
+            err = e.getLocalizedMessage();
+        }
+        for (int i = 0; i < 2; i++) {
+            // clientGenerator.newClientAccount();
+        }
+
         req.setAttribute(CLIENTS_ATTRIBUTE, clientManager.getClients());
 
-        dispatch(req, resp);
+        if (err != null) {
+            errorDispatch(err, req, resp);
+        } else if (success != null) {
+            successDispatch(success, req, resp);
+        } else {
+            dispatch(req, resp);
+        }
+    }
+
+    /**
+     * @param req
+     * @param action
+     * @return info message if action was successful or null if it's unknown action
+     */
+    private String doAction(HttpServletRequest req, String action) {
+        if (action.equals(ACTION_DELETE)) {
+            return doDelete(req);
+        }
+        return null;
+    }
+
+    private String doDelete(HttpServletRequest req) {
+        String clientID = req.getParameter(CLIENT_PARAMETER);
+        if (!StringUtils.isNumeric(clientID)) {
+            throw new IllegalArgumentException("Invalid client ID.");
+        }
+        if (clientManager.delete(Long.parseLong(clientID))) {
+            return "Client's account was successfully removed.";
+        } else {
+            throw new IllegalArgumentException("Client's account not found.");
+        }
     }
 
     private void clientTest() {
@@ -60,7 +109,7 @@ public class AccountListController extends AbstractAdminController {
             System.out.println("----------------------------");
         }
 
-        clientManager.delete(client);
+        clientManager.delete(client.getId());
         for (Client c : clientManager.getClients()) System.out.println("* " + c);
     }
 }

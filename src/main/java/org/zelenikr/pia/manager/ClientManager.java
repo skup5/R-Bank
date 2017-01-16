@@ -26,11 +26,12 @@ public interface ClientManager {
     void register(Client newClient, Address clientAddress, BankAccount clientBankAccount) throws ClientValidationException, PersonValidationException, UserValidationException;
 
     /**
-     * Deletes client with his bank accounts and payment archive.
+     * Deletes client with specific id and his bank accounts and payment archive.
      *
-     * @param client client to remove
+     * @param id id of client to remove
+     * @return true if client was found and removed, false otherwise
      */
-    void delete(Client client);
+    boolean delete(long id);
 
     /**
      * Returns list of clients without detail informations.

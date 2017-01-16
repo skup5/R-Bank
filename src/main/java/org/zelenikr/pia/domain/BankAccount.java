@@ -106,6 +106,7 @@ public class BankAccount extends BaseObject {
      * @return
      */
     @OneToMany(mappedBy = "clientAccount")
+    @OrderColumn(name = "dueDate")
     public Set<SinglePaymentOrder> getSinglePaymentOrders() {
         return singlePaymentOrders;
     }

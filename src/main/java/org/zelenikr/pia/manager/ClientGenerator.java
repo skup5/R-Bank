@@ -48,8 +48,8 @@ public class ClientGenerator {
             creditCardManager.delete(creditCard);
             throw new RuntimeException(e);
         }
-        Address clientAddress = new Address(1, "street", "city", "10000");
-        Client client = new Client("John", "Doo", "1111111111", "777777777", "e@e.com");
+        Address clientAddress = new Address(1, "street", "city", RandomStringUtils.randomNumeric(5));
+        Client client = new Client("John", "Doo", RandomStringUtils.randomNumeric(10), RandomStringUtils.randomNumeric(9), "e@e.com");
         try {
             addressManager.create(clientAddress);
 //            clientManager.register(client, clientAddress);

@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * JPA implementation of the {@link ClientDao} interface.
+ *
  * @author Roman Zelenik
  */
 @Repository
@@ -32,10 +34,6 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
 
     @Override
     public Client findByUsernameFully(String username) {
-//        throw new IllegalStateException("Not implemented yet");
-//        Client client = findByUsername(username);
-//        client.getBankAccounts().size();
-//        return client;
         TypedQuery<Client> q = em.createQuery("FROM Client c JOIN FETCH c.bankAccounts WHERE c.username = :uname", Client.class);
         q.setParameter("uname", username);
         try {
@@ -47,7 +45,7 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
 
     @Override
     public List<Client> findAll() {
-        TypedQuery<Client> q = em.createQuery("FROM Client", Client.class);
+        TypedQuery<Client> q = em.createQuery("SELECT c FROM Client c ORDER BY c.surname, c.name", Client.class);
         try {
             return q.getResultList();
         } catch (NoResultException e) {

@@ -74,8 +74,12 @@ public class DefaultClientManager implements ClientManager {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
-    public void delete(Client client) {
+    public boolean delete(long id) {
+        Client client = clientDao.findOne(id);
+        if(client == null)
+            return false;
         clientDao.remove(client);
+        return true;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

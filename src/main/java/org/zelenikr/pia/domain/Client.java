@@ -57,6 +57,7 @@ public class Client extends Person {
      * @return
      */
     @OneToMany(mappedBy = "owner")
+    @OrderColumn(name = "name")
     public Set<PatternPaymentOrder> getPaymentOrderPatterns() {
         return paymentOrderPatterns;
     }

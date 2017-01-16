@@ -9,7 +9,7 @@ mixin clientActions(clientID)
                     span.fa.fa-user
                     |Zobrazit
             li
-                a(href='#delete-'+clientID, onclick="return confirm('Smazat klienta číslo "+clientID+"?');")
+                a(href='?action=delete&client='+clientID,  onclick="return confirm('Smazat klienta číslo "+clientID+"?');")
                     span.fa.fa-times.text-danger
                     |Smazat
 
