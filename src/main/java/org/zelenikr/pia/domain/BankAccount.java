@@ -91,7 +91,7 @@ public class BankAccount extends BaseObject {
      * @return
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id",  insertable = false, updatable = false)
+    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
     public Client getOwner() {
         return owner;
     }
@@ -133,7 +133,7 @@ public class BankAccount extends BaseObject {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("BankAccount{");
-        sb.append("number=").append(accountNumber);
+        sb.append("accountNumber=").append(accountNumber);
         sb.append(", sum=").append(sum);
         sb.append(", currency=").append(currency);
         sb.append('}');

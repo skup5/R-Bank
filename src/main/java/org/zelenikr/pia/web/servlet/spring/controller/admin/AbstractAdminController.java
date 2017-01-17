@@ -30,6 +30,9 @@ public abstract class AbstractAdminController extends AbstractController {
     protected static final String ZIP_CODE_PARAMETER = "inputZipCode";
     protected static final String EMAIL_PARAMETER = "inputEmail";
     protected static final String PHONE_NO_PARAMETER = "inputPhoneNumber";
+    protected static final String CARD_NO_PARAMETER = "inputCardNo";
+    protected static final String CARD_PIN_PARAMETER = "inputCardPinNo";
+    protected static final String BANK_ACCOUNT_NO_PARAMETER = "inputBankAccountNo";
 
     protected ClientManager clientManager;
 

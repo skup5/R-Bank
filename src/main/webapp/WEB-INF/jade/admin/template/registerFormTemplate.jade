@@ -14,7 +14,8 @@ form.form-horizontal.form(method="post" autocomplete="on")
 
     fieldset
         legend.form-signin-heading Bankovní účet
-        .form-group
+        +bankAccount(inputCardNo, inputCardPinNo, inputBankAccountNo)
+        //-.form-group
             label.control-label.col-sm-5.required-input(for="inputCardNo") Číslo karty
             .col-sm-7: .input-group
                 input(type="text" id="inputCardNo" name="inputCardNo" value=inputCardNo class="form-control" placeholder="################" required
@@ -22,7 +23,7 @@ form.form-horizontal.form(method="post" autocomplete="on")
                 span.input-group-btn
                     button.btn.btn-primary(type="button" id="btnCardNo" value=btnCardNo data-toggle="tooltip" data-placement="right" title="Generovat")
                         span.fa.fa-random.fa-only.fa-flip-horizontal
-        .form-group
+        //-.form-group
             label.control-label.col-sm-5.required-input(for="inputCardPinNo") Pin karty
             .col-sm-7: .input-group
                 input(type="text" id="inputCardPinNo" name="inputCardPinNo" value=inputCardPinNo class="form-control" placeholder="####" required
@@ -30,7 +31,7 @@ form.form-horizontal.form(method="post" autocomplete="on")
                 span.input-group-btn
                     button.btn.btn-primary(type="button" id="btnCardPin" data-toggle="tooltip" data-placement="right" title="Generovat")
                         span.fa.fa-random.fa-only.fa-flip-horizontal
-        .form-group
+        //-.form-group
             label.control-label.col-sm-5.required-input(for="inputBankAccountNo") Číslo účtu
             .col-sm-7: .input-group
                 input(type="text" id="inputBankAccountNo" name="inputBankAccountNo" value=inputBankAccountNo class="form-control" placeholder="#########" required

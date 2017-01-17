@@ -1,18 +1,24 @@
 package org.zelenikr.pia.web.servlet.spring.controller.admin;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.zelenikr.pia.domain.BankAccount;
 import org.zelenikr.pia.domain.Client;
-import org.zelenikr.pia.validation.exception.ClientValidationException;
-import org.zelenikr.pia.validation.exception.PersonValidationException;
-import org.zelenikr.pia.validation.exception.UserValidationException;
+import org.zelenikr.pia.domain.CreditCard;
+import org.zelenikr.pia.manager.BankAccountManager;
+import org.zelenikr.pia.manager.CreditCardManager;
+import org.zelenikr.pia.validation.exception.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
+ * Servlet handling client's account changes request.
+ *
  * @author Roman Zelenik
  */
 @WebServlet("/admin/account-detail")
@@ -22,6 +28,21 @@ public class AccountDetailController extends AbstractAdminController {
     private static final String CLIENT_PARAMETER = "client";
     private static final String CLIENT_ATTRIBUTE = "clientData";
     private static final String CLIENT_INFO_FORM_PARAMETER = "clientInfo";
+    private static final String NEW_BANK_ACCOUNT_FORM_PARAMETER = "bankAccount";
+
+
+    private BankAccountManager bankAccountManager;
+    private CreditCardManager creditCardManager;
+
+    @Autowired
+    public void setBankAccountManager(BankAccountManager bankAccountManager) {
+        this.bankAccountManager = bankAccountManager;
+    }
+
+    @Autowired
+    public void setCreditCardManager(CreditCardManager creditCardManager) {
+        this.creditCardManager = creditCardManager;
+    }
 
     @Override
     protected String getDefaultTemplatePath() {
@@ -31,8 +52,6 @@ public class AccountDetailController extends AbstractAdminController {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("doGet()");
-        String err = null;
-        String success = null;
         String clientId = req.getParameter(CLIENT_PARAMETER);
 
         if (StringUtils.isNumeric(clientId)) {
@@ -51,21 +70,22 @@ public class AccountDetailController extends AbstractAdminController {
         log("doPost()");
         String clientId = req.getParameter(CLIENT_PARAMETER);
         String clientInfoForm = req.getParameter(CLIENT_INFO_FORM_PARAMETER);
+        String bankAccountForm = req.getParameter(NEW_BANK_ACCOUNT_FORM_PARAMETER);
         Client client = (Client) req.getSession().getAttribute(CLIENT_ATTRIBUTE);
 
         if (client != null && clientId.equals(client.getId().toString())) {
-            if(clientInfoForm != null){
-                    doClientInfoUpdate(req,resp);
-                    return;
+            if (clientInfoForm != null) {
+                doClientInfoUpdate(req, resp);
+                return;
+            } else if (bankAccountForm != null) {
+                doCreateBankAccount(req, resp);
+                return;
             }
-//            else{
-//
-//            }
         }
 //        else {
 //            req.setAttribute(CLIENT_ATTRIBUTE, client);
 //            errorDispatch("Client's ID is not same.", req, resp);
-            resp.sendRedirect(req.getRequestURL().append(req.getQueryString()).toString());
+        resp.sendRedirect(req.getRequestURL().append(req.getQueryString()).toString());
 //        }
     }
 
@@ -115,5 +135,57 @@ public class AccountDetailController extends AbstractAdminController {
             req.setAttribute(CLIENT_ATTRIBUTE, client);
             errorDispatch(e.getLocalizedMessage(), req, resp);
         }
+    }
+
+    private void doCreateBankAccount(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String cardNo = req.getParameter(CARD_NO_PARAMETER),
+                cardPin = req.getParameter(CARD_PIN_PARAMETER),
+                bankAccountNo = req.getParameter(BANK_ACCOUNT_NO_PARAMETER);
+        Integer cardPinInt = null;
+        Client client = (Client) req.getSession().getAttribute(CLIENT_ATTRIBUTE);
+
+        req.setAttribute(COPY_PARAMETERS_ATTRIBUTE, true);
+        req.setAttribute(CLIENT_ATTRIBUTE, client);
+        if (StringUtils.isNumeric(cardPin)) {
+            try {
+                cardPinInt = Integer.parseInt(cardPin);
+            } catch (NumberFormatException e) {
+                errorDispatch("Credit card pin is invalid.", req, resp);
+                return;
+            }
+        } else {
+            errorDispatch("Credit card pin is invalid.", req, resp);
+            return;
+        }
+
+        CreditCard creditCard = new CreditCard(cardNo, cardPinInt);
+        try {
+            creditCardManager.create(creditCard);
+        } catch (CreditCardValidationException e) {
+            errorDispatch(e.getLocalizedMessage(), req, resp);
+            return;
+        }
+
+        BankAccount bankAccount = new BankAccount(bankAccountNo, BigDecimal.ZERO);
+        try {
+            bankAccountManager.create(bankAccount, creditCard, null);
+        } catch (BankAccountValidationException e) {
+            creditCardManager.delete(creditCard);
+            errorDispatch(e.getLocalizedMessage(), req, resp);
+            return;
+        }
+
+        client.getBankAccounts().add(bankAccount);
+        try {
+            clientManager.save(client);
+        } catch (ClientValidationException | UserValidationException | PersonValidationException e) {
+            client.getBankAccounts().remove(bankAccount);
+            bankAccountManager.delete(bankAccount);
+            errorDispatch(e.getLocalizedMessage(), req, resp);
+            return;
+        }
+
+        req.removeAttribute(COPY_PARAMETERS_ATTRIBUTE);
+        successDispatch("Client's new bank account successfully created.", req, resp);
     }
 }

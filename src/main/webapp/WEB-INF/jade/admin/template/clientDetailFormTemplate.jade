@@ -1,4 +1,5 @@
 .page-header: h1: small Klientský účet (#{clientData.getId()})
+h2: small Informace o klientovi
 form.form-horizontal.form(method="post" autocomplete="on")
     span.help-block#helpText
         span.required-input
@@ -20,8 +21,52 @@ form.form-horizontal.form(method="post" autocomplete="on")
                 input(type="hidden" name="clientInfo" value="true")
                 input(type="hidden" name="client" value=clientData.getId())
                 button.btn.btn-primary.btn-block(type="submit") Uložit změny
+//hr
+//-form.form-horizontal.form(method="post")
+    span.help-block
+        span.required-input
+        | Povinná položka
 
-ul
-    each account in clientData.getBankAccounts()
-        li
-            | #{account} (#{account.getCreditCard()})
+    fieldset
+        - var accountsCount = clientData.getBankAccounts().size()
+        legend.form-signin-heading= accountsCount == 1 ? "Bankovní účet" : "Bankovní účty"
+        .form-group
+            select.form-control
+                each account in clientData.getBankAccounts()
+                    option(value=account.getAccountNumber()) #{account.getAccountNumber()} (#{account.getCurrency()})
+
+- var accountsCount = clientData.getBankAccounts().size()
+h2: small= accountsCount == 1 ? "Bankovní účet" : "Bankovní účty"
+.table-responsive
+    table.table.table-striped.table-hover
+        thead: tr
+            th Číslo účtu
+            th Měna
+            th Zůstatek
+            th.text-right Akce
+        tbody
+            each account in clientData.getBankAccounts()
+                tr
+                    td= account.getAccountNumber()
+                    td= account.getCurrency()
+                    td= account.getSum()
+                    td.text-right
+                        a.btn.btn-danger(href='?action=delete&bank-account=' + account.getAccountNumber()
+                        onclick="return confirm('Smazat bankovní účet " + account.getAccountNumber() + " ?');"
+                        data-toggle="tooltip" data-placement="top" title="Smazat bankovní účet")
+                            | Zrušit
+
+button.btn.btn-primary(type='button', data-toggle='collapse', data-target='#newBankAccount', aria-expanded='false', aria-controls='newBankAccount')
+    | Přidat
+#newBankAccount.collapse
+    form.form-horizontal.form(method="post")
+        fieldset
+            legend.form-signin-heading Nový bankovní účet
+            +bankAccount(inputCardNo, inputCardPinNo, inputBankAccountNo)
+        fieldset
+            legend
+            .form-group
+                .col-sm-offset-5.col-sm-7
+                    input(type="hidden" name="bankAccount" value="true")
+                    input(type="hidden" name="client" value=clientData.getId())
+                    button.btn.btn-primary.btn-block(type="submit") Vytvořit

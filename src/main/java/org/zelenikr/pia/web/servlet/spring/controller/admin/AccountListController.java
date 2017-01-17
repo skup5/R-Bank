@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Servlet handling client accounts list request.
+ *
  * @author Roman Zelenik
  */
 @WebServlet("/admin/account-list")

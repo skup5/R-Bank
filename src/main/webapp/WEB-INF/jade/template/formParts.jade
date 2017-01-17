@@ -37,3 +37,29 @@ mixin contactInfo(inputStreet, inputBuildNo, inputCity, inputZipCode, inputEmail
             .col-xs-9.col-sm-9
                 input.form-control(type="text" id="inputPhoneNumber" name="inputPhoneNumber" value=inputPhoneNumber placeholder="123456789"
                 pattern="\\d{9}" maxlength=9)
+
+mixin bankAccount(inputCardNo, inputCardPinNo, inputBankAccountNo)
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputCardNo") Číslo karty
+        .col-sm-7: .input-group
+            input(type="text" id="inputCardNo" name="inputCardNo" value=inputCardNo class="form-control" placeholder="################" required
+            autocomplete="off" pattern="\\d{16}" maxlength=16)
+            span.input-group-btn
+                button.btn.btn-primary(type="button" id="btnCardNo" value=btnCardNo data-toggle="tooltip" data-placement="right" title="Generovat")
+                    span.fa.fa-random.fa-only.fa-flip-horizontal
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputCardPinNo") Pin karty
+        .col-sm-7: .input-group
+            input(type="text" id="inputCardPinNo" name="inputCardPinNo" value=inputCardPinNo class="form-control" placeholder="####" required
+            autocomplete="off" pattern="\\d{4}" maxlength=4)
+            span.input-group-btn
+                button.btn.btn-primary(type="button" id="btnCardPin" data-toggle="tooltip" data-placement="right" title="Generovat")
+                    span.fa.fa-random.fa-only.fa-flip-horizontal
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputBankAccountNo") Číslo účtu
+        .col-sm-7: .input-group
+            input(type="text" id="inputBankAccountNo" name="inputBankAccountNo" value=inputBankAccountNo class="form-control" placeholder="#########" required
+            autocomplete="off" pattern="\\d{9}" maxlength=9)
+            span.input-group-btn
+                button.btn.btn-primary(type="button" id="btnBankAccountNo" data-toggle="tooltip" data-placement="right" title="Generovat")
+                    span.fa.fa-random.fa-only.fa-flip-horizontal

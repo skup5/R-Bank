@@ -29,9 +29,6 @@ public class CreateAccountController extends AbstractAdminController {
 
     private static final String TEMPLATE_PATH = "admin/createAccount";
 
-    private static final String CARD_NO_PARAMETER = "inputCardNo";
-    private static final String CARD_PIN_PARAMETER = "inputCardPinNo";
-    private static final String BANK_ACCOUNT_NO_PARAMETER = "inputBankAccountNo";
     private static final String ROBOT_CHECK = "robotCheck";
 
     private AddressManager addressManager;
@@ -111,7 +108,7 @@ public class CreateAccountController extends AbstractAdminController {
                 return;
             }
         } else {
-            errorDispatch("Credit card is invalid.", req, resp);
+            errorDispatch("Credit card pin is invalid.", req, resp);
             return;
         }
 

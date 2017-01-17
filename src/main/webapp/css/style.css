@@ -12,7 +12,7 @@ html, body {
 }
 
 #wrapper > .container {
-    padding-bottom: 60px;
+    padding-bottom: 80px;
 }
 
 .main {
@@ -189,7 +189,7 @@ table > tbody > tr:hover {
 }
 
 .footer > .container {
-    padding: 15px 15px 15px 0;
+    padding: 16px 0 0 0;
 }
 
 .footer .list-inline > li {

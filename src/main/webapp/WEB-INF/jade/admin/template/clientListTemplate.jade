@@ -26,8 +26,8 @@ mixin clientActions(clientID)
         tbody
             //- -var clients = [1,2]
             each client in clients
-                tr(onclick="window.location='#" + client.getId() + "';")
-                    //-tr(onclick="window.location='#" + client + "';")
+                //-tr(onclick="window.location='account-detail?client=" + client.getId() + "';")
+                tr
                     td= client.getName()
                     td= client.getSurname()
                     td= client.getPersonalIdNumber()
