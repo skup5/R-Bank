@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  * @author Roman Zelenik
  */
 @Service
-public class ClientGenerator {
+public class DataGenerator {
 
     private AddressManager addressManager;
     private CreditCardManager creditCardManager;
@@ -23,7 +23,7 @@ public class ClientGenerator {
     private ClientManager clientManager;
 
     @Autowired
-    public ClientGenerator(AddressManager addressManager, CreditCardManager creditCardManager, BankAccountManager bankAccountManager, ClientManager clientManager) {
+    public DataGenerator(AddressManager addressManager, CreditCardManager creditCardManager, BankAccountManager bankAccountManager, ClientManager clientManager) {
         this.addressManager = addressManager;
         this.creditCardManager = creditCardManager;
         this.bankAccountManager = bankAccountManager;
@@ -31,14 +31,7 @@ public class ClientGenerator {
     }
 
     public Client newClientAccount() {
-        CreditCard creditCard = new CreditCard(
-                RandomStringUtils.randomNumeric(16), 1234);
-        try {
-            creditCardManager.create(creditCard);
-        } catch (CreditCardValidationException e) {
-            // clientManager.delete(client);
-            throw new RuntimeException(e);
-        }
+        CreditCard creditCard = newCreditCard();
 
         BankAccount bankAccount = new BankAccount(RandomStringUtils.randomNumeric(9), BigDecimal.ZERO);
         try {
@@ -60,5 +53,23 @@ public class ClientGenerator {
             throw new RuntimeException(e);
         }
         return client;
+    }
+
+    public CreditCard newCreditCard(){
+        return newCreditCard(RandomStringUtils.randomNumeric(16), 1234);
+    }
+
+    public CreditCard newCreditCard(String number, int pin){
+        CreditCard creditCard = new CreditCard(number, pin);
+        try {
+            creditCardManager.create(creditCard);
+            return creditCard;
+        } catch (CreditCardValidationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteCrediCard(CreditCard card){
+        creditCardManager.delete(card);
     }
 }

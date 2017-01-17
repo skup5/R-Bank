@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 /**
  * @author Roman Zelenik
  */
-@Repository
+//@Repository
 public class CreditCardDaoJpa extends GenericDaoJpa<CreditCard> implements CreditCardDao {
 
     public CreditCardDaoJpa() {

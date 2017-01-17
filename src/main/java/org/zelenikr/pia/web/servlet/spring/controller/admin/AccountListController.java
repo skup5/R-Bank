@@ -4,7 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.BankAccount;
 import org.zelenikr.pia.domain.Client;
-import org.zelenikr.pia.manager.ClientGenerator;
+import org.zelenikr.pia.domain.CreditCard;
+import org.zelenikr.pia.manager.DataGenerator;
 import org.zelenikr.pia.validation.exception.ClientValidationException;
 
 import javax.servlet.ServletException;
@@ -25,11 +26,11 @@ public class AccountListController extends AbstractAdminController {
     private static final String ACTION_DELETE = "delete";
     private static final String CLIENT_PARAMETER = "client";
 
-    ClientGenerator clientGenerator;
+    DataGenerator dataGenerator;
 
     @Autowired
-    public void setClientGenerator(ClientGenerator clientGenerator) {
-        this.clientGenerator = clientGenerator;
+    public void setDataGenerator(DataGenerator dataGenerator) {
+        this.dataGenerator = dataGenerator;
     }
 
     @Override
@@ -51,8 +52,11 @@ public class AccountListController extends AbstractAdminController {
         } catch (RuntimeException e) {
             err = e.getLocalizedMessage();
         }
-        for (int i = 0; i < 2; i++) {
-            // clientGenerator.newClientAccount();
+        for (int i = 0; i < 1; i++) {
+            //clientGenerator.newClientAccount();
+//            CreditCard card = dataGenerator.newCreditCard("4305504726854653", 4444);
+//            System.out.println(card);
+//            dataGenerator.deleteCrediCard(card);
         }
 
         req.setAttribute(CLIENTS_ATTRIBUTE, clientManager.getClients());
@@ -92,7 +96,7 @@ public class AccountListController extends AbstractAdminController {
 
     private void clientTest() {
         log("generating client...");
-        Client client = clientGenerator.newClientAccount();
+        Client client = dataGenerator.newClientAccount();
         log("client was generated");
         for (Client c : clientManager.getClients()) {
             try {

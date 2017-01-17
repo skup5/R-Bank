@@ -21,7 +21,7 @@ import java.util.Set;
  *
  * @author Jakub Danek
  */
-//@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @Service
 @Transactional
 public class DefaultUserManager implements UserManager {
