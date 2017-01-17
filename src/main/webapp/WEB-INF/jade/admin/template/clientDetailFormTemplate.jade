@@ -17,6 +17,8 @@ form.form-horizontal.form(method="post" autocomplete="on")
         legend
         .form-group
             .col-sm-offset-5.col-sm-7
+                input(type="hidden" name="clientInfo" value="true")
+                input(type="hidden" name="client" value=clientData.getId())
                 button.btn.btn-primary.btn-block(type="submit") Uložit změny
 
 ul

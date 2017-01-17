@@ -2,12 +2,10 @@ package org.zelenikr.pia.validation.configurable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.zelenikr.pia.domain.Person;
 import org.zelenikr.pia.validation.PersonValidator;
-import org.zelenikr.pia.validation.UserValidator;
 import org.zelenikr.pia.validation.exception.PersonValidationException;
 import org.zelenikr.pia.validation.exception.UserValidationException;
 
@@ -23,13 +21,6 @@ public class ConfigurablePersonValidator implements PersonValidator {
     @Value("${validation.person.personIdNo.maxLength}")
     private int personIdNoMaxLength;
 
-    private UserValidator userValidator;
-
-    @Autowired
-    public ConfigurablePersonValidator(UserValidator userValidator) {
-        this.userValidator = userValidator;
-    }
-
     @Override
     public int getPersonIdNoMinLength() {
         return personIdNoMinLength;
@@ -42,7 +33,6 @@ public class ConfigurablePersonValidator implements PersonValidator {
 
     @Override
     public void validate(Person person) throws PersonValidationException, UserValidationException {
-        userValidator.validate(person);
         validateName(person.getName());
         validateSurname(person.getSurname());
         validatePersonalIdNumber(person.getPersonalIdNumber());

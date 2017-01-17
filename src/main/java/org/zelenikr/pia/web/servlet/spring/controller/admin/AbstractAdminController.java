@@ -20,6 +20,17 @@ public abstract class AbstractAdminController extends AbstractController {
     protected static final String VIEW_NAME = "/view/adminView";
     protected static final String COPY_PARAMETERS_ATTRIBUTE = "copyParams";
 
+    /*  Form inputs     */
+    protected static final String NAME_PARAMETER = "inputName";
+    protected static final String SURNAME_PARAMETER = "inputSurname";
+    protected static final String PERSONAL_NO_PARAMETER = "inputPersonalNo";
+    protected static final String STREET_PARAMETER = "inputStreet";
+    protected static final String BUILD_NO_PARAMETER = "inputBuildNo";
+    protected static final String CITY_PARAMETER = "inputCity";
+    protected static final String ZIP_CODE_PARAMETER = "inputZipCode";
+    protected static final String EMAIL_PARAMETER = "inputEmail";
+    protected static final String PHONE_NO_PARAMETER = "inputPhoneNumber";
+
     protected ClientManager clientManager;
 
     @Autowired

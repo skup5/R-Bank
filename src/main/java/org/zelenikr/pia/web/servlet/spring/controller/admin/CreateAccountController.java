@@ -1,8 +1,6 @@
 package org.zelenikr.pia.web.servlet.spring.controller.admin;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.Address;
 import org.zelenikr.pia.domain.BankAccount;
@@ -31,15 +29,6 @@ public class CreateAccountController extends AbstractAdminController {
 
     private static final String TEMPLATE_PATH = "admin/createAccount";
 
-    private static final String NAME_PARAMETER = "inputName";
-    private static final String SURNAME_PARAMETER = "inputSurname";
-    private static final String PERSONAL_NO_PARAMETER = "inputPersonalNo";
-    private static final String STREET_PARAMETER = "inputStreet";
-    private static final String BUILD_NO_PARAMETER = "inputBuildNo";
-    private static final String CITY_PARAMETER = "inputCity";
-    private static final String ZIP_CODE_PARAMETER = "inputZipCode";
-    private static final String EMAIL_PARAMETER = "inputEmail";
-    private static final String PHONE_NO_PARAMETER = "inputPhoneNumber";
     private static final String CARD_NO_PARAMETER = "inputCardNo";
     private static final String CARD_PIN_PARAMETER = "inputCardPinNo";
     private static final String BANK_ACCOUNT_NO_PARAMETER = "inputBankAccountNo";

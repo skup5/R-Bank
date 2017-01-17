@@ -103,6 +103,7 @@ public class DefaultClientManager implements ClientManager {
         return client;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @Override
     public void save(Client client) throws ClientValidationException, UserValidationException, PersonValidationException {
         if (client.isNew()) {
