@@ -1,0 +1,25 @@
+.page-header: h1: small Klientský účet (#{clientData.getId()})
+form.form-horizontal.form(method="post" autocomplete="on")
+    span.help-block#helpText
+        span.required-input
+        | Povinná položka
+
+    fieldset
+        legend.form-signin-heading Osobní údaje
+        +personalInfo(clientData.getName(), clientData.getSurname(), clientData.getPersonalIdNumber())
+
+    fieldset
+        legend.form-signin-heading Kontaktní údaje
+        - var address = clientData.getAddress()
+        +contactInfo(address.getStreet(), address.getHouseNumber(), address.getCity(), address.getZipCode(), clientData.getEmail(), clientData.getPhoneNumber())
+
+    fieldset
+        legend
+        .form-group
+            .col-sm-offset-5.col-sm-7
+                button.btn.btn-primary.btn-block(type="submit") Uložit změny
+
+ul
+    each account in clientData.getBankAccounts()
+        li
+            | #{account} (#{account.getCreditCard()})

@@ -1,0 +1,39 @@
+mixin personalInfo(inputName, inputSurname, inputPersonalNo)
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputName") Jméno
+        .col-sm-7: input(type="text" id="inputName" name="inputName" value=inputName class="form-control" placeholder="jméno" required autofocus
+        pattern="([^\\s]+)")
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputSurname") Příjmení
+        .col-sm-7: input(type="text" id="inputSurname" name="inputSurname" value=inputSurname class="form-control" placeholder="příjmení" required
+        pattern="([^\\s]+)")
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputPersonalNo") Rodné číslo
+        .col-sm-7: input(type="text" id="inputPersonalNo" name="inputPersonalNo" value=inputPersonalNo class="form-control" placeholder="##########" required
+        autocomplete="off" pattern="\\d{9,10}" maxlength=10)
+
+mixin contactInfo(inputStreet, inputBuildNo, inputCity, inputZipCode, inputEmail, inputPhoneNumber)
+    .form-group
+        label.control-label.col-sm-5(for="inputStreet") Ulice
+        .col-sm-7: input(type="text" id="inputStreet" name="inputStreet" value=inputStreet class="form-control" placeholder="název ulice")
+    .form-group
+        label.control-label.col-sm-5(for="inputBuildNo") Č. popisné
+        .col-sm-7: input(type="number" id="inputBuildNo" name="inputBuildNo" value=inputBuildNo class="form-control" placeholder="####" min=1 max=9999)
+    .form-group
+        label.control-label.col-sm-5(for="inputCity") Město
+        .col-sm-7: input(type="text" id="inputCity" name="inputCity" value=inputCity class="form-control" placeholder="název města")
+    .form-group
+        label.control-label.col-sm-5(for="inputZipCode") PSČ
+        .col-sm-7: input(type="text"  id="inputZipCode" name="inputZipCode" value=inputZipCode class="form-control" placeholder="#####"
+        pattern="\\d{5}" maxlength=5)
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputEmail") Emailová adresa
+        .col-sm-7: input(type="email" id="inputEmail" name="inputEmail" value=inputEmail class="form-control" placeholder="e@mail.com" required)
+    .form-group
+        label.control-label.col-sm-5(for="inputPhoneNumber") Kontaktní telefon
+        .col-sm-7: .row
+            .col-xs-3.col-sm-3
+                p.form-control-static +420
+            .col-xs-9.col-sm-9
+                input.form-control(type="text" id="inputPhoneNumber" name="inputPhoneNumber" value=inputPhoneNumber placeholder="123456789"
+                pattern="\\d{9}" maxlength=9)

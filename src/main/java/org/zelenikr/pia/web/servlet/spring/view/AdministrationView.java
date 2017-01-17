@@ -23,6 +23,7 @@ public class AdministrationView extends AbstractView {
 
     private static final String COPY_PARAMETERS_ATTRIBUTE = "copyParams";
     private static final String CLIENTS_ATTRIBUTE = "clients";
+    private static final String CLIENT_DETAIL_ATTRIBUTE = "clientData";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,6 +37,7 @@ public class AdministrationView extends AbstractView {
             throw new NullPointerException();
 
         Collection<Client> clients = (Collection) req.getAttribute(CLIENTS_ATTRIBUTE);
+        Client clientDetail = (Client) req.getAttribute(CLIENT_DETAIL_ATTRIBUTE);
         Map<String, Object> vars;
 
         if(req.getAttribute(COPY_PARAMETERS_ATTRIBUTE) != null){
@@ -49,6 +51,7 @@ public class AdministrationView extends AbstractView {
             clients = Collections.emptyList();
         }
         vars.put(CLIENTS_ATTRIBUTE, clients);
+        vars.put(CLIENT_DETAIL_ATTRIBUTE, clientDetail);
         vars.put(DISPLAY_NAME_PARAMETER, getDisplayName(req));
         vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
         vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));

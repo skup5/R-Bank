@@ -1,20 +1,17 @@
 extends template/adminPageTemplate
 
-block append script
-    script(type="text/javascript" src="/r-bank/js/registerGenButtons.js")
-
 block content
     .row
         .col-lg-3.col-md-3.col-sm-3: nav.sidebar
             ul.nav.nav-sidebar
                 li: .nav-menu
                     ul.nav.nav-sidebar-items
-                        li.active: a(href="create-account")
+                        li: a(href="create-account")
                             span.fa.fa-user-plus
-                            |Vytvořit účet
+                            | Vytvořit účet
                         li: a(href="account-list")
                             span.fa.fa-users
-                            |Seznam účtů
+                            | Seznam účtů
 
         .col-lg-9.col-md-9.col-sm-9
             main.main
@@ -22,5 +19,8 @@ block content
                     +dismiss-alert("alert-success", success)
                 if err
                     +dismiss-alert("alert-danger", err)
-                include ../template/formParts
-                include template/registerFormTemplate
+                unless clientData
+                    p Chybí údaje o klientovi
+                else
+                    include ../template/formParts
+                    include template/clientDetailFormTemplate

@@ -31,7 +31,8 @@ html, body {
 /*  Form    */
 
 .form, .form-signin {
-    max-width: 460px;
+    max-width: 480px;
+    min-width: 400px;
     /*padding: 15px;*/
     /*margin: 0 auto*/
 }
