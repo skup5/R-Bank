@@ -160,7 +160,7 @@ public class CreateAccountController extends AbstractAdminController {
 
 //        for(Client c : clientManager.getClients()){
 //            try {
-//                c = clientManager.loadDetails(c)    ;
+//                c = clientManager.loadDetail(c)    ;
 //            } catch (ClientValidationException e) {
 //                e.printStackTrace();
 //            }

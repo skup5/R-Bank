@@ -43,7 +43,7 @@ public class DefaultClientManager implements ClientManager {
         if (clientAddress.isNew()) {
             throw new RuntimeException("Client's address has not been created. Create it before client registration.");
         }
-        if (clientBankAccount.isNew()){
+        if (clientBankAccount.isNew()) {
             throw new RuntimeException("Client's bank account has not been created. Create it before client registration.");
         }
 
@@ -76,7 +76,7 @@ public class DefaultClientManager implements ClientManager {
     @Override
     public boolean delete(long id) {
         Client client = clientDao.findOne(id);
-        if(client == null)
+        if (client == null)
             return false;
         clientDao.remove(client);
         return true;
@@ -89,8 +89,18 @@ public class DefaultClientManager implements ClientManager {
     }
 
     @Override
-    public Client loadDetails(Client client) throws ClientValidationException {
+    public Client loadDetail(Client client) {
         return clientDao.findByUsernameFully(client.getUsername());
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
+    @Override
+    public Client loadDetail(long clientIdNumber) {
+        Client client = clientDao.findOneFully(clientIdNumber);
+        for (BankAccount account : client.getBankAccounts()) {
+            account.getCreditCard().toString();
+        }
+        return client;
     }
 
     @Override

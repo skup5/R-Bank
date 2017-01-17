@@ -26,9 +26,18 @@ public interface ClientDao extends GenericDao<Client> {
     Client findByUsernameFully(String username);
 
     /**
+     * Returns client with all association fields.
+     *
+     * @param id the requested id
+     * @return client with the given id or null
+     */
+    Client findOneFully(long id);
+
+    /**
      * Returns list of clients without association fields.
      *
      * @return list of all client entities or empty list
      */
     List<Client> findAll();
+
 }

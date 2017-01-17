@@ -2,6 +2,7 @@ package org.zelenikr.pia.dao.jpa;
 
 import org.springframework.stereotype.Repository;
 import org.zelenikr.pia.dao.ClientDao;
+import org.zelenikr.pia.domain.BankAccount;
 import org.zelenikr.pia.domain.Client;
 
 import javax.persistence.NoResultException;
@@ -34,8 +35,20 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
 
     @Override
     public Client findByUsernameFully(String username) {
-        TypedQuery<Client> q = em.createQuery("FROM Client c JOIN FETCH c.bankAccounts WHERE c.username = :uname", Client.class);
+        TypedQuery<Client> q = em.createQuery("FROM Client c JOIN FETCH c.bankAccounts JOIN FETCH c.address WHERE c.username = :uname", Client.class);
         q.setParameter("uname", username);
+        try {
+            return q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Client findOneFully(long id) {
+        System.out.println("ClientDaoJpa.findOneFully");
+        TypedQuery<Client> q = em.createQuery("FROM Client c JOIN FETCH c.bankAccounts JOIN FETCH c.address WHERE c.id = :id", Client.class);
+        q.setParameter("id", id);
         try {
             return q.getSingleResult();
         } catch (NoResultException e) {

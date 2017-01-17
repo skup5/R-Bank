@@ -44,10 +44,17 @@ public interface ClientManager {
      * Fills client instance with detail information (like bank accounts or address).
      *
      * @param client instance to be filled
-     * @return updated instance
-     * @throws ClientValidationException if client doesn't exist yet or is not in valid state
+     * @return updated instance or null
      */
-    Client loadDetails(Client client) throws ClientValidationException;
+    Client loadDetail(Client client);
+
+    /**
+     * Returns client instance with all information (bank accounts, credit cards, address).
+     *
+     * @param clientIdNumber id of requested client
+     * @return client with the given id or null
+     */
+    Client loadDetail(long clientIdNumber);
 
     /**
      * Saves existing modified client data.

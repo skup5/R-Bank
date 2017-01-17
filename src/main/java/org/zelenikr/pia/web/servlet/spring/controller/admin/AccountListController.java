@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.BankAccount;
 import org.zelenikr.pia.domain.Client;
-import org.zelenikr.pia.domain.CreditCard;
 import org.zelenikr.pia.manager.DataGenerator;
 import org.zelenikr.pia.validation.exception.ClientValidationException;
 
@@ -99,12 +98,8 @@ public class AccountListController extends AbstractAdminController {
         Client client = dataGenerator.newClientAccount();
         log("client was generated");
         for (Client c : clientManager.getClients()) {
-            try {
-                log("loading client details...");
-                c = clientManager.loadDetails(c);
-            } catch (ClientValidationException e) {
-                e.printStackTrace();
-            }
+            log("loading client details...");
+            c = clientManager.loadDetail(c);
             System.out.println(c);
             System.out.println("--Bank accounts--");
             for (BankAccount ba : c.getBankAccounts()) {

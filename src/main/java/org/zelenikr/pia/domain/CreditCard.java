@@ -1,5 +1,7 @@
 package org.zelenikr.pia.domain;
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,6 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "zelenikr_rbank_credit_card")
+@BatchSize(size = 10)
 public class CreditCard extends BaseObject {
 
     private String creditCardNumber;

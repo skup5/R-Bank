@@ -18,7 +18,7 @@ form.form-horizontal.form(method="post" autocomplete="on")
         .form-group
             label.control-label.col-sm-5.required-input(for="inputPersonalNo") Rodné číslo
             .col-sm-7: input(type="text" id="inputPersonalNo" name="inputPersonalNo" value=inputPersonalNo class="form-control" placeholder="##########" required
-                autocomplete="off" pattern="\\d{10}" maxlength=10)
+                autocomplete="off" pattern="\\d{9,10}" maxlength=10)
 
     fieldset
         legend.form-signin-heading Kontaktní údaje
