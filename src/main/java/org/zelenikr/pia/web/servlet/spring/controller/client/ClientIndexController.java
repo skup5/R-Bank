@@ -14,7 +14,7 @@ import java.io.IOException;
 @WebServlet("/client")
 public class ClientIndexController extends AbstractClientController {
 
-    private static final String INDEX_URL = "client/all-payments";
+    private static final String INDEX_URL = "client/payment-order";
 
     @Override
     protected String getDefaultTemplatePath() {

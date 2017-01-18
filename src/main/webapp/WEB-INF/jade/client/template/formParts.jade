@@ -1,0 +1,41 @@
+mixin paymentOrder(inputDate, selectAccount, bankAccounts, inputOffset1, inputOffset2, inputBankCode, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputDate") Datum
+        .col-sm-7: input(type="date" id="inputDate" name="inputDate" value=inputDate class="form-control" placeholder="" required autofocus
+        min=DateHelper.todayString())
+    .form-group
+        label.control-label.col-sm-5.required-input(for="selectAccount") Účet
+        .col-sm-7
+            select.form-control(id="selectAccount" name="selectAccount" required)
+                each account in bankAccounts
+                    option(value=account.getAccountNumber() selected= account.getAccountNumber().equals(selectAccount))
+                        | #{account.getAccountNumber()}(#{account.getCurrency().name()})
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputOffset1") Příjemce
+        .col-sm-7
+            input(type="text" id="inputOffset1" name="inputOffset1" value=inputOffset1 class="form-control text-right" placeholder=""
+            pattern="\\d{6}" maxlength=6)
+            span.form-control-static -
+            input(type="text" id="inputOffset2" name="inputOffset2" value=inputOffset2 class="form-control text-right" placeholder="" required
+            pattern="\\d{10}" maxlength=10)
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputBankCode") Kód banky
+        .col-sm-7: input(type="text" id="inputBankCode" name="inputBankCode" value=inputBankCode class="form-control text-right" placeholder="####" required
+        pattern="\\d{4}" maxlength=4)
+    .form-group
+        label.control-label.col-sm-5.required-input(for="inputAmount") Částka
+        .col-sm-7: input(type="text" id="inputAmount" name="inputAmount" value=inputAmount class="form-control text-right" placeholder="" required)
+    .form-group
+        label.control-label.col-sm-5(for="inputConstSymbol") Konstantní symbol
+        .col-sm-7: input(type="text" id="inputConstSymbol" name="inputConstSymbol" value=inputConstSymbol class="form-control text-right" placeholder=""
+        pattern="\\d{4}" maxlength=4)
+    .form-group
+        label.control-label.col-sm-5(for="inputVarSymbol") Variabilní symbol
+        .col-sm-7: input(type="text" id="inputVarSymbol" name="inputVarSymbol" value=inputVarSymbol class="form-control text-right" placeholder="")
+    .form-group
+        label.control-label.col-sm-5(for="inputSpecSymbol") Specifický symbol
+        .col-sm-7: input(type="text" id="inputSpecSymbol" name="inputSpecSymbol" value=inputSpecSymbol class="form-control text-right" placeholder="")
+    .form-group
+        label.control-label.col-sm-5(for="inputMessage") Zpráva pro příjemce (i plátce)
+        .col-sm-7: input(type="text" id="inputMessage" name="inputMessage" class="form-control text-right" placeholder=""
+        maxlength=255)= inputMessage

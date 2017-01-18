@@ -7,10 +7,16 @@ import java.util.Date;
  * @author Roman Zelenik
  */
 public class Helpers {
-    private Helpers() {}
+    private Helpers() {
+    }
 
-    public static class DateHelper{
-        public String toLocaleDateString(){
+    public static class DateHelper {
+
+        public String todayString() {
+            return new SimpleDateFormat().format(new Date());
+        }
+
+        public String toLocaleDateString() {
             String format = "";
             return new SimpleDateFormat().format(new Date());
         }

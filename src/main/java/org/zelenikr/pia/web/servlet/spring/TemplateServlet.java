@@ -28,7 +28,7 @@ public abstract class TemplateServlet extends AbstractServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         Map<String, Object> defaults = new HashMap<String, Object>();
-        defaults.put("date", new Helpers.DateHelper());
+        defaults.put("DateHelper", new Helpers.DateHelper());
         this.templateRender.setSharedVariables(defaults);
     }
 

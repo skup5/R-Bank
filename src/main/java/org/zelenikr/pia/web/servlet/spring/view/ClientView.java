@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,6 +17,10 @@ import java.util.Map;
  */
 @WebServlet("/view/clientView")
 public class ClientView extends AbstractView {
+
+    private static final String COPY_PARAMETERS_ATTRIBUTE = "copyParams";
+    private static final String BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts";
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,7 +33,14 @@ public class ClientView extends AbstractView {
         if (template == null)
             throw new NullPointerException();
 
-        Map<String, Object> vars = emptyVariables();
+        Map<String, Object> vars;
+
+        if (req.getAttribute(COPY_PARAMETERS_ATTRIBUTE) != null) {
+            vars = createVariablesFromParameters(req);
+        } else {
+            vars = new HashMap<>();
+        }
+        vars.put(BANK_ACCOUNTS_ATTRIBUTE, req.getAttribute(BANK_ACCOUNTS_ATTRIBUTE));
         vars.put(DISPLAY_NAME_PARAMETER, getDisplayName(req));
         try {
             resp.setContentType("text/html");
