@@ -10,17 +10,6 @@
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
 
-            <!--<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>-->
-
-            <!--<property name="hibernate.connection.password" value="pia"/>-->
-            <!--<property name="hibernate.connection.username" value="pia"/>-->
-            <!--<property name="hibernate.connection.url" value="jdbc:mysql://students.kiv.zcu.cz:3306/pia"/>-->
-            <!--<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/pia"/>-->
-
-            <!--<property name="hibernate.connection.password" value="${db.connection.password}"/>-->
-            <!--<property name="hibernate.connection.username" value="${db.connection.username}"/>-->
-            <!--<property name="hibernate.connection.url" value="${db.connection.url}"/>-->
-
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
             <property name="hibernate.validator.apply_to_ddl" value="true"/>
             <property name="hibernate.show_sql" value="true"/>

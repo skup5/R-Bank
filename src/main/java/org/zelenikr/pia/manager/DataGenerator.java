@@ -3,10 +3,7 @@ package org.zelenikr.pia.manager;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.zelenikr.pia.domain.Address;
-import org.zelenikr.pia.domain.BankAccount;
-import org.zelenikr.pia.domain.Client;
-import org.zelenikr.pia.domain.CreditCard;
+import org.zelenikr.pia.domain.*;
 import org.zelenikr.pia.validation.exception.*;
 
 import java.math.BigDecimal;
@@ -33,10 +30,10 @@ public class DataGenerator {
     public Client newClientAccount() {
         CreditCard creditCard = newCreditCard();
 
-        BankAccount bankAccount = new BankAccount(RandomStringUtils.randomNumeric(9), BigDecimal.ZERO);
+        BankAccount bankAccount = new BankAccount(RandomStringUtils.randomNumeric(9), BigDecimal.ZERO, Currency.USD);
         try {
 //            bankAccountManager.create(bankAccount, creditCard, client);
-            bankAccountManager.create(bankAccount, creditCard, null);
+            bankAccountManager.create(bankAccount, creditCard);
         } catch (BankAccountValidationException e) {
             creditCardManager.delete(creditCard);
             throw new RuntimeException(e);

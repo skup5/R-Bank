@@ -24,6 +24,7 @@ public class AdministrationView extends AbstractView {
     private static final String COPY_PARAMETERS_ATTRIBUTE = "copyParams";
     private static final String CLIENTS_ATTRIBUTE = "clients";
     private static final String CLIENT_DETAIL_ATTRIBUTE = "clientData";
+    protected static final String CURRENCIES_ATTRIBUTE = "currencies";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,24 +33,25 @@ public class AdministrationView extends AbstractView {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        log(req.getAttribute("javax.servlet.forward.request_uri").toString());
         String template = (String) req.getAttribute(TEMPLATE_ATTRIBUTE);
-        if(template == null)
+        if (template == null)
             throw new NullPointerException();
 
         Collection<Client> clients = (Collection) req.getAttribute(CLIENTS_ATTRIBUTE);
         Client clientDetail = (Client) req.getAttribute(CLIENT_DETAIL_ATTRIBUTE);
         Map<String, Object> vars;
 
-        if(req.getAttribute(COPY_PARAMETERS_ATTRIBUTE) != null){
+        if (req.getAttribute(COPY_PARAMETERS_ATTRIBUTE) != null) {
             vars = createVariablesFromParameters(req);
-        }
-        else{
+        } else {
             vars = new HashMap<>();
         }
-        if(clients == null){
-            log("empty client list");
+        if (clients == null) {
+            //log("empty client list");
             clients = Collections.emptyList();
         }
+        vars.put(CURRENCIES_ATTRIBUTE, req.getAttribute(CURRENCIES_ATTRIBUTE));
         vars.put(CLIENTS_ATTRIBUTE, clients);
         vars.put(CLIENT_DETAIL_ATTRIBUTE, clientDetail);
         vars.put(DISPLAY_NAME_PARAMETER, getDisplayName(req));

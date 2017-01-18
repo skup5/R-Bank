@@ -2,13 +2,11 @@ package org.zelenikr.pia.web.servlet.spring.controller.admin;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.zelenikr.pia.domain.Address;
-import org.zelenikr.pia.domain.BankAccount;
-import org.zelenikr.pia.domain.Client;
-import org.zelenikr.pia.domain.CreditCard;
+import org.zelenikr.pia.domain.*;
 import org.zelenikr.pia.manager.AddressManager;
 import org.zelenikr.pia.manager.BankAccountManager;
 import org.zelenikr.pia.manager.CreditCardManager;
+import org.zelenikr.pia.manager.CurrencyManager;
 import org.zelenikr.pia.validation.exception.*;
 
 import javax.servlet.ServletException;
@@ -34,6 +32,7 @@ public class CreateAccountController extends AbstractAdminController {
     private AddressManager addressManager;
     private BankAccountManager bankAccountManager;
     private CreditCardManager creditCardManager;
+    private CurrencyManager currencyManager;
 
     @Autowired
     public void setAddressManager(AddressManager addressManager) {
@@ -50,6 +49,11 @@ public class CreateAccountController extends AbstractAdminController {
         this.creditCardManager = creditCardManager;
     }
 
+    @Autowired
+    public void setCurrencyManager(CurrencyManager currencyManager) {
+        this.currencyManager = currencyManager;
+    }
+
     @Override
     protected String getDefaultTemplatePath() {
         return TEMPLATE_PATH;
@@ -57,6 +61,7 @@ public class CreateAccountController extends AbstractAdminController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute(CURRENCIES_ATTRIBUTE, currencyManager.getAvailableCurrencies());
         dispatch(req, resp);
     }
 
@@ -76,10 +81,12 @@ public class CreateAccountController extends AbstractAdminController {
                 cardNo = req.getParameter(CARD_NO_PARAMETER),
                 cardPin = req.getParameter(CARD_PIN_PARAMETER),
                 bankAccountNo = req.getParameter(BANK_ACCOUNT_NO_PARAMETER),
+                currencyType = req.getParameter(CURRENCY_TYPE_PARAMETER),
                 robotCheck = req.getParameter(ROBOT_CHECK);
         Integer houseNoInt = null, cardPinInt = null;
 
         req.setAttribute(COPY_PARAMETERS_ATTRIBUTE, true);
+        req.setAttribute(CURRENCIES_ATTRIBUTE, currencyManager.getAvailableCurrencies());
 
         if (robotCheck == null) {
             errorDispatch("Confirm that you're not a robot.", req, resp);
@@ -112,29 +119,35 @@ public class CreateAccountController extends AbstractAdminController {
             return;
         }
 
+        Currency currency = null;
+        try {
+            currency = Currency.valueOf(currencyType);
+        } catch (IllegalArgumentException e) {
+            errorDispatch("Unknown currency.", req, resp);
+            return;
+        }
+
         CreditCard creditCard = new CreditCard(cardNo, cardPinInt);
         try {
             creditCardManager.create(creditCard);
         } catch (CreditCardValidationException e) {
-           // clientManager.delete(client);
             errorDispatch(e.getLocalizedMessage(), req, resp);
             return;
         }
 
-        BankAccount bankAccount = new BankAccount(bankAccountNo, BigDecimal.ZERO);
+        BankAccount bankAccount = new BankAccount(bankAccountNo, BigDecimal.ZERO, currency);
         try {
-//            bankAccountManager.create(bankAccount, creditCard, client);
-            bankAccountManager.create(bankAccount, creditCard, null);
+            bankAccountManager.create(bankAccount, creditCard);
         } catch (BankAccountValidationException e) {
             creditCardManager.delete(creditCard);
             errorDispatch(e.getLocalizedMessage(), req, resp);
             return;
         }
+
         Address clientAddress = new Address(houseNoInt, street, city, zip);
         Client client = new Client(name, surname, personalIdNo, phone, email);
         try {
             addressManager.create(clientAddress);
-//            clientManager.register(client, clientAddress);
             clientManager.register(client, clientAddress, bankAccount);
         } catch (UserValidationException | PersonValidationException | ClientValidationException e) {
             addressManager.delete(clientAddress);

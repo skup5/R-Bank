@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.BankAccount;
 import org.zelenikr.pia.domain.Client;
 import org.zelenikr.pia.domain.CreditCard;
+import org.zelenikr.pia.domain.Currency;
 import org.zelenikr.pia.manager.BankAccountManager;
 import org.zelenikr.pia.manager.CreditCardManager;
+import org.zelenikr.pia.manager.CurrencyManager;
 import org.zelenikr.pia.validation.exception.*;
 
 import javax.servlet.ServletException;
@@ -33,6 +35,7 @@ public class AccountDetailController extends AbstractAdminController {
 
     private BankAccountManager bankAccountManager;
     private CreditCardManager creditCardManager;
+    private CurrencyManager currencyManager;
 
     @Autowired
     public void setBankAccountManager(BankAccountManager bankAccountManager) {
@@ -44,6 +47,11 @@ public class AccountDetailController extends AbstractAdminController {
         this.creditCardManager = creditCardManager;
     }
 
+    @Autowired
+    public void setCurrencyManager(CurrencyManager currencyManager) {
+        this.currencyManager = currencyManager;
+    }
+
     @Override
     protected String getDefaultTemplatePath() {
         return TEMPLATE_PATH;
@@ -52,6 +60,7 @@ public class AccountDetailController extends AbstractAdminController {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("doGet()");
+        req.setAttribute(CURRENCIES_ATTRIBUTE, currencyManager.getAvailableCurrencies());
         String clientId = req.getParameter(CLIENT_PARAMETER);
 
         if (StringUtils.isNumeric(clientId)) {
@@ -68,6 +77,7 @@ public class AccountDetailController extends AbstractAdminController {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("doPost()");
+        req.setAttribute(CURRENCIES_ATTRIBUTE, currencyManager.getAvailableCurrencies());
         String clientId = req.getParameter(CLIENT_PARAMETER);
         String clientInfoForm = req.getParameter(CLIENT_INFO_FORM_PARAMETER);
         String bankAccountForm = req.getParameter(NEW_BANK_ACCOUNT_FORM_PARAMETER);
@@ -140,12 +150,15 @@ public class AccountDetailController extends AbstractAdminController {
     private void doCreateBankAccount(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String cardNo = req.getParameter(CARD_NO_PARAMETER),
                 cardPin = req.getParameter(CARD_PIN_PARAMETER),
-                bankAccountNo = req.getParameter(BANK_ACCOUNT_NO_PARAMETER);
-        Integer cardPinInt = null;
+                bankAccountNo = req.getParameter(BANK_ACCOUNT_NO_PARAMETER),
+                currencyType = req.getParameter(CURRENCY_TYPE_PARAMETER);
+
         Client client = (Client) req.getSession().getAttribute(CLIENT_ATTRIBUTE);
 
         req.setAttribute(COPY_PARAMETERS_ATTRIBUTE, true);
         req.setAttribute(CLIENT_ATTRIBUTE, client);
+
+        Integer cardPinInt = null;
         if (StringUtils.isNumeric(cardPin)) {
             try {
                 cardPinInt = Integer.parseInt(cardPin);
@@ -158,6 +171,14 @@ public class AccountDetailController extends AbstractAdminController {
             return;
         }
 
+        Currency currency = null;
+        try {
+            currency = Currency.valueOf(currencyType);
+        } catch (IllegalArgumentException e) {
+            errorDispatch("Unknown currency.", req, resp);
+            return;
+        }
+
         CreditCard creditCard = new CreditCard(cardNo, cardPinInt);
         try {
             creditCardManager.create(creditCard);
@@ -166,9 +187,9 @@ public class AccountDetailController extends AbstractAdminController {
             return;
         }
 
-        BankAccount bankAccount = new BankAccount(bankAccountNo, BigDecimal.ZERO);
+        BankAccount bankAccount = new BankAccount(bankAccountNo, BigDecimal.ZERO, currency);
         try {
-            bankAccountManager.create(bankAccount, creditCard, null);
+            bankAccountManager.create(bankAccount, creditCard);
         } catch (BankAccountValidationException e) {
             creditCardManager.delete(creditCard);
             errorDispatch(e.getLocalizedMessage(), req, resp);

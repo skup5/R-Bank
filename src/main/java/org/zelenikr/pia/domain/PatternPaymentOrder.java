@@ -70,6 +70,7 @@ public class PatternPaymentOrder extends AbstractPaymentOrder implements Validab
      * @return
      */
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
     public Client getOwner() {
         return owner;
     }

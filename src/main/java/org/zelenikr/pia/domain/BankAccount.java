@@ -32,10 +32,11 @@ public class BankAccount extends BaseObject {
         this.singlePaymentOrders = new LinkedHashSet<>();
     }
 
-    public BankAccount(String accountNumber, BigDecimal sum) {
+    public BankAccount(String accountNumber, BigDecimal sum, Currency currency) {
         this();
         this.accountNumber = accountNumber;
         this.sum = sum;
+        this.currency = currency;
     }
 
 
@@ -61,8 +62,8 @@ public class BankAccount extends BaseObject {
         this.sum = sum;
     }
 
-    @Embedded
-    @Enumerated
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     public Currency getCurrency() {
         return currency;
     }

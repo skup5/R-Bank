@@ -92,7 +92,7 @@
     <bean id="jadeConfiguration" class="de.neuland.jade4j.JadeConfiguration">
         <property name="templateLoader" ref="jadeFileLoader"/>
         <property name="prettyPrint" value="true"/>
-        <property name="caching" value="false"/>
+        <property name="caching" value="true"/>
     </bean>
 
     <bean id="templateRender" class="org.zelenikr.pia.web.template.jade.JadeRender">

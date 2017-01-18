@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.zelenikr.pia.domain.BankAccount;
+import org.zelenikr.pia.domain.Currency;
 import org.zelenikr.pia.validation.exception.BankAccountValidationException;
 import org.zelenikr.pia.validation.BankAccountValidator;
 
@@ -24,6 +25,7 @@ public class ConfigurableBankAccountValidator implements BankAccountValidator {
     @Override
     public void validate(BankAccount bankAccount) throws BankAccountValidationException {
         validateAccountNumber(bankAccount.getAccountNumber());
+        validateCurrency(bankAccount.getCurrency());
     }
 
     private void validateAccountNumber(String accountNumber) throws BankAccountValidationException {
@@ -33,4 +35,7 @@ public class ConfigurableBankAccountValidator implements BankAccountValidator {
         if (!StringUtils.isNumeric(accountNumber)) throw new BankAccountValidationException("Account number must be a positive numeric value");
     }
 
+    private void validateCurrency(Currency currency) throws BankAccountValidationException {
+        if(currency == null) throw new BankAccountValidationException("Currency is required field.");
+    }
 }

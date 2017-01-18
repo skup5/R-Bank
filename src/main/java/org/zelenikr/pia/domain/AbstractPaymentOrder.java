@@ -1,6 +1,8 @@
 package org.zelenikr.pia.domain;
 
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,6 +14,7 @@ import java.util.Date;
  */
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@BatchSize(size = 100)
 public abstract class AbstractPaymentOrder extends BaseObject {
 
     protected Date dueDate;
@@ -39,6 +42,7 @@ public abstract class AbstractPaymentOrder extends BaseObject {
     ########### MAPPINGS #####################
      */
 
+    @Temporal(TemporalType.DATE)
     public Date getDueDate() {
         return dueDate;
     }

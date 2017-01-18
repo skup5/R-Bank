@@ -19,6 +19,7 @@ public abstract class AbstractAdminController extends AbstractController {
 
     protected static final String VIEW_NAME = "/view/adminView";
     protected static final String COPY_PARAMETERS_ATTRIBUTE = "copyParams";
+    protected static final String CURRENCIES_ATTRIBUTE = "currencies";
 
     /*  Form inputs     */
     protected static final String NAME_PARAMETER = "inputName";
@@ -33,6 +34,7 @@ public abstract class AbstractAdminController extends AbstractController {
     protected static final String CARD_NO_PARAMETER = "inputCardNo";
     protected static final String CARD_PIN_PARAMETER = "inputCardPinNo";
     protected static final String BANK_ACCOUNT_NO_PARAMETER = "inputBankAccountNo";
+    protected static final String CURRENCY_TYPE_PARAMETER = "selectCurrency";
 
     protected ClientManager clientManager;
 
