@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * View servlet responsible for rendering page containing login form
@@ -17,11 +18,22 @@ import java.util.Collections;
 @WebServlet("/login")
 public class LoginView extends AbstractView {
 
+    private static String ERROR_PARAMETER = "error";
+    private static String LOGOUT_PARAMETER = "logout";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Map<String, Object> vars = emptyVariables();
+        Exception error = (Exception) req.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+        if (req.getParameter(ERROR_PARAMETER) != null && error != null) {
+//            vars.put(ERROR_ATTRIBUTE, error.getLocalizedMessage());
+            vars.put(ERROR_PARAMETER, true);
+        } else if (req.getParameter(LOGOUT_PARAMETER) != null) {
+            vars.put(LOGOUT_PARAMETER, true);
+        }
         try {
             resp.setContentType("text/html");
-            renderTemplate("login", Collections.singletonMap(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE)), resp.getWriter());
+            renderTemplate("login", vars, resp.getWriter());
         } catch (TemplateParserException e) {
 //            throw new ServletException("Chyba při načítání požadované stránky");
             throw new ServletException(e);

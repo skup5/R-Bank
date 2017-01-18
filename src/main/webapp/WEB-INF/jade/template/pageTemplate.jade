@@ -7,7 +7,7 @@ mixin script(paths)
         script(type="text/javascript" src=item)
 
 mixin dismiss-alert(type, msg)
-    .alert.alert-dismissable.fade.in(class=type role="alert")
+    .alert.alert-dismissable.fade.in.text-center(class=type role="alert")
         button.close(type="button" data-dismiss="alert" aria-label="Close")
             span(aria-hidden) &times;
         | #{msg}

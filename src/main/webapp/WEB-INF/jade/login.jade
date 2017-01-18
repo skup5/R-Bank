@@ -7,4 +7,15 @@ block prepend rightNavbar
     include template/defaultNavbarTemplate
 
 block content
-    .row: main.main: .col-md-12: include template/loginFormTemplate
+    .row
+        main.main
+            .col-md-12
+                if success
+                    +dismiss-alert("alert-success", success)
+                if err
+                    +dismiss-alert("alert-danger", err)
+                if logout
+                    +dismiss-alert("alert-success", "Byl jste úspěšně odlhášen.")
+                if error
+                    +dismiss-alert("alert-danger", "Neplatné přihlašovací jméno nebo pin.")
+                include template/loginFormTemplate
