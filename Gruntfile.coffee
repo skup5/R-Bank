@@ -32,7 +32,7 @@ module.exports = (grunt) ->
         flatten: false
         cwd: pugPath
         src: [
-          "user/userpage.pug"
+          "client/userpage.pug"
           "admin/adminpage.pug"
         ]
         dest: webappPath + hiddenHtml
@@ -52,7 +52,7 @@ module.exports = (grunt) ->
         flatten: false
         cwd: jadePath
         src: [
-          #"user/userpage.jade"
+          #"client/userpage.jade"
           "admin/*.jade"
         ]
         dest: webappPath + hiddenHtml
@@ -63,7 +63,7 @@ module.exports = (grunt) ->
           pretty: true
         files:
           "src/main/webapp/index.html": jadePath + "index.jade"
-          "src/main/webapp/userpage.html": jadePath + "user/userpage.jade"
+          "src/main/webapp/userpage.html": jadePath + "client/userpage.jade"
 #WATCH
     watch:
       pug:

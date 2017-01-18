@@ -1,0 +1,11 @@
+extends template/clientPageTemplate
+
+block content
+    .row
+        .col-lg-3.col-md-3.col-sm-3
+            +menu(1, "allPayments")
+
+        //-main.main.col-lg-9.col-lg-offset-3.col-md-9.col-md-offset-3.col-sm-9.col-sm-offset-3.col-xs-9.col-xs-offset-3
+        .col-lg-9.col-md-9.col-sm-9
+            main.main
+                include template/accountStatementTemplate

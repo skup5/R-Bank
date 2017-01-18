@@ -6,12 +6,12 @@ li.dropdown
         else
             |Uživatel
         span.caret
-    ul.dropdown-menu(aria-labelledby="user")
-        li: a(href="#")
+    ul.dropdown-menu(aria-labelledby="client")
+        //-li: a(href="#")
                 span.fa.fa-cog
                 |Nastavení
-        li: a(href="logout")
-                span.fa.fa-times
+        li: a(href="../logout")
+                span.fa.fa-times.text-danger
                 |Odhlásit
 li#account: .navbar-text disponibilní zůstatek &nbsp;
     span#account_value 1111,10 CZK

@@ -1,0 +1,31 @@
+extends ../../template/pageTemplate
+
+block title
+    title Bankovní účet - R-Bank
+
+block prepend rightNavbar
+    include clientNavbarTemplate
+
+mixin menu(activeMenuItems, activeItem)
+    nav.sidebar
+        ul.nav.nav-sidebar
+            li
+                a.nav-menu(href="#" data-toggle="collapse" data-target="#menuItems1")
+                    | Informace o účtu
+                ul#menuItems1.nav.collapse.nav-sidebar-items(class= activeMenuItems == 1 ? "in" : "")
+                    li(class= activeItem.equals("allPayments") ? "active" : ""): a(href="all-payments") Vše
+                    li: a(href="incomes") Příjmy
+                    li: a(href="expenses") Výdaje
+            li
+                a.nav-menu.collapsed(href="#" data-toggle="collapse" data-target="#menuItems2")
+                    | Platby
+                ul#menuItems2.nav.collapse.nav-sidebar-items(class= activeMenuItems == 2 ? "in" : "")
+                    li: a(href="#") Jednorázový příkaz
+                    li: a(href="#") Hromadný příkaz
+                    li: a(href="#") Vzory příkazů
+                    li: a(href="#") Vytvořit vzor příkazu
+            li
+                a.nav-menu.collapsed(href="#" data-toggle="collapse" data-target="#menuItems3")
+                    | Nastavení
+                ul#menuItems3.nav.collapse.nav-sidebar-items(class= activeMenuItems == 3 ? "in" : "")
+                    li: a(href="#") Moje údaje

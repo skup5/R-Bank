@@ -1,6 +1,5 @@
 package org.zelenikr.pia.web.servlet.spring.view;
 
-import org.zelenikr.pia.web.servlet.spring.TemplateServlet;
 import org.zelenikr.pia.web.template.TemplateParserException;
 
 import javax.servlet.ServletException;
@@ -15,18 +14,25 @@ import java.util.Map;
  *
  * @author Roman Zelenik
  */
-@WebServlet("/client")
+@WebServlet("/view/clientView")
 public class ClientView extends AbstractView {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log("ClientView.doGet()");
-        try {
-            Map<String, Object> vars = emptyVariables();
-            vars.put(DISPLAY_NAME_PARAMETER, getDisplayName(req));
+        doPost(req, resp);
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String template = (String) req.getAttribute(TEMPLATE_ATTRIBUTE);
+        if (template == null)
+            throw new NullPointerException();
+
+        Map<String, Object> vars = emptyVariables();
+        vars.put(DISPLAY_NAME_PARAMETER, getDisplayName(req));
+        try {
             resp.setContentType("text/html");
-            renderTemplate("user/userpage", vars, resp.getWriter());
+            renderTemplate(template, vars, resp.getWriter());
 
 //            Enumeration<String> attr = req.getSession().getAttributeNames();
 //            while(attr.hasMoreElements()) System.out.println(attr.nextElement());

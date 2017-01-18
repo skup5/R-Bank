@@ -32,4 +32,14 @@ public class LogoutController extends AbstractController {
         }
         resp.sendRedirect("login?logout");
     }
+
+    @Override
+    protected String getDefaultTemplatePath() {
+        return null;
+    }
+
+    @Override
+    protected String getViewUrl() {
+        return null;
+    }
 }
