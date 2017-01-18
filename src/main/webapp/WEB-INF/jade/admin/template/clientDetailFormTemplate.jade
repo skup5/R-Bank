@@ -36,25 +36,28 @@ form.form-horizontal.form(method="post" autocomplete="on")
                     option(value=account.getAccountNumber()) #{account.getAccountNumber()} (#{account.getCurrency()})
 
 - var accountsCount = clientData.getBankAccounts().size()
-h2: small= accountsCount == 1 ? "Bankovní účet" : "Bankovní účty"
-.table-responsive
-    table.table.table-striped.table-hover
-        thead: tr
-            th Číslo účtu
-            th Měna
-            th Zůstatek
-            th.text-right Akce
-        tbody
-            each account in clientData.getBankAccounts()
-                tr
-                    td= account.getAccountNumber()
-                    td= account.getCurrency()
-                    td= account.getSum()
-                    td.text-right
-                        a.btn.btn-danger(href='?action=delete&bank-account=' + account.getAccountNumber()
-                        onclick="return confirm('Smazat bankovní účet " + account.getAccountNumber() + " ?');"
-                        data-toggle="tooltip" data-placement="top" title="Smazat bankovní účet")
-                            | Zrušit
+h2: small= accountsCount <= 1 ? "Bankovní účet" : "Bankovní účty"
+if accountsCount == 0
+    p Klient nemá žádné bankovní účty
+else
+    .table-responsive
+        table.table.table-striped.table-hover
+            thead: tr
+                th Číslo účtu
+                th Měna
+                th Zůstatek
+                th.text-right Akce
+            tbody
+                each account in clientData.getBankAccounts()
+                    tr
+                        td= account.getAccountNumber()
+                        td= account.getCurrency()
+                        td= account.getSum()
+                        td.text-right
+                            a.btn.btn-danger(href='?client=' + clientData.getId() + '&action=delete-bank-account&bank-account=' + account.getAccountNumber()
+                            onclick="return confirm('Smazat bankovní účet " + account.getAccountNumber() + " ?');"
+                            data-toggle="tooltip" data-placement="top" title="Smazat bankovní účet")
+                                | Zrušit
 
 button.btn.btn-primary(type='button', data-toggle='collapse', data-target='#newBankAccount', aria-expanded='false', aria-controls='newBankAccount')
     | Přidat

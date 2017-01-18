@@ -97,9 +97,11 @@ public class DefaultClientManager implements ClientManager {
     @Override
     public Client loadDetail(long clientIdNumber) {
         Client client = clientDao.findOneFully(clientIdNumber);
-        for (BankAccount account : client.getBankAccounts()) {
-            account.getCreditCard().toString();
-        }
+        if(client == null)
+            return null;
+//        for (BankAccount account : client.getBankAccounts()) {
+//            account.getCreditCard().toString();
+//        }
         return client;
     }
 

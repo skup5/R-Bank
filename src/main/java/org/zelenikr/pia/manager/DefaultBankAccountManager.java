@@ -58,4 +58,19 @@ public class DefaultBankAccountManager implements BankAccountManager {
     public void delete(BankAccount bankAccount) {
         bankAccountDao.remove(bankAccount);
     }
+
+    @Override
+    public boolean delete(String accountNumber) {
+        BankAccount account = bankAccountDao.findByAccountNumber(accountNumber);
+        if (account == null)
+            return false;
+        bankAccountDao.remove(account);
+        return true;
+    }
+
+    @Override
+    public BankAccount findBy(String accountNumber, long ownerId) {
+       BankAccount account = bankAccountDao.findByAccountNumber(accountNumber);
+       return account != null && account.getOwner().getId() == ownerId ? account : null;
+    }
 }

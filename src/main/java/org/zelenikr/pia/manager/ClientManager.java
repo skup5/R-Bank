@@ -49,7 +49,7 @@ public interface ClientManager {
     Client loadDetail(Client client);
 
     /**
-     * Returns client instance with all information (bank accounts, credit cards, address).
+     * Returns client instance with all information (bank accounts, address).
      *
      * @param clientIdNumber id of requested client
      * @return client with the given id or null

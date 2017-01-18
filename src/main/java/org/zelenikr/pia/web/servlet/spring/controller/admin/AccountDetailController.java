@@ -31,7 +31,9 @@ public class AccountDetailController extends AbstractAdminController {
     private static final String CLIENT_ATTRIBUTE = "clientData";
     private static final String CLIENT_INFO_FORM_PARAMETER = "clientInfo";
     private static final String NEW_BANK_ACCOUNT_FORM_PARAMETER = "bankAccount";
-
+    private static final String ACTION_PARAMETER = "action";
+    private static final String ACTION_DELETE_BANK_ACCOUNT = "delete-bank-account";
+    private static final String BANK_ACCOUNT_PARAMETER = "bank-account";
 
     private BankAccountManager bankAccountManager;
     private CreditCardManager creditCardManager;
@@ -61,16 +63,35 @@ public class AccountDetailController extends AbstractAdminController {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("doGet()");
         req.setAttribute(CURRENCIES_ATTRIBUTE, currencyManager.getAvailableCurrencies());
+        String err = null;
+        String success = null;
+        String action = req.getParameter(ACTION_PARAMETER);
         String clientId = req.getParameter(CLIENT_PARAMETER);
+
 
         if (StringUtils.isNumeric(clientId)) {
             long clientIdNumber = Long.parseLong(clientId);
+
+            try {
+                if (action != null) {
+                    success = doAction(req, action);
+                }
+            } catch (RuntimeException e) {
+                err = e.getLocalizedMessage();
+            }
             Client client = clientManager.loadDetail(clientIdNumber);
             req.getSession().setAttribute(CLIENT_ATTRIBUTE, client);
             req.setAttribute(CLIENT_ATTRIBUTE, client);
-            dispatch(req, resp);
         } else {
-            errorDispatch("Invalid client ID.", req, resp);
+            err="Invalid client ID.";
+        }
+
+        if (err != null) {
+            errorDispatch(err, req, resp);
+        } else if (success != null) {
+            successDispatch(success, req, resp);
+        } else {
+            dispatch(req, resp);
         }
     }
 
@@ -97,6 +118,33 @@ public class AccountDetailController extends AbstractAdminController {
 //            errorDispatch("Client's ID is not same.", req, resp);
         resp.sendRedirect(req.getRequestURL().append(req.getQueryString()).toString());
 //        }
+    }
+
+    /**
+     * @param req
+     * @param action
+     * @return info message if action was successful or null if it's unknown action
+     */
+    private String doAction(HttpServletRequest req, String action){
+        if (action.equals(ACTION_DELETE_BANK_ACCOUNT)) {
+            return doDeleteBankAccount(req);
+        }
+        return null;
+    }
+
+    private String doDeleteBankAccount(HttpServletRequest req){
+        long clientID = Long.parseLong(req.getParameter(CLIENT_PARAMETER));
+        String accountNumber = req.getParameter(BANK_ACCOUNT_PARAMETER);
+        if(!StringUtils.isNumeric(accountNumber)){
+            throw new IllegalArgumentException("Invalid bank account number.");
+        }
+        BankAccount account = bankAccountManager.findBy(accountNumber, clientID);
+        if (account != null) {
+            bankAccountManager.delete(account);
+            return "Client's bank account was successfully removed.";
+        } else {
+            throw new IllegalArgumentException("Client's bank account not found.");
+        }
     }
 
     private void doClientInfoUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

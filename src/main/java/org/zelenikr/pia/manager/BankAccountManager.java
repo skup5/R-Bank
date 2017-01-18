@@ -30,4 +30,21 @@ public interface BankAccountManager {
      * @param bankAccount bank account to delete
      */
     void delete(BankAccount bankAccount);
+
+    /**
+     * Deletes bank account with specific account number. Deletes also credit card and payment archive.
+     *
+     * @param accountNumber account number of bank account to remove
+     * @return true if bank account was found and removed, false otherwise
+     */
+    boolean delete(String accountNumber);
+
+    /**
+     * Finds bank account with specific account number and owner id
+     *
+     * @param accountNumber the requested account number
+     * @param ownerId       the requested owner id
+     * @return bank account with the given account number and owner or null
+     */
+    BankAccount findBy(String accountNumber, long ownerId);
 }
