@@ -13,16 +13,17 @@ module.exports = (grunt) ->
         options:
           bare: true
           join: true
-        expand: true
-        flatten: false
-        cwd: coffeePath
-        src: [
-          "*.coffee"
-        ]
-        dest: webappPath+"js/"
-        ext: ".js"
-#        files:
-#          "src/main/webapp/js/script.js": [coffeePath + "*.coffee"]
+#        expand: true
+#        flatten: false
+#        cwd: coffeePath
+#        src: [
+#          "*.coffee"
+#        ]
+#        dest: webappPath + "js/"
+#        ext: ".js"
+        files:
+          "src/main/webapp/js/script.js": [coffeePath + "countdown.coffee", coffeePath + "script.coffee"]
+          "src/main/webapp/js/registerGenButtons.js": coffeePath + "registerGenButtons.coffee"
 #PUG
     pug:
       compileHidden:
@@ -45,15 +46,27 @@ module.exports = (grunt) ->
           "src/main/webapp/index.html": pugPath + "index.pug"
 #JADE
     jade:
-      compileHidden:
+      compileAdmin:
         options:
           pretty: true
         expand: true
         flatten: false
         cwd: jadePath
         src: [
-          #"client/userpage.jade"
           "admin/*.jade"
+        ]
+        dest: webappPath + hiddenHtml
+        ext: ".html"
+
+      compileClient:
+        options:
+          pretty: true
+        expand: true
+        flatten: false
+        cwd: jadePath
+        src: [
+#          "client/paymentOrder.jade",
+          "client/verifyOrder.jade"
         ]
         dest: webappPath + hiddenHtml
         ext: ".html"
@@ -63,7 +76,7 @@ module.exports = (grunt) ->
           pretty: true
         files:
           "src/main/webapp/index.html": jadePath + "index.jade"
-          "src/main/webapp/userpage.html": jadePath + "client/userpage.jade"
+          "src/main/webapp/login.html": jadePath + "login.jade"
 #WATCH
     watch:
       pug:

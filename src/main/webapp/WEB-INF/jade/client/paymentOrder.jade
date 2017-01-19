@@ -1,16 +1,27 @@
 extends template/clientPageTemplate
 
+include template/formParts
+
 block content
     .row
         .col-lg-3.col-md-3.col-sm-3
             +menu(2, "paymentOrder")
 
-        //-main.main.col-lg-9.col-lg-offset-3.col-md-9.col-md-offset-3.col-sm-9.col-sm-offset-3.col-xs-9.col-xs-offset-3
         .col-lg-9.col-md-9.col-sm-9
             main.main
                 if success
                     +dismiss-alert("alert-success", success)
                 if err
                     +dismiss-alert("alert-danger", err)
-                include template/formParts
-                include template/paymentFormTemplate
+
+                .page-header: h1: small Jednorázový příkaz
+                form.form-horizontal.form(method="post")
+                    span.help-block#helpText
+                        span.required-input
+                        | Povinná položka
+
+                    - var bankCodes = ["0300", "0100"]
+                    +paymentOrder(true, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
+                    .form-group
+                        .col-sm-offset-5.col-sm-7
+                            button.btn.btn-info.btn-block(type="submit") Zaplatit

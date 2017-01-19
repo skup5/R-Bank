@@ -1,30 +1,30 @@
-mixin paymentOrder(inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
+mixin paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
     .form-group
-        label.control-label.col-sm-5.required-input(for="inputDate") Datum
-        .col-sm-7: input(type="date" id="inputDate" name="inputDate" value=inputDate class="form-control" placeholder="" required autofocus
+        label.control-label.col-sm-5(for="inputDate" class=requiredInputs ? "required-input" : "") Datum
+        .col-sm-7: input(type="date" id="inputDate" name="inputDate" value=inputDate class="form-control" placeholder="" required=requiredInputs autofocus
         min=DateHelper.todayString())
     .form-group
-        label.control-label.col-sm-5.required-input(for="selectAccount") Účet
+        label.control-label.col-sm-5(for="selectAccount" class=requiredInputs ? "required-input" : "") Účet
         .col-sm-7
-            select.form-control(id="selectAccount" name="selectAccount" required)
+            select.form-control(id="selectAccount" name="selectAccount" required=requiredInputs)
                 each account in bankAccounts
                     option(value=account.getAccountNumber() selected= account.getAccountNumber().equals(selectAccount))
                         | #{account.getAccountNumber()}(#{account.getCurrency().name()})
     .form-group
-        label.control-label.col-sm-5.required-input(for="inputOffset") Příjemce
-        .col-sm-7: input(type="text" id="inputOffset" name="inputOffset" value=inputOffset class="form-control text-right" placeholder="" required
-                    pattern="\\d{16}" maxlength=16)
+        label.control-label.col-sm-5(for="inputOffset" class=requiredInputs ? "required-input" : "") Příjemce
+        .col-sm-7: input(type="text" id="inputOffset" name="inputOffset" value=inputOffset class="form-control text-right" placeholder="" required=requiredInputs
+        pattern="\\d{16}" maxlength=16)
     .form-group
-        label.control-label.col-sm-5.required-input(for="inputBankCode") Kód banky
+        label.control-label.col-sm-5(for="inputBankCode" class=requiredInputs ? "required-input" : "") Kód banky
         .col-sm-7
-            input(type="text" id="inputBankCode" name="inputBankCode" value=inputBankCode list="bankCodeList" class="form-control text-right" placeholder="####" required
+            input(type="text" id="inputBankCode" name="inputBankCode" value=inputBankCode list="bankCodeList" class="form-control text-right" placeholder="####" required=requiredInputs
             pattern="\\d{4}" maxlength=4)
             datalist#bankCodeList
                 each code in bankCodes
                     option(value=code)
     .form-group
-        label.control-label.col-sm-5.required-input(for="inputAmount") Částka
-        .col-sm-7: input(type="text" id="inputAmount" name="inputAmount" value=inputAmount class="form-control text-right" placeholder="" required)
+        label.control-label.col-sm-5(for="inputAmount" class=requiredInputs ? "required-input" : "") Částka
+        .col-sm-7: input(type="text" id="inputAmount" name="inputAmount" value=inputAmount class="form-control text-right" placeholder="" required=requiredInputs)
     .form-group
         label.control-label.col-sm-5(for="inputConstSymbol") Konstantní symbol
         .col-sm-7: input(type="text" id="inputConstSymbol" name="inputConstSymbol" value=inputConstSymbol class="form-control text-right" placeholder=""

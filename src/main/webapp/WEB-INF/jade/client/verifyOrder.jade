@@ -1,0 +1,51 @@
+extends template/clientPageTemplate
+
+block content
+    .row
+        .col-lg-3.col-md-3.col-sm-3
+            +menu(2, "paymentOrder")
+
+        .col-lg-9.col-md-9.col-sm-9
+            main.main
+                if success
+                    +dismiss-alert("alert-success", success)
+                if err
+                    +dismiss-alert("alert-danger", err)
+
+                .page-header: h1: small Potvrzení transakce
+                dl.dl-horizontal
+                    dt Transakce
+                    dd #
+                    dt Z účtu
+                    dd #
+                    dt Na účet
+                    dd #
+                    dt Částka
+                    dd #
+                p Zbývající čas:
+                    span#paymentVerifyCounter
+                form.form-inline.form(method="post")
+                    //-.form-group
+                        label.control-label.col-sm-5 Transakce
+                        .col-sm-7: p.form-control-static #
+                        //.form-group
+                        label.control-label.col-sm-5 Z účtu
+                        .col-sm-7: p.form-control-static #
+                        //.form-group
+                        label.control-label.col-sm-5 Na účet
+                        .col-sm-7: p.form-control-static #
+                        //.form-group
+                        label.control-label.col-sm-5 Částka
+                        .col-sm-7: p.form-control-static #
+                    .form-group
+                        .input-group
+                            input.form-control.text-center(maxlength=3 size=3)
+                            .input-group-addon -
+                            input.form-control.text-center(maxlength=3 size=3)
+                            .input-group-addon -
+                            input.form-control.text-center(maxlength=3 size=3)
+                        button.btn.btn-success(type="submit") Potvrdit
+
+block append script
+    script.
+        countdown(2, "paymentVerifyCounter");
