@@ -54,7 +54,7 @@ public class AdministrationView extends AbstractView {
         vars.put(CURRENCIES_ATTRIBUTE, req.getAttribute(CURRENCIES_ATTRIBUTE));
         vars.put(CLIENTS_ATTRIBUTE, clients);
         vars.put(CLIENT_DETAIL_ATTRIBUTE, clientDetail);
-        vars.put(DISPLAY_NAME_PARAMETER, getDisplayName(req));
+        vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
         vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
         vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));
         try {

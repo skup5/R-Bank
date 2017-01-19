@@ -41,7 +41,7 @@ public class ClientView extends AbstractView {
             vars = new HashMap<>();
         }
         vars.put(BANK_ACCOUNTS_ATTRIBUTE, req.getAttribute(BANK_ACCOUNTS_ATTRIBUTE));
-        vars.put(DISPLAY_NAME_PARAMETER, getDisplayName(req));
+        vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
         try {
             resp.setContentType("text/html");
             renderTemplate(template, vars, resp.getWriter());

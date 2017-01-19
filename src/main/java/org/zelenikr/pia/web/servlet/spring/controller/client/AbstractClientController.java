@@ -3,9 +3,12 @@ package org.zelenikr.pia.web.servlet.spring.controller.client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.zelenikr.pia.domain.Client;
 import org.zelenikr.pia.domain.User;
 import org.zelenikr.pia.manager.ClientManager;
 import org.zelenikr.pia.web.servlet.spring.controller.AbstractController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Abstract controller for all client's controllers
@@ -15,6 +18,8 @@ import org.zelenikr.pia.web.servlet.spring.controller.AbstractController;
 public abstract class AbstractClientController extends AbstractController {
 
     private static final String VIEW_URL = "/view/clientView";
+    private static final String AUTHENTICATED_CLIENT_SESSION = "authenticatedClient";
+
     protected static final String COPY_PARAMETERS_ATTRIBUTE = "copyParams";
 
 
@@ -39,5 +44,19 @@ public abstract class AbstractClientController extends AbstractController {
             return (User) authentication.getPrincipal();
         }
         return null;
+    }
+
+    /**
+     *
+     * @param request
+     * @return authenticated client
+     */
+    protected Client getAuthenticatedClient(HttpServletRequest request){
+        Client client = (Client) request.getSession().getAttribute(AUTHENTICATED_CLIENT_SESSION);
+        if(client == null) {
+            client = clientManager.loadDetail(getAuthenticatedUser().getId());
+            request.getSession().setAttribute(AUTHENTICATED_CLIENT_SESSION, client);
+        }
+        return client;
     }
 }

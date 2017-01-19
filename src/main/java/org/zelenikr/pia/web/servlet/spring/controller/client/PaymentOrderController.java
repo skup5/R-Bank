@@ -27,7 +27,7 @@ public class PaymentOrderController extends AbstractClientController {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("doGet()");
 
-        Client client = clientManager.loadDetail(getAuthenticatedUser().getId());
+        Client client = getAuthenticatedClient(req);
         req.setAttribute(BANK_ACCOUNTS_ATTRIBUTE, client.getBankAccounts());
         req.setAttribute(COPY_PARAMETERS_ATTRIBUTE, true);
 

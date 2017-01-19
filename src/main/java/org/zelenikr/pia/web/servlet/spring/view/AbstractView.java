@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 public abstract class AbstractView extends TemplateServlet {
 
     protected static final String TEMPLATE_ATTRIBUTE = "templateName";
-    protected static final String DISPLAY_NAME_PARAMETER = "displayName";
-    protected static final String DISPLAY_NAME_URL_PARAMETER = "displayNameUrl";
+    protected static final String DISPLAY_NAME_SESSION = "displayName";
+    protected static final String DISPLAY_NAME_URL_SESSION = "displayNameUrl";
 
     /**
      * The name of the logged in user or null, if the user isn't logged in.
@@ -22,7 +22,7 @@ public abstract class AbstractView extends TemplateServlet {
      * @return display name value from session or null
      */
     protected String getDisplayName(HttpServletRequest request) {
-        return (String) request.getSession().getAttribute(DISPLAY_NAME_PARAMETER);
+        return (String) request.getSession().getAttribute(DISPLAY_NAME_SESSION);
     }
 
     /**
@@ -32,6 +32,6 @@ public abstract class AbstractView extends TemplateServlet {
      * @return display name url value from session or null
      */
     protected String getDisplayNameUrl(HttpServletRequest request) {
-        return (String) request.getSession().getAttribute(DISPLAY_NAME_URL_PARAMETER);
+        return (String) request.getSession().getAttribute(DISPLAY_NAME_URL_SESSION);
     }
 }

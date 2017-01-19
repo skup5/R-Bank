@@ -1,10 +1,7 @@
 package org.zelenikr.pia.web.servlet.spring.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.zelenikr.pia.domain.RoleType;
-import org.zelenikr.pia.domain.User;
 import org.zelenikr.pia.manager.UserManager;
-import org.zelenikr.pia.validation.exception.UserValidationException;
 import org.zelenikr.pia.web.template.TemplateParserException;
 
 import javax.servlet.ServletException;
@@ -12,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -43,10 +39,10 @@ public class HomeView extends AbstractView {
             String url;
 //            Map<String, Object> vars = createVariablesFromParameters(req);
             Map<String, Object> vars = emptyVariables();
-            vars.put(DISPLAY_NAME_PARAMETER, getDisplayName(req));
+            vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
             if ((url = getDisplayNameUrl(req)) == null)
                 url = "login";
-            vars.put(DISPLAY_NAME_URL_PARAMETER, url);
+            vars.put(DISPLAY_NAME_URL_SESSION, url);
 
             resp.setContentType("text/html");
             renderTemplate("index", vars, resp.getWriter());

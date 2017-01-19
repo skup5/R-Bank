@@ -13,7 +13,7 @@ public class Helpers {
     public static class DateHelper {
 
         public String todayString() {
-            return new SimpleDateFormat().format(new Date());
+            return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         }
 
         public String toLocaleDateString() {

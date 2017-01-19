@@ -1,10 +1,11 @@
-.page-header: h1: .small Jednorázový příkaz
+.page-header: h1: small Jednorázový příkaz
 form.form-horizontal.form
     span.help-block#helpText
         span.required-input
         |Povinná položka
 
-    +paymentOrder(inputDate, selectAccount, bankAccounts, inputOffset1, inputOffset2, inputBankCode, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
+    - var bankCodes = ["0300", "0100"]
+    +paymentOrder(inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
     .form-group
             .col-sm-offset-5.col-sm-7
                 button.btn.btn-lg.btn-primary.btn-block(type="submit") Zaplatit

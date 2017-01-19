@@ -90,7 +90,7 @@ public class DefaultClientManager implements ClientManager {
 
     @Override
     public Client loadDetail(Client client) {
-        return clientDao.findByUsernameFully(client.getUsername());
+        return loadDetail(client.getId());
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")

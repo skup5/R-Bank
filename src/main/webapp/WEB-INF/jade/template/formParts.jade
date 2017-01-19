@@ -28,20 +28,23 @@ mixin contactInfo(inputStreet, inputBuildNo, inputCity, inputZipCode, inputEmail
         pattern="\\d{5}" maxlength=5)
     .form-group
         label.control-label.col-sm-5.required-input(for="inputEmail") Emailová adresa
-        .col-sm-7: input(type="email" id="inputEmail" name="inputEmail" value=inputEmail class="form-control" placeholder="e@mail.com" required)
+        .col-sm-7: .input-group
+            .input-group-addon @
+            input(type="email" id="inputEmail" name="inputEmail" value=inputEmail class="form-control" placeholder="e@mail.com" required)
     .form-group
         label.control-label.col-sm-5(for="inputPhoneNumber") Kontaktní telefon
-        .col-sm-7: .row
-            .col-xs-3.col-sm-3
-                p.form-control-static +420
-            .col-xs-9.col-sm-9
-                input.form-control(type="text" id="inputPhoneNumber" name="inputPhoneNumber" value=inputPhoneNumber placeholder="123456789"
-                pattern="\\d{9}" maxlength=9)
+        .col-sm-7: .input-group
+            .input-group-addon
+                span.fa.fa-phone
+                | +420
+            input.form-control(type="text" id="inputPhoneNumber" name="inputPhoneNumber" value=inputPhoneNumber placeholder="123456789"
+            pattern="\\d{9}" maxlength=9)
 
 mixin bankAccount(inputCardNo, inputCardPinNo, inputBankAccountNo, selectCurrency, currencies)
     .form-group
         label.control-label.col-sm-5.required-input(for="inputCardNo") Číslo platební karty
         .col-sm-7: .input-group
+            .input-group-addon: span.fa.fa-credit-card
             input(type="text" id="inputCardNo" name="inputCardNo" value=inputCardNo class="form-control" placeholder="################" required
             autocomplete="off" pattern="\\d{16}" maxlength=16)
             span.input-group-btn
