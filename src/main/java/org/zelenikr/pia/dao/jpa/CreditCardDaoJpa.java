@@ -8,6 +8,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 /**
+ * JPA implementation of the {@link CreditCardDao} interface.
+ *
  * @author Roman Zelenik
  */
 //@Repository
@@ -21,9 +23,9 @@ public class CreditCardDaoJpa extends GenericDaoJpa<CreditCard> implements Credi
     public CreditCard findByCardNumber(String creditCardNumber) {
         TypedQuery<CreditCard> q = em.createQuery("SELECT c FROM CreditCard c WHERE c.creditCardNumber = :cnumber", CreditCard.class);
         q.setParameter("cnumber", creditCardNumber);
-        try{
+        try {
             return q.getSingleResult();
-        } catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
     }

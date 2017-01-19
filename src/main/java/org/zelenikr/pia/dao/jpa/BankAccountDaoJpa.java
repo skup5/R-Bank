@@ -8,6 +8,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 /**
+ * JPA implementation of the {@link BankAccountDao} interface.
+ *
  * @author Roman Zelenik
  */
 @Repository
@@ -21,9 +23,9 @@ public class BankAccountDaoJpa extends GenericDaoJpa<BankAccount> implements Ban
     public BankAccount findByAccountNumber(String accountNumber) {
         TypedQuery<BankAccount> q = em.createQuery("SELECT b FROM BankAccount b WHERE b.accountNumber = :bano", BankAccount.class);
         q.setParameter("bano", accountNumber);
-        try{
+        try {
             return q.getSingleResult();
-        } catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
     }

@@ -20,10 +20,6 @@ public abstract class AbstractDaoJdbc<T extends BaseObject> implements GenericDa
     @Autowired
     private DBSettingsManager dbSettings;
 
-//    public AbstractDaoJdbc() throws ClassNotFoundException {
-////        this.dbSettings = dbSettings;
-//    }
-
     @PostConstruct
     private void init() throws ClassNotFoundException {
         Class.forName(dbSettings.getDriver());

@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 /**
+ * JPA implementation of the {@link UserDao} interface.
  * Date: 26.11.15
  *
  * @author Jakub Danek

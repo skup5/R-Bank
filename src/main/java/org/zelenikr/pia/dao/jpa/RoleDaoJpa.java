@@ -15,6 +15,8 @@ import javax.persistence.criteria.SetJoin;
 import java.util.List;
 
 /**
+ * JPA implementation of the {@link RoleDao} interface.
+ *
  * @author Roman Zelenik
  */
 @Repository

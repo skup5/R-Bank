@@ -8,6 +8,7 @@ import org.zelenikr.pia.domain.CreditCard;
 import java.sql.*;
 
 /**
+ * JDBC implementation of the {@link CreditCardDao} interface.
  * @author Roman Zelenik
  */
 @Repository
@@ -17,9 +18,6 @@ public class CreditCardDaoJdbc extends AbstractDaoJdbc<CreditCard> implements Cr
     private static final String CARD_NUMBER = "creditCardNumber";
     private static final String CARD_PIN = "pin";
 
-//    public CreditCardDaoJdbc() throws ClassNotFoundException {
-//        super();
-//    }
 
     @Override
     public CreditCard save(CreditCard card) {

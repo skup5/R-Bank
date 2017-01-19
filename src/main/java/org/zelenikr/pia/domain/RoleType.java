@@ -1,7 +1,7 @@
 package org.zelenikr.pia.domain;
 
 /**
- * Defines kinds of roles
+ * Defines types of roles
  *
  * @author Roman Zelenik
  */
