@@ -13,4 +13,6 @@ public interface BankAccountDao extends GenericDao<BankAccount>{
      * @return bank account with the given account number or null
      */
     BankAccount findByAccountNumber(String accountNumber);
+
+    BankAccount findByAccountNumberWithOwner(String accountNumber, long ownerId);
 }

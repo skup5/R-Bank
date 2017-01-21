@@ -61,7 +61,7 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
 //                }
 //            }
             Client client;
-            client =  q.getSingleResult();
+            client = q.getSingleResult();
 //            for (Object o : (Object[]) q.getSingleResult()) {
 //                System.out.println(client.getBankAccounts().size());
 //            }
@@ -83,6 +83,17 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
             return q.getResultList();
         } catch (NoResultException e) {
             return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public Client findOneWithAccounts(long id) {
+        TypedQuery<Client> q = em.createQuery("SELECT c FROM Client c JOIN FETCH c.bankAccounts WHERE c.id = :id", Client.class);
+        q.setParameter("id", id);
+        try {
+            return q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.zelenikr.pia.web.servlet.spring.view;
+package org.zelenikr.pia.web.servlet.spring.view.client;
 
 import org.zelenikr.pia.web.template.TemplateParserException;
 
@@ -11,15 +11,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * View servlet responsible for rendering client pages
+ * View servlet responsible for rendering client payment order (new order, verification)
  *
  * @author Roman Zelenik
  */
-@WebServlet("/view/clientView")
-public class ClientView extends AbstractView {
+@WebServlet("/view/client/payment-order")
+public class PaymentOrderView extends AbstractClientView {
 
-    private static final String COPY_PARAMETERS_ATTRIBUTE = "copyParams";
-    private static final String BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts";
+    private static final String
+            REQUIRED_INPUTS_ATTRIBUTE = "requiredInputs",
+            PREPARED_TRANSACTION_ATTRIBUTE = "preparedTransaction",
+            VERIFICATION_CODE_LENGTH_ATTRIBUTE = "verificationCodeLength",
+            VERIFICATION_CODE_TIMEOUT_ATTRIBUTE = "verificationCodeTimeout";
 
 
     @Override
@@ -40,8 +43,14 @@ public class ClientView extends AbstractView {
         } else {
             vars = new HashMap<>();
         }
-        vars.put(BANK_ACCOUNTS_ATTRIBUTE, req.getAttribute(BANK_ACCOUNTS_ATTRIBUTE));
+        vars.put(REQUIRED_INPUTS_ATTRIBUTE, req.getAttribute(REQUIRED_INPUTS_ATTRIBUTE));
+        vars.put(PREPARED_TRANSACTION_ATTRIBUTE, req.getAttribute(PREPARED_TRANSACTION_ATTRIBUTE));
+        vars.put(VERIFICATION_CODE_LENGTH_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE));
+        vars.put(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE));
+        vars.put(BANK_ACCOUNTS_ATTRIBUTE, getClientBankAccounts(req));
         vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
+        vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
+        vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));
         try {
             resp.setContentType("text/html");
             renderTemplate(template, vars, resp.getWriter());

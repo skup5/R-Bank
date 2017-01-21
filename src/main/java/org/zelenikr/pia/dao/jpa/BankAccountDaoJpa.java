@@ -29,4 +29,16 @@ public class BankAccountDaoJpa extends GenericDaoJpa<BankAccount> implements Ban
             return null;
         }
     }
+
+    @Override
+    public BankAccount findByAccountNumberWithOwner(String accountNumber, long ownerId) {
+        TypedQuery<BankAccount> q = em.createQuery("SELECT b FROM BankAccount b JOIN FETCH b.owner o WHERE b.accountNumber = :bano AND o.id  = :owner", BankAccount.class);
+        q.setParameter("bano", accountNumber);
+        q.setParameter("owner", ownerId);
+        try {
+            return q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

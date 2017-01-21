@@ -22,6 +22,11 @@ public class ClientIndexController extends AbstractClientController {
     }
 
     @Override
+    protected String getViewUrl() {
+        return "";
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.sendRedirect(INDEX_URL);
     }

@@ -40,4 +40,11 @@ public interface ClientDao extends GenericDao<Client> {
      */
     List<Client> findAll();
 
+    /**
+     * Returns client associated with bank accounts.
+     *
+     * @param id the requested id
+     * @return client with bank accounts or null
+     */
+    Client findOneWithAccounts(long id);
 }

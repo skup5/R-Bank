@@ -19,6 +19,10 @@
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.zelenikr.pia.web.filter.EncodingFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>clientInitFilter</filter-name>
+        <filter-class>org.zelenikr.pia.web.filter.ClientInitFilter</filter-class>
+    </filter>
 
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
@@ -27,6 +31,10 @@
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>clientInitFilter</filter-name>
+        <url-pattern>/client/*</url-pattern>
     </filter-mapping>
 
     <!-- Session -->

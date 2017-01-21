@@ -15,13 +15,17 @@ block content
                     +dismiss-alert("alert-danger", err)
 
                 .page-header: h1: small Jednorázový příkaz
-                form.form-horizontal.form(method="post")
+                form.form-horizontal.form(method="post" autocomplete="off")
                     span.help-block#helpText
                         span.required-input
                         | Povinná položka
 
                     - var bankCodes = ["0300", "0100"]
-                    +paymentOrder(true, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
+                    if preparedTransaction
+                        +paymentOrder(requiredInputs, bankAccounts, bankCodes, preparedTransaction)
+                    else
+                        +paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
                     .form-group
                         .col-sm-offset-5.col-sm-7
+                            input(type="hidden" name="action" value="pay")
                             button.btn.btn-info.btn-block(type="submit") Zaplatit

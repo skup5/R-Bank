@@ -26,10 +26,10 @@ public class BankAccount extends BaseObject {
 
     private Client owner;
 
-    private Set<SinglePaymentOrder> singlePaymentOrders;
+    private Set<PaymentTransaction> paymentTransactions;
 
     public BankAccount() {
-        this.singlePaymentOrders = new LinkedHashSet<>();
+        this.paymentTransactions = new LinkedHashSet<>();
     }
 
     public BankAccount(String accountNumber, BigDecimal sum, Currency currency) {
@@ -39,6 +39,37 @@ public class BankAccount extends BaseObject {
         this.currency = currency;
     }
 
+    /*
+    ############### API #####################
+     */
+
+    /**
+     * Checks if there is enough money.
+     *
+     * @param amount the amount of the deduction
+     * @return true if the amount is lower of equal that actual account balance
+     */
+    public boolean hasEnough(BigDecimal amount) {
+        return sum.compareTo(amount) >= 0;
+    }
+
+    /**
+     * Deducts the amount from this account.
+     *
+     * @param amount the amount of the deduction
+     * @return false if there isn't enough money
+     */
+    public boolean deduct(BigDecimal amount) {
+        if (hasEnough(amount)) {
+            sum = sum.subtract(amount);
+            return true;
+        }
+        return false;
+    }
+
+    public void add(BigDecimal amount) {
+        sum = sum.add(amount);
+    }
 
     /*
     ########### MAPPINGS #####################
@@ -108,12 +139,12 @@ public class BankAccount extends BaseObject {
      */
     @OneToMany(mappedBy = "clientAccount")
     @OrderColumn(name = "dueDate")
-    public Set<SinglePaymentOrder> getSinglePaymentOrders() {
-        return singlePaymentOrders;
+    public Set<PaymentTransaction> getPaymentTransactions() {
+        return paymentTransactions;
     }
 
-    public void setSinglePaymentOrders(Set<SinglePaymentOrder> singlePaymentOrders) {
-        this.singlePaymentOrders = singlePaymentOrders;
+    public void setPaymentTransactions(Set<PaymentTransaction> paymentTransactions) {
+        this.paymentTransactions = paymentTransactions;
     }
 
     @Override

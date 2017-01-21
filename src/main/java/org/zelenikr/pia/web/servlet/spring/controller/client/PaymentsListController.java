@@ -20,6 +20,11 @@ public class PaymentsListController extends AbstractClientController {
     }
 
     @Override
+    protected String getViewUrl() {
+        return null;
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("doGet()");
         //TODO: get payment list

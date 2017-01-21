@@ -96,13 +96,13 @@ public class DefaultClientManager implements ClientManager {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @Override
     public Client loadDetail(long clientIdNumber) {
-        Client client = clientDao.findOneFully(clientIdNumber);
-        if(client == null)
-            return null;
-//        for (BankAccount account : client.getBankAccounts()) {
-//            account.getCreditCard().toString();
-//        }
-        return client;
+        return clientDao.findOneFully(clientIdNumber);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
+    @Override
+    public Client loadWithBankAccounts(long cliendIdNumber) {
+        return clientDao.findOneWithAccounts(cliendIdNumber);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")

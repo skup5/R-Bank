@@ -26,8 +26,8 @@ public class PatternPaymentOrder extends AbstractPaymentOrder implements Validab
         super();
     }
 
-    public PatternPaymentOrder(String name, Date dueDate, BigDecimal amount, Integer constSymbol, String variableSymbol, String specificSymbol, String message) {
-        super(dueDate, amount, constSymbol, variableSymbol, specificSymbol, message);
+    public PatternPaymentOrder(String name, Date dueDate, BigDecimal amount, OffsetAccount offsetAccount, String constSymbol, String variableSymbol, String specificSymbol, String message) {
+        super(dueDate, amount, offsetAccount, constSymbol, variableSymbol, specificSymbol, message);
         this.name = name;
     }
 

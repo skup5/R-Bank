@@ -30,33 +30,26 @@ public abstract class AbstractClientController extends AbstractController {
         this.clientManager = clientManager;
     }
 
-    @Override
-    protected String getViewUrl() {
-        return VIEW_URL;
-    }
+//    @Override
+//    protected String getViewUrl() {
+//        return VIEW_URL;
+//    }
+
+//    /**
+//     * @return authenticated user or null
+//     */
+//    protected User getAuthenticatedUser() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null) {
+//            return (User) authentication.getPrincipal();
+//        }
+//        return null;
+//    }
 
     /**
-     * @return authenticated user or null
+     * @return this authenticated client
      */
-    protected User getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            return (User) authentication.getPrincipal();
-        }
-        return null;
-    }
-
-    /**
-     *
-     * @param request
-     * @return authenticated client
-     */
-    protected Client getAuthenticatedClient(HttpServletRequest request){
-        Client client = (Client) request.getSession().getAttribute(AUTHENTICATED_CLIENT_SESSION);
-        if(client == null) {
-            client = clientManager.loadDetail(getAuthenticatedUser().getId());
-            request.getSession().setAttribute(AUTHENTICATED_CLIENT_SESSION, client);
-        }
-        return client;
+    protected Client getAuthenticatedClient(HttpServletRequest request) {
+        return (Client) request.getSession().getAttribute(AUTHENTICATED_CLIENT_SESSION);
     }
 }
