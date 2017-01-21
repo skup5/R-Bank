@@ -14,6 +14,9 @@ import org.zelenikr.pia.validation.exception.OffsetAccountValidationException;
 import org.zelenikr.pia.validation.exception.PaymentTransactionValidationException;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Roman Zelenik
@@ -146,6 +149,11 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         } else {
             throw new IllegalStateException("Payment transaction is in illegal state.");
         }
+    }
+
+    @Override
+    public List<PaymentTransaction> findAllByClientAccount(String accountNumber) {
+        return paymentTransactionDao.findByClientAccountNumber(accountNumber);
     }
 
     public void sendNewCode(PaymentTransaction transaction) {

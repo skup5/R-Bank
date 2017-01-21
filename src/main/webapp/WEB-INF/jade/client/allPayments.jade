@@ -4,8 +4,22 @@ block content
     .row
         .col-lg-3.col-md-3.col-sm-3
             +menu(1, "allPayments")
-
-        //-main.main.col-lg-9.col-lg-offset-3.col-md-9.col-md-offset-3.col-sm-9.col-sm-offset-3.col-xs-9.col-xs-offset-3
         .col-lg-9.col-md-9.col-sm-9
             main.main
-                include template/accountStatementTemplate
+                .page-header: h1: small Přehled
+                form.form-inline(method="post")
+                    .form-group
+                        label.control-label(for="selectAccount") Účet
+                        select.form-control(id="selectAccount" name="selectAccount" required)
+                            each account in bankAccounts
+                                option(value=account.getAccountNumber() selected=account.getAccountNumber() == selectAccount)
+                                    | #{account.getAccountNumber()} (#{account.getCurrency().name()})
+                    .form-group
+                        button.btn.btn-primary(type="submit") Zobrazit
+                    if actualAccount
+                        .form-group
+                            label.control-label Zůstatek
+                            p.form-control-static
+                                | #{actualAccount.getSum()} #{actualAccount.getCurrency().name()}
+                if transactions != null
+                    include template/accountStatementTemplate

@@ -15,13 +15,25 @@ public enum TransactionType {
      * @return true if this TransactionType is kind of revenue
      */
     public boolean isRevenues() {
-        return this == CREDIT_CARD_PAYMENT || this == INCOMING_PAYMENT;
+        return this == INCOMING_PAYMENT;
     }
 
     /**
      * @return true if this TransactionType is kind of expanse
      */
     public boolean isExpanses() {
-        return this == ONE_TIME_PAYMENT_ORDER;
+        return this == CREDIT_CARD_PAYMENT || this == ONE_TIME_PAYMENT_ORDER;
+    }
+
+    public String toLocaleString() {
+        switch (this) {
+            case CREDIT_CARD_PAYMENT:
+                return "Transakce platební kartou";
+            case INCOMING_PAYMENT:
+                return "Došlá platba";
+            case ONE_TIME_PAYMENT_ORDER:
+                return "Jednorázový platební příkaz";
+        }
+        return "";
     }
 }

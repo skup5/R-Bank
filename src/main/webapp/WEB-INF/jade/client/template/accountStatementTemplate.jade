@@ -1,4 +1,4 @@
-.page-header: h1: .small Výpis účtu
+.page-header: h2: small Výpis účtu
 //-.table-responsive
     table.table.table-striped
         thead: tr
@@ -8,22 +8,35 @@
             tr
                 each val in [new Date().toLocaleDateString(), 123456789, 11111, "Došlá platba", 1000, "CZK"]
                     td= val
-//-hr
+
 .table-responsive
     table.table.table-row-striped.table-bordered
         thead
             tr
                 th(rowspan="2" scope="rowgroup") datum
-                th(rowspan="1" scope="rowgroup") název protiúčtu
+                th(rowspan="2" scope="rowgroup") protiúčet
                 th(colspan="2" scope="colgroup") VS
                 th(rowspan="2" scope="rowgroup") typ transakce
                 th(rowspan="2" scope="rowgroup") částka
-                th(rowspan="2" scope="rowgroup") zůstatek
+                //-th(rowspan="2" scope="rowgroup") zůstatek
             tr
-                th(scope="row") číslo protiúčtu
                 th(scope="row") KS
                 th(scope="row") SS
         tbody
+            each transaction in transactions
+                tr
+                    td(rowspan="2" scope="rowgroup")= transaction.getDueDate()
+                    td(rowspan="2" scope="rowgroup")
+                        | #{transaction.getOffsetAccount().getOffsetAccountNumber()}/#{transaction.getOffsetAccount().getBankCode()}
+                    td(colspan="2" scope="colgroup")= transaction.getVariableSymbol()
+                    td(rowspan="2" scope="rowgroup")= transaction.getType().toLocaleString()
+                    td(rowspan="2" scope="rowgroup" class=transaction.getType().isRevenues() ? "success" : "danger").money
+                        | #{transaction.getAmount()}
+                tr
+                    td(scope="row")= transaction.getConstSymbol()
+                    td(scope="row")= transaction.getSpecificSymbol()
+
+    //-
             tr
                 td(rowspan="2" scope="rowgroup")
                 td(rowspan="1" scope="rowgroup") Firma s.r.o

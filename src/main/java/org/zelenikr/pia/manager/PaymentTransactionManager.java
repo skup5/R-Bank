@@ -6,6 +6,8 @@ import org.zelenikr.pia.validation.exception.BankAccountValidationException;
 import org.zelenikr.pia.validation.exception.OffsetAccountValidationException;
 import org.zelenikr.pia.validation.exception.PaymentTransactionValidationException;
 
+import java.util.List;
+
 /**
  * @author Roman Zelenik
  */
@@ -16,4 +18,6 @@ public interface PaymentTransactionManager {
     boolean verifyPayment(long transaction, String code) throws BankAccountValidationException;
 
     void cancelPayment(long transaction);
+
+    List<PaymentTransaction> findAllByClientAccount(String accountNumber);
 }

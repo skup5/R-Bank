@@ -7,14 +7,6 @@ li.dropdown
             | Uživatel
         span.caret
     ul.dropdown-menu(aria-labelledby="client")
-        //-li: a(href="#")
-                span.fa.fa-cog
-                |Nastavení
         li: a(href="../logout")
             span.fa.fa-times.text-danger
             | Odhlásit
-li#account
-    .navbar-text
-        | disponibilní zůstatek &nbsp;
-        - var account = bankAccounts[0]
-        span#account_value #{account.getSum()} #{account.getCurrency().name()}

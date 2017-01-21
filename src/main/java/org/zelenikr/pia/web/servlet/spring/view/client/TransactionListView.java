@@ -11,19 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * View servlet responsible for rendering client payment order (new order, verification)
+ * View servlet responsible for rendering list of client transactions
  *
  * @author Roman Zelenik
  */
-@WebServlet("/view/client/payment-order")
-public class PaymentOrderView extends AbstractClientView {
+@WebServlet("/view/client/transaction-list")
+public class TransactionListView extends AbstractClientView {
 
     private static final String
-            REQUIRED_INPUTS_ATTRIBUTE = "requiredInputs",
-            PREPARED_TRANSACTION_ATTRIBUTE = "preparedTransaction",
-            VERIFICATION_CODE_LENGTH_ATTRIBUTE = "verificationCodeLength",
-            VERIFICATION_CODE_TIMEOUT_ATTRIBUTE = "verificationCodeTimeout",
-            BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts";
+            TRANSACTION_LIST_ATTRIBUTE = "transactions",
+            BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts",
+            ACTUAL_BANK_ACCOUNT_ATTRIBUTE = "actualAccount";
 
 
     @Override
@@ -44,27 +42,19 @@ public class PaymentOrderView extends AbstractClientView {
         } else {
             vars = new HashMap<>();
         }
-        vars.put(REQUIRED_INPUTS_ATTRIBUTE, req.getAttribute(REQUIRED_INPUTS_ATTRIBUTE));
-        vars.put(PREPARED_TRANSACTION_ATTRIBUTE, req.getAttribute(PREPARED_TRANSACTION_ATTRIBUTE));
-        vars.put(VERIFICATION_CODE_LENGTH_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE));
-        vars.put(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE));
+
+        vars.put(TRANSACTION_LIST_ATTRIBUTE, req.getAttribute(TRANSACTION_LIST_ATTRIBUTE));
         vars.put(BANK_ACCOUNTS_ATTRIBUTE, req.getAttribute(BANK_ACCOUNTS_ATTRIBUTE));
+        vars.put(ACTUAL_BANK_ACCOUNT_ATTRIBUTE, req.getAttribute(ACTUAL_BANK_ACCOUNT_ATTRIBUTE));
         vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
         vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
         vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));
+
         try {
             resp.setContentType("text/html");
             renderTemplate(template, vars, resp.getWriter());
-
-//            Enumeration<String> attr = req.getSession().getAttributeNames();
-//            while(attr.hasMoreElements()) System.out.println(attr.nextElement());
-//            SecurityContext context = (SecurityContext) req.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
-//            System.out.println(context);
-//            System.out.println(getDisplayName(req));
         } catch (TemplateParserException e) {
-//            throw new ServletException("Chyba při načítání požadované stránky");
             throw new ServletException(e);
         }
     }
-
 }

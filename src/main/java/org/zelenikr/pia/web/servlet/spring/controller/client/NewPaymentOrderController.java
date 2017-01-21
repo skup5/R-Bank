@@ -91,6 +91,7 @@ public class NewPaymentOrderController extends AbstractClientController {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("doGet()");
         req.setAttribute(REQUIRED_INPUTS_ATTRIBUTE, true);
+        req.setAttribute(BANK_ACCOUNTS_ATTRIBUTE, getClientBankAccounts(req));
         dispatch(req, resp);
     }
 
@@ -131,6 +132,7 @@ public class NewPaymentOrderController extends AbstractClientController {
                 message = req.getParameter(MESSAGE_PARAMETER);
 
         req.setAttribute(REQUIRED_INPUTS_ATTRIBUTE, true);
+        req.setAttribute(BANK_ACCOUNTS_ATTRIBUTE, getClientBankAccounts(req));
         req.setAttribute(COPY_PARAMETERS_ATTRIBUTE, true);
 
         // TODO: validate form parameters
