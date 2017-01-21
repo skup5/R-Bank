@@ -3,6 +3,7 @@ package org.zelenikr.pia.manager;
 import org.zelenikr.pia.domain.Address;
 import org.zelenikr.pia.domain.BankAccount;
 import org.zelenikr.pia.domain.Client;
+import org.zelenikr.pia.validation.exception.BankAccountValidationException;
 import org.zelenikr.pia.validation.exception.ClientValidationException;
 import org.zelenikr.pia.validation.exception.PersonValidationException;
 import org.zelenikr.pia.validation.exception.UserValidationException;
@@ -71,5 +72,23 @@ public interface ClientManager {
      * @param client instance with modified client data, expected not-null value
      * @throws ClientValidationException if client doesn't exist yet or is not in valid state
      */
-    void save(Client client) throws ClientValidationException, UserValidationException, PersonValidationException;
+    void save(Client client) throws ClientValidationException, PersonValidationException;
+
+    /**
+     * Adds new bank account to client.
+     *
+     * @param client          existing client you want add bank account
+     * @param nextBankAccount already created bank account, expected not-null value
+     * @throws ClientValidationException
+     */
+    void addBankAccount(Client client, BankAccount nextBankAccount) throws ClientValidationException;
+
+    /**
+     * Removes client bank account.
+     * @param client
+     * @param accountNumber
+     * @throws ClientValidationException
+     * @throws BankAccountValidationException
+     */
+    void removeBankAccount(Client client, String accountNumber) throws ClientValidationException, BankAccountValidationException;
 }

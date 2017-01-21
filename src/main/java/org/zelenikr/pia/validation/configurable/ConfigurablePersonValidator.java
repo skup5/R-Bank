@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.zelenikr.pia.domain.Person;
 import org.zelenikr.pia.validation.PersonValidator;
 import org.zelenikr.pia.validation.exception.PersonValidationException;
-import org.zelenikr.pia.validation.exception.UserValidationException;
 
 /**
  * @author Roman Zelenik
@@ -32,7 +31,7 @@ public class ConfigurablePersonValidator implements PersonValidator {
     }
 
     @Override
-    public void validate(Person person) throws PersonValidationException, UserValidationException {
+    public void validate(Person person) throws PersonValidationException {
         validateName(person.getName());
         validateSurname(person.getSurname());
         validatePersonalIdNumber(person.getPersonalIdNumber());

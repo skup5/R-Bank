@@ -9,5 +9,5 @@ import org.zelenikr.pia.validation.exception.UserValidationException;
  */
 public interface ClientValidator extends DomainValidator<Client> {
     @Override
-    void validate(Client domainObject) throws UserValidationException, PersonValidationException;
+    void validate(Client domainObject) throws PersonValidationException;
 }

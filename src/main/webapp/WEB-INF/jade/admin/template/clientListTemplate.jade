@@ -17,22 +17,16 @@ mixin clientActions(clientID)
 .page-header
     h1: small Seznam klientů
 .table-responsive
-    table.table.table-striped.table-hover
+    table.table.table-striped
         thead: tr
             th Jméno
             th Příjmení
             th Rodné číslo
             th.text-right Akce
         tbody
-            //- -var clients = [1,2]
             each client in clients
-                //-tr(onclick="window.location='account-detail?client=" + client.getId() + "';")
                 tr
                     td= client.getName()
                     td= client.getSurname()
                     td= client.getPersonalIdNumber()
                     td.text-right: +clientActions(client.getId())
-                //- td
-                 td
-                 td
-                 td.text-right: +clientActions(client)

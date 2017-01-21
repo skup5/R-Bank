@@ -70,7 +70,6 @@ public class DefaultBankAccountManager implements BankAccountManager {
 
     @Override
     public BankAccount findBy(String accountNumber, long ownerId) {
-       BankAccount account = bankAccountDao.findByAccountNumber(accountNumber);
-       return account != null && account.getOwner().getId() == ownerId ? account : null;
+       return bankAccountDao.findByAccountNumberWithOwner(accountNumber, ownerId);
     }
 }

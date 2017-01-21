@@ -76,14 +76,14 @@ public class AccountDetailController extends AbstractAdminController {
                 if (action != null) {
                     success = doAction(req, action);
                 }
-            } catch (RuntimeException e) {
+            } catch (ClientValidationException | BankAccountValidationException | RuntimeException e) {
                 err = e.getLocalizedMessage();
             }
             Client client = clientManager.loadDetail(clientIdNumber);
             req.getSession().setAttribute(CLIENT_ATTRIBUTE, client);
             req.setAttribute(CLIENT_ATTRIBUTE, client);
         } else {
-            err="Invalid client ID.";
+            err = "Invalid client ID.";
         }
 
         if (err != null) {
@@ -125,26 +125,22 @@ public class AccountDetailController extends AbstractAdminController {
      * @param action
      * @return info message if action was successful or null if it's unknown action
      */
-    private String doAction(HttpServletRequest req, String action){
+    private String doAction(HttpServletRequest req, String action) throws ClientValidationException, BankAccountValidationException {
         if (action.equals(ACTION_DELETE_BANK_ACCOUNT)) {
             return doDeleteBankAccount(req);
         }
         return null;
     }
 
-    private String doDeleteBankAccount(HttpServletRequest req){
-        long clientID = Long.parseLong(req.getParameter(CLIENT_PARAMETER));
+    private String doDeleteBankAccount(HttpServletRequest req) throws ClientValidationException, BankAccountValidationException {
         String accountNumber = req.getParameter(BANK_ACCOUNT_PARAMETER);
-        if(!StringUtils.isNumeric(accountNumber)){
+        if (!StringUtils.isNumeric(accountNumber)) {
             throw new IllegalArgumentException("Invalid bank account number.");
         }
-        BankAccount account = bankAccountManager.findBy(accountNumber, clientID);
-        if (account != null) {
-            bankAccountManager.delete(account);
-            return "Client's bank account was successfully removed.";
-        } else {
-            throw new IllegalArgumentException("Client's bank account not found.");
-        }
+
+        Client client = (Client) req.getSession().getAttribute(CLIENT_ATTRIBUTE);
+        clientManager.removeBankAccount(client, accountNumber);
+        return "Client's bank account was successfully removed.";
     }
 
     private void doClientInfoUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -189,7 +185,7 @@ public class AccountDetailController extends AbstractAdminController {
             clientManager.save(client);
             req.setAttribute(CLIENT_ATTRIBUTE, client);
             successDispatch("Client's account was successfully updated.", req, resp);
-        } catch (ClientValidationException | UserValidationException | PersonValidationException e) {
+        } catch (ClientValidationException | PersonValidationException e) {
             req.setAttribute(CLIENT_ATTRIBUTE, client);
             errorDispatch(e.getLocalizedMessage(), req, resp);
         }
@@ -244,11 +240,9 @@ public class AccountDetailController extends AbstractAdminController {
             return;
         }
 
-        client.getBankAccounts().add(bankAccount);
         try {
-            clientManager.save(client);
-        } catch (ClientValidationException | UserValidationException | PersonValidationException e) {
-            client.getBankAccounts().remove(bankAccount);
+            clientManager.addBankAccount(client, bankAccount);
+        } catch (ClientValidationException e) {
             bankAccountManager.delete(bankAccount);
             errorDispatch(e.getLocalizedMessage(), req, resp);
             return;

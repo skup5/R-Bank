@@ -3,9 +3,11 @@ package org.zelenikr.pia.manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.zelenikr.pia.dao.BankAccountDao;
 import org.zelenikr.pia.dao.ClientDao;
 import org.zelenikr.pia.domain.*;
 import org.zelenikr.pia.validation.ClientValidator;
+import org.zelenikr.pia.validation.exception.BankAccountValidationException;
 import org.zelenikr.pia.validation.exception.ClientValidationException;
 import org.zelenikr.pia.validation.exception.PersonValidationException;
 import org.zelenikr.pia.validation.exception.UserValidationException;
@@ -26,11 +28,13 @@ public class DefaultClientManager implements ClientManager {
     private UserManager userManager;
     private ClientDao clientDao;
     private ClientValidator clientValidator;
+    private BankAccountDao bankAccountDao;
 
     @Autowired
-    public DefaultClientManager(UserManager userManager, ClientDao clientDao, ClientValidator clientValidator) {
+    public DefaultClientManager(UserManager userManager, ClientDao clientDao, BankAccountDao bankAccountDao, ClientValidator clientValidator) {
         this.userManager = userManager;
         this.clientDao = clientDao;
+        this.bankAccountDao = bankAccountDao;
         this.clientValidator = clientValidator;
     }
 
@@ -107,11 +111,36 @@ public class DefaultClientManager implements ClientManager {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @Override
-    public void save(Client client) throws ClientValidationException, UserValidationException, PersonValidationException {
+    public void save(Client client) throws ClientValidationException, PersonValidationException {
         if (client.isNew()) {
             throw new ClientValidationException("Client doesn't exist!");
         }
         clientValidator.validate(client);
         clientDao.save(client);
+    }
+
+    @Override
+    public void addBankAccount(Client client, BankAccount nextBankAccount) throws ClientValidationException {
+        client.getBankAccounts().add(nextBankAccount);
+        try {
+            save(client);
+        } catch (PersonValidationException e) {
+            client.getBankAccounts().remove(nextBankAccount);
+            throw new ClientValidationException(e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public void removeBankAccount(Client client, String accountNumber) throws ClientValidationException, BankAccountValidationException {
+        if (client.getBankAccounts().size() <= 1) {
+            throw new ClientValidationException("Client has to own at least one bank account.");
+        }
+        BankAccount account = bankAccountDao.findByAccountNumberWithOwner(accountNumber, client.getId());
+        if (account == null) {
+            throw new BankAccountValidationException("Cannot delete foreign bank account.");
+        } else {
+            client.getBankAccounts().remove(account);
+            bankAccountDao.remove(account);
+        }
     }
 }

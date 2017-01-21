@@ -21,19 +21,6 @@ form.form-horizontal.form(method="post" autocomplete="on")
                 input(type="hidden" name="clientInfo" value="true")
                 input(type="hidden" name="client" value=clientData.getId())
                 button.btn.btn-primary.btn-block(type="submit") Uložit změny
-//hr
-//-form.form-horizontal.form(method="post")
-    span.help-block
-        span.required-input
-        | Povinná položka
-
-    fieldset
-        - var accountsCount = clientData.getBankAccounts().size()
-        legend.form-signin-heading= accountsCount == 1 ? "Bankovní účet" : "Bankovní účty"
-        .form-group
-            select.form-control
-                each account in clientData.getBankAccounts()
-                    option(value=account.getAccountNumber()) #{account.getAccountNumber()} (#{account.getCurrency()})
 
 - var accountsCount = clientData.getBankAccounts().size()
 h2: small= accountsCount <= 1 ? "Bankovní účet" : "Bankovní účty"
@@ -41,7 +28,7 @@ if accountsCount == 0
     p Klient nemá žádné bankovní účty
 else
     .table-responsive
-        table.table.table-striped.table-hover
+        table.table.table-striped
             thead: tr
                 th Číslo účtu
                 th Měna
@@ -59,7 +46,7 @@ else
                             data-toggle="tooltip" data-placement="top" title="Smazat bankovní účet")
                                 | Zrušit
 
-button.btn.btn-primary(type='button', data-toggle='collapse', data-target='#newBankAccount', aria-expanded='false', aria-controls='newBankAccount')
+button.btn.btn-success(type='button', data-toggle='collapse', data-target='#newBankAccount', aria-expanded='false', aria-controls='newBankAccount')
     | Přidat
 #newBankAccount.collapse
     form.form-horizontal.form(method="post")

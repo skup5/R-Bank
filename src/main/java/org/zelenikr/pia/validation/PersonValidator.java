@@ -2,7 +2,6 @@ package org.zelenikr.pia.validation;
 
 import org.zelenikr.pia.domain.Person;
 import org.zelenikr.pia.validation.exception.PersonValidationException;
-import org.zelenikr.pia.validation.exception.UserValidationException;
 
 /**
  * @author Roman Zelenik
@@ -16,8 +15,7 @@ public interface PersonValidator extends DomainValidator<Person>{
      * Validates that person instance is currently in a valid state.
      *
      * @throws PersonValidationException in case the person is not in valid state.
-     * @throws UserValidationException
      */
     @Override
-    void validate(Person domainObject) throws PersonValidationException, UserValidationException;
+    void validate(Person domainObject) throws PersonValidationException;
 }

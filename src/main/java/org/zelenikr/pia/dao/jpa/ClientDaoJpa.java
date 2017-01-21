@@ -48,7 +48,7 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
     @Override
     public Client findOneFully(long id) {
         System.out.println("ClientDaoJpa.findOneFully");
-        TypedQuery<Client> q = em.createQuery("SELECT c FROM Client c JOIN FETCH c.address a WHERE c.id = :id", Client.class);
+        TypedQuery<Client> q = em.createQuery("SELECT c FROM Client c JOIN FETCH c.address JOIN FETCH c.bankAccounts WHERE c.id = :id", Client.class);
 //        Query q = em.createQuery("SELECT DISTINCT c, ba FROM Client c JOIN FETCH c.address LEFT JOIN c.bankAccounts ba WHERE c.id = :id");
         q.setParameter("id", id);
         try {
@@ -68,7 +68,6 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
 
 //             client = null;
 //                    (Client) clients.get(0);
-            client.getBankAccounts().size();
             client.getPaymentOrderPatterns().size();
             return client;
         } catch (NoResultException e) {

@@ -22,7 +22,7 @@ public class ConfigurableClientValidator implements ClientValidator {
     }
 
     @Override
-    public void validate(Client client) throws UserValidationException, PersonValidationException {
+    public void validate(Client client) throws PersonValidationException {
         personValidator.validate(client);
     }
 }
