@@ -19,7 +19,6 @@ import java.util.Set;
  */
 public abstract class AbstractClientController extends AbstractController {
 
-    private static final String VIEW_URL = "/view/clientView";
     private static final String AUTHENTICATED_CLIENT_SESSION = "authenticatedClient";
 
     protected static final String
@@ -32,22 +31,6 @@ public abstract class AbstractClientController extends AbstractController {
     public void setClientManager(ClientManager clientManager) {
         this.clientManager = clientManager;
     }
-
-//    @Override
-//    protected String getViewUrl() {
-//        return VIEW_URL;
-//    }
-
-//    /**
-//     * @return authenticated user or null
-//     */
-//    protected User getAuthenticatedUser() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication != null) {
-//            return (User) authentication.getPrincipal();
-//        }
-//        return null;
-//    }
 
     /**
      * @return this authenticated client

@@ -1,14 +1,4 @@
 .page-header: h2: small Výpis účtu
-//-.table-responsive
-    table.table.table-striped
-        thead: tr
-            each head in ["datum","protiúčet","VS","typ transakce","částka","měna"]
-                th= head
-        tbody
-            tr
-                each val in [new Date().toLocaleDateString(), 123456789, 11111, "Došlá platba", 1000, "CZK"]
-                    td= val
-
 .table-responsive
     table.table.table-row-striped.table-bordered
         thead
@@ -18,7 +8,6 @@
                 th(colspan="2" scope="colgroup") VS
                 th(rowspan="2" scope="rowgroup") typ transakce
                 th(rowspan="2" scope="rowgroup") částka
-                //-th(rowspan="2" scope="rowgroup") zůstatek
             tr
                 th(scope="row") KS
                 th(scope="row") SS
@@ -35,27 +24,3 @@
                 tr
                     td(scope="row")= transaction.getConstSymbol()
                     td(scope="row")= transaction.getSpecificSymbol()
-
-    //-
-            tr
-                td(rowspan="2" scope="rowgroup")
-                td(rowspan="1" scope="rowgroup") Firma s.r.o
-                td(colspan="2" scope="colgroup") 12
-                td(rowspan="2" scope="rowgroup") Došlá platba
-                td(rowspan="2" scope="rowgroup").money.success 1000,00 CZK
-                td(rowspan="2" scope="rowgroup").money 1111,10 CZK
-            tr
-                td(scope="row") 123456789/0000
-                td(scope="row") 0138
-                td(scope="row")
-            tr
-                td(rowspan="2" scope="rowgroup")
-                td(rowspan="1" scope="rowgroup")
-                td(colspan="2" scope="colgroup") 12345
-                td(rowspan="2" scope="rowgroup") Transakce platební kartou
-                td(rowspan="2" scope="rowgroup").money.danger -500,00 CZK
-                td(rowspan="2" scope="rowgroup").money 11,10 CZK
-            tr
-                td(scope="row")
-                td(scope="row") 1178
-                td(scope="row") 1234567890

@@ -15,8 +15,10 @@ mixin menu(activeMenuItems, activeItem)
                 ul#menuItems1.nav.collapse.nav-sidebar-items(class= activeMenuItems == 1 ? "in" : "")
                     li(class= activeItem.equals("allPayments") ? "active" : "")
                         a(href="all-payments") Vše
-                    li: a(href="incomes") Příjmy
-                    li: a(href="expenses") Výdaje
+                    li(class= activeItem.equals("incomes") ? "active" : "")
+                        a(href="incomes") Příjmy
+                    li(class= activeItem.equals("expenses") ? "active" : "")
+                        a(href="expenses") Výdaje
             li
                 a.nav-menu.collapsed(href="#" data-toggle="collapse" data-target="#menuItems2")
                     | Platby

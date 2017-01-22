@@ -68,8 +68,9 @@ public class DefaultBankAccountManager implements BankAccountManager {
         return true;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @Override
     public BankAccount findBy(String accountNumber, long ownerId) {
-       return bankAccountDao.findByAccountNumberWithOwner(accountNumber, ownerId);
+        return bankAccountDao.findByAccountNumberWithOwner(accountNumber, ownerId);
     }
 }

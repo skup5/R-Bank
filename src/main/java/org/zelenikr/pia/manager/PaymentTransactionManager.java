@@ -20,4 +20,9 @@ public interface PaymentTransactionManager {
     void cancelPayment(long transaction);
 
     List<PaymentTransaction> findAllByClientAccount(String accountNumber);
+
+    List<PaymentTransaction> findAllRevenuesByClientAccount(String accountNumber);
+
+    List<PaymentTransaction> findAllExpensesByClientAccount(String accountNumber);
+
 }

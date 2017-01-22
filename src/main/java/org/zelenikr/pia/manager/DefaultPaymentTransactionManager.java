@@ -1,5 +1,6 @@
 package org.zelenikr.pia.manager;
 
+import javafx.collections.transformation.SortedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -154,6 +155,20 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
     @Override
     public List<PaymentTransaction> findAllByClientAccount(String accountNumber) {
         return paymentTransactionDao.findByClientAccountNumber(accountNumber);
+//        List<PaymentTransaction> exp = findAllExpensesByClientAccount(accountNumber);
+//        List<PaymentTransaction> rev = findAllRevenuesByClientAccount(accountNumber);
+//        return new SortedList<PaymentTransaction>()
+
+    }
+
+    @Override
+    public List<PaymentTransaction> findAllRevenuesByClientAccount(String accountNumber) {
+        return paymentTransactionDao.findByClientAccountNumber(accountNumber, TransactionState.RECEIVED);
+    }
+
+    @Override
+    public List<PaymentTransaction> findAllExpensesByClientAccount(String accountNumber) {
+        return paymentTransactionDao.findByClientAccountNumber(accountNumber, TransactionState.SENT);
     }
 
     public void sendNewCode(PaymentTransaction transaction) {
