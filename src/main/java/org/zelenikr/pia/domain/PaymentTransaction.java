@@ -1,5 +1,7 @@
 package org.zelenikr.pia.domain;
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,6 +18,7 @@ import java.util.Date;
         @AttributeOverride(name = "amount", column = @Column(nullable = false)),
         @AttributeOverride(name = "clientAccount", column = @Column(nullable = false))
 })
+@BatchSize(size = 100)
 public class PaymentTransaction extends AbstractPaymentOrder {
 
     private TransactionState state;

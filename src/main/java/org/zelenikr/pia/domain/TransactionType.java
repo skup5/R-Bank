@@ -7,6 +7,7 @@ package org.zelenikr.pia.domain;
  */
 public enum TransactionType {
 
+    ATM_WITHDRAWAL,
     CREDIT_CARD_PAYMENT,
     ONE_TIME_PAYMENT_ORDER,
     INCOMING_PAYMENT;
@@ -22,11 +23,13 @@ public enum TransactionType {
      * @return true if this TransactionType is kind of expanse
      */
     public boolean isExpanses() {
-        return this == CREDIT_CARD_PAYMENT || this == ONE_TIME_PAYMENT_ORDER;
+        return !isRevenues();
     }
 
     public String toLocaleString() {
         switch (this) {
+            case ATM_WITHDRAWAL:
+                return "Výběr z bankomatu";
             case CREDIT_CARD_PAYMENT:
                 return "Transakce platební kartou";
             case INCOMING_PAYMENT:

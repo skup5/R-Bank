@@ -10,7 +10,8 @@ import java.util.List;
  */
 public interface PaymentTransactionDao extends GenericDao<PaymentTransaction> {
 
-    List<PaymentTransaction> findByClientAccountNumber(String accountNumber);
-
     List<PaymentTransaction> findByClientAccountNumber(String accountNumber, TransactionState state);
+
+    List<PaymentTransaction> findByClientAccountNumber(String accountNumber, List<TransactionState> states);
+
 }

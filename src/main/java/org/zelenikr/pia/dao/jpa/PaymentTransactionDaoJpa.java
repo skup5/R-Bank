@@ -23,21 +23,6 @@ public class PaymentTransactionDaoJpa extends GenericDaoJpa<PaymentTransaction> 
     }
 
     @Override
-    public List<PaymentTransaction> findByClientAccountNumber(String accountNumber) {
-        TypedQuery<PaymentTransaction> q = em.createQuery(
-                "SELECT p FROM PaymentTransaction p " +
-                        "WHERE p.clientAccount.accountNumber = :an " +
-                        "ORDER BY p.dueDate DESC ",
-                PaymentTransaction.class);
-        q.setParameter("an", accountNumber);
-        try {
-            return q.getResultList();
-        } catch (NoResultException e) {
-            return Collections.emptyList();
-        }
-    }
-
-    @Override
     public List<PaymentTransaction> findByClientAccountNumber(String accountNumber, TransactionState state) {
         TypedQuery<PaymentTransaction> q = em.createQuery(
                 "SELECT p FROM PaymentTransaction p " +
@@ -53,5 +38,20 @@ public class PaymentTransactionDaoJpa extends GenericDaoJpa<PaymentTransaction> 
         }
     }
 
-    
+    @Override
+    public List<PaymentTransaction> findByClientAccountNumber(String accountNumber, List<TransactionState> states) {
+        TypedQuery<PaymentTransaction> q = em.createQuery(
+                "SELECT p FROM PaymentTransaction p " +
+                        "WHERE p.clientAccount.accountNumber = :an AND p.state IN :states " +
+                        "ORDER BY p.dueDate DESC ",
+                PaymentTransaction.class);
+        q.setParameter("an", accountNumber);
+        q.setParameter("states", states);
+        try {
+            return q.getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+    }
+
 }

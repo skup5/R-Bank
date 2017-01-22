@@ -15,9 +15,7 @@ import org.zelenikr.pia.validation.exception.OffsetAccountValidationException;
 import org.zelenikr.pia.validation.exception.PaymentTransactionValidationException;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Roman Zelenik
@@ -154,11 +152,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
 
     @Override
     public List<PaymentTransaction> findAllByClientAccount(String accountNumber) {
-        return paymentTransactionDao.findByClientAccountNumber(accountNumber);
-//        List<PaymentTransaction> exp = findAllExpensesByClientAccount(accountNumber);
-//        List<PaymentTransaction> rev = findAllRevenuesByClientAccount(accountNumber);
-//        return new SortedList<PaymentTransaction>()
-
+        return paymentTransactionDao.findByClientAccountNumber(accountNumber, Arrays.asList(TransactionState.RECEIVED, TransactionState.SENT));
     }
 
     @Override
