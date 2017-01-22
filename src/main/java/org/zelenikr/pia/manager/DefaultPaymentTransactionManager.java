@@ -60,7 +60,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
 
     @Override
     public void preparePayment(PaymentTransaction newPaymentTransaction, Client payer, String payerAccountNumber) throws PaymentTransactionValidationException, OffsetAccountValidationException, BankAccountValidationException {
-        //TODO: validate
+        // validate
         if (!newPaymentTransaction.isNew()) {
             throw new RuntimeException("Payment already exists, use verify or cancel method.");
         }
@@ -82,7 +82,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
             throw new BankAccountValidationException("There isn't enough money in this bank account.");
         }
 
-        //TODO: insert payment
+        // insert payment
         newPaymentTransaction.setState(TransactionState.CREATED);
         newPaymentTransaction = paymentTransactionDao.save(newPaymentTransaction);
         newPaymentTransaction.setClientAccount(payerAccount);
@@ -94,7 +94,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
     public boolean verifyPayment(long transactionId, String code) throws BankAccountValidationException {
         PaymentTransaction transaction = paymentTransactionDao.findOne(transactionId);
 
-        //TODO: check transaction (not null, state, type)
+        // check transaction (not null, state, type)
         if (transaction == null) {
             throw new RuntimeException("Payment transaction with this id doesn't exist.");
         }
@@ -109,8 +109,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
             throw new BankAccountValidationException("There isn't enough money in this bank account.");
         }
 
-        //TODO: verify code
-        // verified
+        // verify code
         if (transactinVerifier.verifyObject(transaction, code)) {
             transactinVerifier.forgetObject(transaction);
 
@@ -119,11 +118,11 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
             // money transfer
             transfer(transaction);
 
-            //TODO: change transaction state
+            // change transaction state
 //            transaction.setState(TransactionState.WAITING);
             transaction.setState(TransactionState.SENT);
 
-            // TODO: amount * (-1)
+            // amount * (-1)
             transaction.setAmount(transaction.getAmount().negate());
             paymentTransactionDao.save(transaction);
             return true;
@@ -136,7 +135,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
     public void cancelPayment(long transactionId) {
         PaymentTransaction transaction = paymentTransactionDao.findOne(transactionId);
 
-        //TODO: check transaction (not null, state)
+        // check transaction (not null, state)
         if (transaction == null) {
 //            throw new RuntimeException("Payment transaction with this id doesn't exist.");
             return;
@@ -168,10 +167,10 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         if (transaction.isNew()) {
             throw new RuntimeException("Payment transaction doesn't exist.");
         }
-        //TODO: generate code
+        // generate code
         String verifyCode = transactinVerifier.generateCode(transaction);
 
-        //TODO: send code
+        // send code
         Client payer = transaction.getClientAccount().getOwner();
         if (codeSender.send(verifyCode, payer, transaction)) {
             // successfully sent
@@ -180,23 +179,23 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         }
     }
 
-    public void sendNewCode(PaymentTransaction transaction, Client payer) {
-        if (transaction.isNew()) {
-            throw new RuntimeException("Payment transaction doesn't exist.");
-        }
-        if (payer.isNew()) {
-            throw new RuntimeException("Payer of payment doesn't exist!");
-        }
-        //TODO: generate code
-        String verifyCode = transactinVerifier.generateCode(transaction);
-
-        //TODO: send code
-        if (codeSender.send(verifyCode, payer, transaction)) {
-            // successfully sent
-        } else {
-            throw new RuntimeException("Could not send verify code.");
-        }
-    }
+//    public void sendNewCode(PaymentTransaction transaction, Client payer) {
+//        if (transaction.isNew()) {
+//            throw new RuntimeException("Payment transaction doesn't exist.");
+//        }
+//        if (payer.isNew()) {
+//            throw new RuntimeException("Payer of payment doesn't exist!");
+//        }
+//        // generate code
+//        String verifyCode = transactinVerifier.generateCode(transaction);
+//
+//        // send code
+//        if (codeSender.send(verifyCode, payer, transaction)) {
+//            // successfully sent
+//        } else {
+//            throw new RuntimeException("Could not send verify code.");
+//        }
+//    }
 
     private void transfer(PaymentTransaction transaction) {
         BankAccount payeeBankAccount = bankAccountDao.findByAccountNumber(transaction.getOffsetAccount().getOffsetAccountNumber());

@@ -30,7 +30,8 @@ mixin paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, input
             datalist#bankCodeList
                 if bankCodes
                     each code in bankCodes
-                        option(value=code)
+                        option(value=code.getCode())
+                            | #{code.getCode()} - #{code.getBankName()}
     .form-group
         label.control-label.col-sm-5(for="inputAmount" class=requiredInputs ? "required-input" : "") Částka
         .col-sm-7: input(type="text" id="inputAmount" name="inputAmount" value=inputAmount class="form-control text-right" placeholder="" required=requiredInputs)

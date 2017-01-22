@@ -19,6 +19,8 @@ import java.util.Map;
 public class PaymentOrderView extends AbstractClientView {
 
     private static final String
+            BANK_CODES_ATTRIBUTE = "bankCodes",
+            CURRENCIES_ATTRIBUTE = "currencies",
             REQUIRED_INPUTS_ATTRIBUTE = "requiredInputs",
             PREPARED_TRANSACTION_ATTRIBUTE = "preparedTransaction",
             VERIFICATION_CODE_LENGTH_ATTRIBUTE = "verificationCodeLength",
@@ -44,6 +46,8 @@ public class PaymentOrderView extends AbstractClientView {
         } else {
             vars = new HashMap<>();
         }
+        vars.put(BANK_CODES_ATTRIBUTE, req.getAttribute(BANK_CODES_ATTRIBUTE));
+        vars.put(CURRENCIES_ATTRIBUTE, req.getAttribute(CURRENCIES_ATTRIBUTE));
         vars.put(REQUIRED_INPUTS_ATTRIBUTE, req.getAttribute(REQUIRED_INPUTS_ATTRIBUTE));
         vars.put(PREPARED_TRANSACTION_ATTRIBUTE, req.getAttribute(PREPARED_TRANSACTION_ATTRIBUTE));
         vars.put(VERIFICATION_CODE_LENGTH_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE));

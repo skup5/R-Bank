@@ -1,7 +1,9 @@
 package org.zelenikr.pia.web.servlet.spring.controller.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.zelenikr.pia.bankcode.BankCodeManager;
 import org.zelenikr.pia.domain.*;
+import org.zelenikr.pia.manager.CurrencyManager;
 import org.zelenikr.pia.manager.PaymentTransactionManager;
 import org.zelenikr.pia.validation.exception.BankAccountValidationException;
 import org.zelenikr.pia.validation.exception.OffsetAccountValidationException;
@@ -37,6 +39,8 @@ public class NewPaymentOrderController extends AbstractClientController {
 
     //    private static final String BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts";
     private static final String
+            BANK_CODES_ATTRIBUTE = "bankCodes",
+            CURRENCIES_ATTRIBUTE = "currencies",
             REQUIRED_INPUTS_ATTRIBUTE = "requiredInputs",
             PREPARED_TRANSACTION_ATTRIBUTE = "preparedTransaction",
             VERIFICATION_CODE_LENGTH_ATTRIBUTE = "verificationCodeLength",
@@ -67,6 +71,8 @@ public class NewPaymentOrderController extends AbstractClientController {
 
     private PaymentTransactionManager transactionManager;
     private VerificationSettings verificationSettings;
+    private BankCodeManager bankCodeManager;
+    private CurrencyManager currencyManager;
 
     @Autowired
     public void setTransactionManager(PaymentTransactionManager transactionManager) {
@@ -76,6 +82,16 @@ public class NewPaymentOrderController extends AbstractClientController {
     @Autowired
     public void setVerificationSettings(VerificationSettings verificationSettings) {
         this.verificationSettings = verificationSettings;
+    }
+
+    @Autowired
+    public void setBankCodeManager(BankCodeManager bankCodeManager) {
+        this.bankCodeManager = bankCodeManager;
+    }
+
+    @Autowired
+    public void setCurrencyManager(CurrencyManager currencyManager) {
+        this.currencyManager = currencyManager;
     }
 
     @Override
@@ -93,6 +109,8 @@ public class NewPaymentOrderController extends AbstractClientController {
         log("doGet()");
         req.setAttribute(REQUIRED_INPUTS_ATTRIBUTE, true);
         req.setAttribute(BANK_ACCOUNTS_ATTRIBUTE, getClientBankAccounts(req));
+        req.setAttribute(BANK_CODES_ATTRIBUTE, bankCodeManager.getBankCodes());
+        req.setAttribute(CURRENCIES_ATTRIBUTE, currencyManager.getAvailableCurrencies());
         dispatch(req, resp);
     }
 
@@ -100,7 +118,8 @@ public class NewPaymentOrderController extends AbstractClientController {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String formAction = req.getParameter(ACTION_PARAMETER);
         if (formAction == null) {
-            errorDispatch("Invalid action!", req, resp);
+            req.setAttribute(ERROR_ATTRIBUTE,"Invalid action!");
+            doGet(req,resp);
         } else {
             doAction(formAction, req, resp);
         }
@@ -118,13 +137,13 @@ public class NewPaymentOrderController extends AbstractClientController {
                 doCancelTransaction(request, response);
                 break;
             default:
-                errorDispatch("Invalid action!", request, response);
+                request.setAttribute(ERROR_ATTRIBUTE,"Invalid action!");
+                doGet(request,response);
                 break;
         }
     }
 
     private void doCreateTransaction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO: get form parameters
         String dateStr = req.getParameter(DATE_PARAMETER),
                 accountNumber = req.getParameter(ACCOUNT_NUMBER_PARAMETER),
                 offset = req.getParameter(OFFSET_PARAMETER),
@@ -135,23 +154,23 @@ public class NewPaymentOrderController extends AbstractClientController {
                 specificSymbol = req.getParameter(SPECIFIC_SYMBOL_PARAMETER),
                 message = req.getParameter(MESSAGE_PARAMETER);
 
-        req.setAttribute(REQUIRED_INPUTS_ATTRIBUTE, true);
-        req.setAttribute(BANK_ACCOUNTS_ATTRIBUTE, getClientBankAccounts(req));
         req.setAttribute(COPY_PARAMETERS_ATTRIBUTE, true);
 
-        // TODO: validate form parameters
+        // validate form parameters
         Date dueDate = null;
         try {
             dueDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
         } catch (ParseException e) {
-            errorDispatch(e.getLocalizedMessage(), req, resp);
+            req.setAttribute(ERROR_ATTRIBUTE,e.getLocalizedMessage());
+            doGet(req,resp);
             return;
         }
         BigDecimal amount = null;
         try {
             amount = new BigDecimal(amountStr);
         } catch (NumberFormatException e) {
-            errorDispatch("Invalid amount format.", req, resp);
+            req.setAttribute(ERROR_ATTRIBUTE,"Invalid amount format.");
+            doGet( req, resp);
             return;
         }
         PaymentTransaction transaction = new PaymentTransaction(
@@ -165,10 +184,12 @@ public class NewPaymentOrderController extends AbstractClientController {
         try {
             transactionManager.preparePayment(transaction, getAuthenticatedClient(req), accountNumber);
         } catch (PaymentTransactionValidationException | OffsetAccountValidationException | BankAccountValidationException e) {
-            errorDispatch(e.getLocalizedMessage(), req, resp);
+            req.setAttribute(ERROR_ATTRIBUTE,e.getLocalizedMessage());
+            doGet(req,resp);
             return;
         }
 
+        req.removeAttribute(COPY_PARAMETERS_ATTRIBUTE);
         req.getSession().setAttribute(PREPARED_TRANSACTION_SESSION, transaction);
         req.setAttribute(PREPARED_TRANSACTION_ATTRIBUTE, transaction);
         req.setAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE, verificationSettings.getCodeLength());
@@ -184,7 +205,7 @@ public class NewPaymentOrderController extends AbstractClientController {
                 req.getSession().removeAttribute(PREPARED_TRANSACTION_SESSION);
                 dispatch(SUCCESS_TEMPLATE_PATH, req, resp);
             } else {
-                req.setAttribute(ERROR_ATTRIBUTE,"Invalid verification code");
+                req.setAttribute(ERROR_ATTRIBUTE, "Invalid verification code");
                 doCancelTransaction(req, resp);
             }
         } catch (BankAccountValidationException e) {

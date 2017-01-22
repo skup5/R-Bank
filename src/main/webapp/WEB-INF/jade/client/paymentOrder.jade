@@ -21,8 +21,6 @@ block content
                     span.help-block#helpText
                         span.required-input
                         | Povinná položka
-
-                    - var bankCodes = ["0300", "0100"]
                     if preparedTransaction
                         +paymentOrderFromTransaction(requiredInputs, bankAccounts, bankCodes, preparedTransaction)
                     else

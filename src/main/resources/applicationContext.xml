@@ -101,4 +101,16 @@
         <constructor-arg name="configuration" ref="jadeConfiguration"/>
     </bean>
 
+    <!-- Bank codes -->
+
+    <bean id="rbankBankCode" class="org.zelenikr.pia.bankcode.BankCode">
+        <constructor-arg name="bankName" value="PIA R-Bank"/>
+        <constructor-arg name="code" value="6666"/>
+    </bean>
+
+    <bean id="bankCodeManager" class="org.zelenikr.pia.bankcode.OnlineBankCodeManager">
+        <constructor-arg name="localBankCode" ref="rbankBankCode"/>
+        <constructor-arg name="url" value="https://www.cnb.cz/cs/platebni_styk/ucty_kody_bank/download/kody_bank_CR.csv"/>
+    </bean>
+
 </beans>
