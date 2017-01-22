@@ -7,19 +7,18 @@ block content
         .col-lg-9.col-md-9.col-sm-9
             main.main
                 .page-header: h1: small Přehled
+                .page-header: h2
+                    small="Zůstatek "
+                        if actualAccount
+                            | #{actualAccount.getSum()} #{actualAccount.getCurrency().name()}
                 form.form-inline(method="post")
                     .form-group
                         label.control-label(for="selectAccount") Účet
                         select.form-control(id="selectAccount" name="selectAccount" required)
                             each account in bankAccounts
-                                option(value=account.getAccountNumber() selected=account.getAccountNumber() == selectAccount)
+                                option(value=account.getAccountNumber() selected=actualAccount && account.getAccountNumber() == actualAccount.getAccountNumber())
                                     | #{account.getAccountNumber()} (#{account.getCurrency().name()})
-                    .form-group
-                        button.btn.btn-primary(type="submit") Zobrazit
-                    if actualAccount
                         .form-group
-                            label.control-label Zůstatek
-                            p.form-control-static
-                                | #{actualAccount.getSum()} #{actualAccount.getCurrency().name()}
+                            button.btn.btn-primary(type="submit") Zobrazit
                 if transactions != null
                     include accountStatementTemplate

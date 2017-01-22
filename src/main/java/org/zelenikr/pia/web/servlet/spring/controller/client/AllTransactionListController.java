@@ -19,14 +19,19 @@ public class AllTransactionListController extends AbstractTransactionListControl
     private static final String TEMPLATE_PATH = "client/allPayments";
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doGet(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String accountNumber = req.getParameter(ACCOUNT_NUMBER_PARAMETER);
-        BankAccount actualAccount = bankAccountManager.findBy(accountNumber, getAuthenticatedClient(req).getId());
-        req.setAttribute(TRANSACTION_LIST_ATTRIBUTE, transactionManager.findAllByClientAccount(accountNumber));
-        req.setAttribute(BANK_ACCOUNTS_ATTRIBUTE, getClientBankAccounts(req));
+        super.doPost(req, resp);
+    }
+
+    @Override
+    protected void loadStatement(HttpServletRequest req, BankAccount actualAccount){
+        req.setAttribute(TRANSACTION_LIST_ATTRIBUTE, transactionManager.findAllByClientAccount(actualAccount.getAccountNumber()));
         req.setAttribute(ACTUAL_BANK_ACCOUNT_ATTRIBUTE, actualAccount);
-        req.setAttribute(COPY_PARAMETERS_ATTRIBUTE, true);
-        dispatch(req, resp);
     }
 
     @Override
