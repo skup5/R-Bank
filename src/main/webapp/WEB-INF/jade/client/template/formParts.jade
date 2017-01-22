@@ -1,7 +1,10 @@
-mixin paymentOrder(requiredInputs, bankAccounts, bankCodes, transaction)
-    +paymentOrder(requiredInputs, transaction.getDueDate(), transaction.getClientAccount().getAccountNumber(),
-    bankAccounts, transaction.getOffsetAccount().getOffsetAccountNumber(), transaction.getOffsetAccount().getBankCode,
-    bankCodes, transaction.getAmount(), transaction.getConstSymbol(), transaction.getVariableSymbol(), transaction.getSpecificSymbol(), transaction.getMessage)
+mixin paymentOrderFromTransaction(requiredInputs, bankAccounts, bankCodes, transaction)
+    - var _selectedBankAccount = transaction.getClientAccount() ? transaction.getClientAccount().getAccountNumber() : ""
+    - var _offsetAccount = transaction.getOffsetAccount()
+    - var _offseetAccountNumber = _offsetAccount ? _offsetAccount.getOffsetAccountNumber() : ""
+    - var _bankCode = _offsetAccount ? _offsetAccount.getBankCode() : ""
+    +paymentOrder(requiredInputs, DateHelper.toString(transaction.getDueDate()), _selectedBankAccount, bankAccounts, _offseetAccountNumber, _bankCode,
+    bankCodes, transaction.getAmount(), transaction.getConstSymbol(), transaction.getVariableSymbol(), transaction.getSpecificSymbol(), transaction.getMessage())
 
 mixin paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
     .form-group
@@ -25,8 +28,9 @@ mixin paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, input
             input(type="text" id="inputBankCode" name="inputBankCode" value=inputBankCode list="bankCodeList" class="form-control text-right" placeholder="####" required=requiredInputs
             pattern="\\d{4}" maxlength=4)
             datalist#bankCodeList
-                each code in bankCodes
-                    option(value=code)
+                if bankCodes
+                    each code in bankCodes
+                        option(value=code)
     .form-group
         label.control-label.col-sm-5(for="inputAmount" class=requiredInputs ? "required-input" : "") Částka
         .col-sm-7: input(type="text" id="inputAmount" name="inputAmount" value=inputAmount class="form-control text-right" placeholder="" required=requiredInputs)

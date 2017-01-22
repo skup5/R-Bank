@@ -11,6 +11,8 @@ block content
             main.main
                 if success
                     +dismiss-alert("alert-success", success)
+                if warning
+                    +dismiss-alert("alert-warning", warning)
                 if err
                     +dismiss-alert("alert-danger", err)
 
@@ -22,7 +24,7 @@ block content
 
                     - var bankCodes = ["0300", "0100"]
                     if preparedTransaction
-                        +paymentOrder(requiredInputs, bankAccounts, bankCodes, preparedTransaction)
+                        +paymentOrderFromTransaction(requiredInputs, bankAccounts, bankCodes, preparedTransaction)
                     else
                         +paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
                     .form-group

@@ -59,7 +59,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
     }
 
     @Override
-    public PaymentTransaction preparePayment(PaymentTransaction newPaymentTransaction, Client payer, String payerAccountNumber) throws PaymentTransactionValidationException, OffsetAccountValidationException, BankAccountValidationException {
+    public void preparePayment(PaymentTransaction newPaymentTransaction, Client payer, String payerAccountNumber) throws PaymentTransactionValidationException, OffsetAccountValidationException, BankAccountValidationException {
         //TODO: validate
         if (!newPaymentTransaction.isNew()) {
             throw new RuntimeException("Payment already exists, use verify or cancel method.");
@@ -88,7 +88,6 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         newPaymentTransaction.setClientAccount(payerAccount);
         newPaymentTransaction = paymentTransactionDao.save(newPaymentTransaction);
         sendNewCode(newPaymentTransaction);
-        return newPaymentTransaction;
     }
 
     @Override

@@ -44,7 +44,8 @@ public class NewPaymentOrderController extends AbstractClientController {
 
     private static final String
             CREATE_TRANSACTION_ACTION = "pay",
-            VERIFY_TRANSACTION_ACTION = "verify";
+            VERIFY_TRANSACTION_ACTION = "verify",
+            CANCEL_TRANSACTION_ACTION = "cancel";
 
     /*
      ### Form inputs ###
@@ -99,7 +100,7 @@ public class NewPaymentOrderController extends AbstractClientController {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String formAction = req.getParameter(ACTION_PARAMETER);
         if (formAction == null) {
-            // TODO: error
+            errorDispatch("Invalid action!", req, resp);
         } else {
             doAction(formAction, req, resp);
         }
@@ -113,8 +114,11 @@ public class NewPaymentOrderController extends AbstractClientController {
             case VERIFY_TRANSACTION_ACTION:
                 doVerifyTransaction(request, response);
                 break;
+            case CANCEL_TRANSACTION_ACTION:
+                doCancelTransaction(request, response);
+                break;
             default:
-                // TODO: unknown action
+                errorDispatch("Invalid action!", request, response);
                 break;
         }
     }
@@ -165,16 +169,6 @@ public class NewPaymentOrderController extends AbstractClientController {
             return;
         }
 
-//        req.setAttribute(PREPARED_TRANSACTION_ATTRIBUTE, transaction);
-//        req.getRequestDispatcher("/controller/client/verify-payment-order").forward(req, resp);
-
-        /*#####  FROM VerifyPaymentOrder  #####*/
-
-        //        if (req.getParameter(CANCEL_TRANSACTION_PARAMETER) != null) {
-//            transactionManager.cancelPayment(transaction.getId());
-//            resp.sendRedirect("/client");
-//            return;
-//        }
         req.getSession().setAttribute(PREPARED_TRANSACTION_SESSION, transaction);
         req.setAttribute(PREPARED_TRANSACTION_ATTRIBUTE, transaction);
         req.setAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE, verificationSettings.getCodeLength());
@@ -190,16 +184,19 @@ public class NewPaymentOrderController extends AbstractClientController {
                 req.getSession().removeAttribute(PREPARED_TRANSACTION_SESSION);
                 dispatch(SUCCESS_TEMPLATE_PATH, req, resp);
             } else {
-                // wrong code
-//                req.setAttribute(ERROR_ATTRIBUTE, "Invalid verification");
-//                req.setAttribute(PREPARED_TRANSACTION_ATTRIBUTE, transaction);
-//                req.getRequestDispatcher("/client/payment-order").forward(req, resp);
-                transactionManager.cancelPayment(transaction.getId());
-
-                errorDispatch("Invalid verification code", req, resp);
+                req.setAttribute(ERROR_ATTRIBUTE,"Invalid verification code");
+                doCancelTransaction(req, resp);
             }
         } catch (BankAccountValidationException e) {
             errorDispatch(e.getLocalizedMessage(), req, resp);
         }
+    }
+
+    private void doCancelTransaction(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        PaymentTransaction transaction = (PaymentTransaction) req.getSession().getAttribute(PREPARED_TRANSACTION_SESSION);
+        req.setAttribute(PREPARED_TRANSACTION_ATTRIBUTE, transaction);
+        transactionManager.cancelPayment(transaction.getId());
+        req.setAttribute(WARNING_ATTRIBUTE, "Transaction was canceled");
+        doGet(req, resp);
     }
 }

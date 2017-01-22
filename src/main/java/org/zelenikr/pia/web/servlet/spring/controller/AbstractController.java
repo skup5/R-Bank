@@ -84,4 +84,18 @@ public abstract class AbstractController extends AbstractServlet {
         req.setAttribute(ERROR_ATTRIBUTE, err);
         dispatch(req, resp);
     }
+
+    /**
+     * Forward with default template path and specific warning message.
+     *
+     * @param warning warning message
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void warningDispatch(String warning, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute(WARNING_ATTRIBUTE, warning);
+        dispatch(req, resp);
+    }
 }

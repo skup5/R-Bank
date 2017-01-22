@@ -16,12 +16,8 @@ public class Helpers {
             return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         }
 
-        public String toLocaleDateString() {
-            String format = "";
-            return new SimpleDateFormat().format(new Date());
+        public String toString(Date date) {
+            return date == null ? "" : new SimpleDateFormat("yyyy-MM-dd").format(date);
         }
-//        public String localDate(String date){
-//            new SimpleDateFormat().p
-//        }
     }
 }

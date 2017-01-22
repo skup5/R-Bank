@@ -51,6 +51,7 @@ public class PaymentOrderView extends AbstractClientView {
         vars.put(BANK_ACCOUNTS_ATTRIBUTE, req.getAttribute(BANK_ACCOUNTS_ATTRIBUTE));
         vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
         vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
+        vars.put(WARNING_ATTRIBUTE, req.getAttribute(WARNING_ATTRIBUTE));
         vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));
         try {
             resp.setContentType("text/html");

@@ -17,6 +17,7 @@ public abstract class AbstractServlet extends HttpServlet {
 
     protected static final String ERROR_ATTRIBUTE = "err";
     protected static final String SUCCESS_ATTRIBUTE = "success";
+    protected static final String WARNING_ATTRIBUTE = "warning";
 
     protected AutowireCapableBeanFactory ctx;
 
