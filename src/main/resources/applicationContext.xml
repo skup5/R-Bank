@@ -108,9 +108,12 @@
         <constructor-arg name="code" value="6666"/>
     </bean>
 
-    <bean id="bankCodeManager" class="org.zelenikr.pia.bankcode.OnlineBankCodeManager">
+    <bean id="csvLoader" class="org.zelenikr.pia.utils.WebCSVLoader"></bean>
+
+    <bean id="bankCodeManager" class="org.zelenikr.pia.bankcode.CSVBankCodeManager">
+        <constructor-arg name="loader" ref="csvLoader"/>
         <constructor-arg name="localBankCode" ref="rbankBankCode"/>
-        <constructor-arg name="url" value="https://www.cnb.cz/cs/platebni_styk/ucty_kody_bank/download/kody_bank_CR.csv"/>
+        <constructor-arg name="source" value="https://www.cnb.cz/cs/platebni_styk/ucty_kody_bank/download/kody_bank_CR.csv"/>
     </bean>
 
 </beans>
