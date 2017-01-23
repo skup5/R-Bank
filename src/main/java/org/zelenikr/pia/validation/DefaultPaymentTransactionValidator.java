@@ -3,6 +3,7 @@ package org.zelenikr.pia.validation;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.zelenikr.pia.domain.Currency;
 import org.zelenikr.pia.domain.PaymentTransaction;
 import org.zelenikr.pia.domain.TransactionState;
 import org.zelenikr.pia.domain.TransactionType;
@@ -28,14 +29,20 @@ public class DefaultPaymentTransactionValidator implements PaymentTransactionVal
     @Override
     public void validate(PaymentTransaction transaction) throws PaymentTransactionValidationException, OffsetAccountValidationException {
         validateAmount(transaction.getAmount());
+        validateCurrency(transaction.getCurrency());
         validateDueDate(transaction.getDueDate());
         validateState(transaction.getState());
         validateType(transaction.getType());
         offsetAccountValidator.validate(transaction.getOffsetAccount());
     }
 
+    private void validateCurrency(Currency currency) throws PaymentTransactionValidationException {
+        if(currency == null) throw new PaymentTransactionValidationException("Payment currency is a required field");
+
+    }
+
     private void validateType(TransactionType type) throws PaymentTransactionValidationException {
-        if(type == null) throw new PaymentTransactionValidationException("Payment tye is a required field");
+        if(type == null) throw new PaymentTransactionValidationException("Payment type is a required field");
     }
 
     private void validateState(TransactionState state) throws PaymentTransactionValidationException {

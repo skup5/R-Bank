@@ -21,6 +21,7 @@ public abstract class AbstractPaymentOrder extends BaseObject {
     protected BankAccount clientAccount;
     protected OffsetAccount offsetAccount;
     protected BigDecimal amount;
+    protected Currency currency;
     protected String constSymbol;
     protected String variableSymbol;
     protected String specificSymbol;
@@ -29,9 +30,10 @@ public abstract class AbstractPaymentOrder extends BaseObject {
     public AbstractPaymentOrder() {
     }
 
-    public AbstractPaymentOrder(Date dueDate, BigDecimal amount, OffsetAccount offsetAccount, String constSymbol, String variableSymbol, String specificSymbol, String message) {
+    public AbstractPaymentOrder(Date dueDate, BigDecimal amount, Currency currency, OffsetAccount offsetAccount, String constSymbol, String variableSymbol, String specificSymbol, String message) {
         this.dueDate = dueDate;
         this.amount = amount;
+        this.currency = currency;
         this.offsetAccount = offsetAccount;
         this.constSymbol = constSymbol;
         this.variableSymbol = variableSymbol;
@@ -79,6 +81,15 @@ public abstract class AbstractPaymentOrder extends BaseObject {
         this.amount = amount;
     }
 
+    @Enumerated(EnumType.STRING)
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
     public String getConstSymbol() {
         return constSymbol;
     }
@@ -119,8 +130,10 @@ public abstract class AbstractPaymentOrder extends BaseObject {
         AbstractPaymentOrder that = (AbstractPaymentOrder) o;
 
         if (dueDate != null ? !dueDate.equals(that.dueDate) : that.dueDate != null) return false;
-        if (offsetAccount != null ? !offsetAccount.equals(that.offsetAccount) : that.offsetAccount != null) return false;
+        if (offsetAccount != null ? !offsetAccount.equals(that.offsetAccount) : that.offsetAccount != null)
+            return false;
         if (amount != null ? !amount.equals(that.amount) : that.amount != null) return false;
+        if (currency != that.currency) return false;
         if (constSymbol != null ? !constSymbol.equals(that.constSymbol) : that.constSymbol != null) return false;
         if (variableSymbol != null ? !variableSymbol.equals(that.variableSymbol) : that.variableSymbol != null)
             return false;
@@ -134,6 +147,7 @@ public abstract class AbstractPaymentOrder extends BaseObject {
         int result = dueDate != null ? dueDate.hashCode() : 0;
         result = 31 * result + (offsetAccount != null ? offsetAccount.hashCode() : 0);
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
+        result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (constSymbol != null ? constSymbol.hashCode() : 0);
         result = 31 * result + (variableSymbol != null ? variableSymbol.hashCode() : 0);
         result = 31 * result + (specificSymbol != null ? specificSymbol.hashCode() : 0);
@@ -147,6 +161,7 @@ public abstract class AbstractPaymentOrder extends BaseObject {
         sb.append("{dueDate=").append(dueDate);
         sb.append(", offsetAccount=").append(offsetAccount);
         sb.append(", amount=").append(amount);
+        sb.append(", currency=").append(currency);
         sb.append(", constSymbol=").append(constSymbol);
         sb.append(", variableSymbol=").append(variableSymbol);
         sb.append(", specificSymbol=").append(specificSymbol);

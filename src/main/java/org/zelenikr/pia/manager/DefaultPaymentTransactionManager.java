@@ -15,6 +15,7 @@ import org.zelenikr.pia.validation.exception.OffsetAccountValidationException;
 import org.zelenikr.pia.validation.exception.PaymentTransactionValidationException;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -27,15 +28,15 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
 
     private static final String OUR_BANK_CODE = "6666";
 
-    private TransactionVerifier transactinVerifier;
+    private TransactionVerifier transactionVerifier;
     private VerificationCodeSender codeSender;
     private PaymentTransactionDao paymentTransactionDao;
     private PaymentTransactionValidator paymentTransactionValidator;
     private BankAccountDao bankAccountDao;
 
     @Autowired
-    public void setTransactinVerifier(TransactionVerifier transactinVerifier) {
-        this.transactinVerifier = transactinVerifier;
+    public void setTransactionVerifier(TransactionVerifier transactionVerifier) {
+        this.transactionVerifier = transactionVerifier;
     }
 
     @Autowired
@@ -67,9 +68,6 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         if (payer.isNew()) {
             throw new RuntimeException("Payer of payment doesn't exist!");
         }
-//        if (payerAccount.isNew()) {
-//            throw new RuntimeException("Payer's bank account doesn't exist.");
-//        }
 
         BankAccount payerAccount = bankAccountDao.findByAccountNumberWithOwner(payerAccountNumber, payer.getId());
         if (payerAccount == null) {
@@ -110,8 +108,8 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         }
 
         // verify code
-        if (transactinVerifier.verifyObject(transaction, code)) {
-            transactinVerifier.forgetObject(transaction);
+        if (transactionVerifier.verifyObject(transaction, code)) {
+            transactionVerifier.forgetObject(transaction);
 
             account.deduct(transaction.getAmount());
             bankAccountDao.save(account);
@@ -141,7 +139,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
             return;
         }
         if (transaction.getState() == TransactionState.CREATED || transaction.getState() == TransactionState.WAITING) {
-            transactinVerifier.forgetObject(transaction);
+            transactionVerifier.forgetObject(transaction);
             paymentTransactionDao.remove(transaction);
         } else {
             throw new IllegalStateException("Payment transaction is in illegal state.");
@@ -168,7 +166,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
             throw new RuntimeException("Payment transaction doesn't exist.");
         }
         // generate code
-        String verifyCode = transactinVerifier.generateCode(transaction);
+        String verifyCode = transactionVerifier.generateCode(transaction);
 
         // send code
         Client payer = transaction.getClientAccount().getOwner();
@@ -202,9 +200,12 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         payeeBankAccount.add(transaction.getAmount());
         bankAccountDao.save(payeeBankAccount);
 
+        BigDecimal amount = transaction.getAmount();
+        // TODO: přepočítat amount
+
         PaymentTransaction payeeTransaction = new PaymentTransaction(
                 TransactionType.INCOMING_PAYMENT, TransactionState.RECEIVED,
-                transaction.getDueDate(), transaction.getAmount(),
+                transaction.getDueDate(), amount, payeeBankAccount.getCurrency(),
                 new OffsetAccount(transaction.getClientAccount().getAccountNumber(), OUR_BANK_CODE),
                 transaction.getConstSymbol(), transaction.getVariableSymbol(), transaction.getSpecificSymbol(),
                 transaction.getMessage());

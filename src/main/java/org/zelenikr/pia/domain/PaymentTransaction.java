@@ -16,7 +16,8 @@ import java.util.Date;
 @AttributeOverrides({
         @AttributeOverride(name = "dueDate", column = @Column(nullable = false)),
         @AttributeOverride(name = "amount", column = @Column(nullable = false)),
-        @AttributeOverride(name = "clientAccount", column = @Column(nullable = false))
+        @AttributeOverride(name = "clientAccount", column = @Column(nullable = false)),
+        @AttributeOverride(name = "currency", column = @Column(nullable = false))
 })
 @BatchSize(size = 100)
 public class PaymentTransaction extends AbstractPaymentOrder {
@@ -28,14 +29,14 @@ public class PaymentTransaction extends AbstractPaymentOrder {
         super();
     }
 
-    public PaymentTransaction(TransactionType type, Date dueDate, BigDecimal amount, OffsetAccount offsetAccount, String constSymbol, String variableSymbol, String specificSymbol, String message) {
-        this(type, TransactionState.CREATED, dueDate, amount, offsetAccount, constSymbol, variableSymbol, specificSymbol, message);
+    public PaymentTransaction(TransactionType type, Date dueDate, BigDecimal amount, Currency currency, OffsetAccount offsetAccount, String constSymbol, String variableSymbol, String specificSymbol, String message) {
+        this(type, TransactionState.CREATED, dueDate, amount, currency, offsetAccount, constSymbol, variableSymbol, specificSymbol, message);
     }
 
-    public PaymentTransaction(TransactionType type, TransactionState state, Date dueDate, BigDecimal amount, OffsetAccount offsetAccount, String constSymbol, String variableSymbol, String specificSymbol, String message) {
-        super(dueDate, amount, offsetAccount, constSymbol, variableSymbol, specificSymbol, message);
-        this.type = type;
+    public PaymentTransaction(TransactionType type, TransactionState state, Date dueDate, BigDecimal amount, Currency currency, OffsetAccount offsetAccount, String constSymbol, String variableSymbol, String specificSymbol, String message) {
+        super(dueDate, amount, currency, offsetAccount, constSymbol, variableSymbol, specificSymbol, message);
         this.state = state;
+        this.type = type;
     }
 
 

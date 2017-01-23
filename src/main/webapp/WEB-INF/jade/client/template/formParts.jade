@@ -1,12 +1,13 @@
-mixin paymentOrderFromTransaction(requiredInputs, bankAccounts, bankCodes, transaction)
+mixin paymentOrderFromTransaction(requiredInputs, bankAccounts, bankCodes, currencies, transaction)
     - var _selectedBankAccount = transaction.getClientAccount() ? transaction.getClientAccount().getAccountNumber() : ""
     - var _offsetAccount = transaction.getOffsetAccount()
     - var _offseetAccountNumber = _offsetAccount ? _offsetAccount.getOffsetAccountNumber() : ""
     - var _bankCode = _offsetAccount ? _offsetAccount.getBankCode() : ""
+    - var _selectedCurrency = transaction.getCurrency() ? transaction.getCurrency().name() : ""
     +paymentOrder(requiredInputs, DateHelper.toString(transaction.getDueDate()), _selectedBankAccount, bankAccounts, _offseetAccountNumber, _bankCode,
-    bankCodes, transaction.getAmount(), transaction.getConstSymbol(), transaction.getVariableSymbol(), transaction.getSpecificSymbol(), transaction.getMessage())
+    bankCodes, transaction.getAmount(), _selectedCurrency, currencies, transaction.getConstSymbol(), transaction.getVariableSymbol(), transaction.getSpecificSymbol(), transaction.getMessage())
 
-mixin paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
+mixin paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, selectCurrency, currencies, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
     .form-group
         label.control-label.col-sm-5(for="inputDate" class=requiredInputs ? "required-input" : "") Datum
         .col-sm-7: input(type="date" id="inputDate" name="inputDate" value=inputDate class="form-control" placeholder="" required=requiredInputs autofocus
@@ -31,10 +32,17 @@ mixin paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, input
                 if bankCodes
                     each code in bankCodes
                         option(value=code.getCode())
-                            | #{code.getCode()} - #{code.getBankName()}
+                            | #{code.getBankName()}
     .form-group
-        label.control-label.col-sm-5(for="inputAmount" class=requiredInputs ? "required-input" : "") Částka
-        .col-sm-7: input(type="text" id="inputAmount" name="inputAmount" value=inputAmount class="form-control text-right" placeholder="" required=requiredInputs)
+        label.control-label.col-sm-5(for="inputAmount" class=requiredInputs ? "required-input" : "") Částka a měna
+        .col-sm-7
+            .form-group.row
+                .col-sm-7
+                    input(type="text" id="inputAmount" name="inputAmount" value=inputAmount class="form-control text-right" required=requiredInputs size=6)
+                .col-sm-5
+                    select.form-control(id="selectCurrency" name="selectCurrency" required=requiredInputs)
+                        each curr in currencies
+                            option(selected= curr.name().equals(_selectCurrency))= curr.name()
     .form-group
         label.control-label.col-sm-5(for="inputConstSymbol") Konstantní symbol
         .col-sm-7: input(type="text" id="inputConstSymbol" name="inputConstSymbol" value=inputConstSymbol class="form-control text-right" placeholder=""

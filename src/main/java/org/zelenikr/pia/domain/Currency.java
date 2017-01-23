@@ -1,7 +1,5 @@
 package org.zelenikr.pia.domain;
 
-import javax.persistence.Embeddable;
-
 /**
  * Defines available currencies
  *
@@ -10,5 +8,6 @@ import javax.persistence.Embeddable;
 public enum Currency {
     CZK,
     EUR,
-    USD
+    USD,
+    GBP
 }

@@ -18,6 +18,7 @@ public class DefualtCurrencyManager implements CurrencyManager {
 
     @Override
     public float getExchangeRate(Currency from, Currency to){
+//        EMU|euro|1|EUR|27,020
         throw new IllegalStateException("Not implemented yet");
     }
 }

@@ -60,6 +60,7 @@ public class NewPaymentOrderController extends AbstractClientController {
             OFFSET_PARAMETER = "inputOffset",
             BANK_CODE_PARAMETER = "inputBankCode",
             AMOUNT_PARAMETER = "inputAmount",
+            CURRENCY_NAME_PARAMETER = "selectCurrency",
             CONST_SYMBOL_PARAMETER = "inputConstSymbol",
             VARIABLE_SYMBOL_PARAMETER = "inputVarSymbol",
             SPECIFIC_SYMBOL_PARAMETER = "inputSpecSymbol",
@@ -118,8 +119,8 @@ public class NewPaymentOrderController extends AbstractClientController {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String formAction = req.getParameter(ACTION_PARAMETER);
         if (formAction == null) {
-            req.setAttribute(ERROR_ATTRIBUTE,"Invalid action!");
-            doGet(req,resp);
+            req.setAttribute(ERROR_ATTRIBUTE, "Invalid action!");
+            doGet(req, resp);
         } else {
             doAction(formAction, req, resp);
         }
@@ -137,8 +138,8 @@ public class NewPaymentOrderController extends AbstractClientController {
                 doCancelTransaction(request, response);
                 break;
             default:
-                request.setAttribute(ERROR_ATTRIBUTE,"Invalid action!");
-                doGet(request,response);
+                request.setAttribute(ERROR_ATTRIBUTE, "Invalid action!");
+                doGet(request, response);
                 break;
         }
     }
@@ -149,6 +150,7 @@ public class NewPaymentOrderController extends AbstractClientController {
                 offset = req.getParameter(OFFSET_PARAMETER),
                 bankCode = req.getParameter(BANK_CODE_PARAMETER),
                 amountStr = req.getParameter(AMOUNT_PARAMETER),
+                currencyName = req.getParameter(CURRENCY_NAME_PARAMETER),
                 constSymbol = req.getParameter(CONST_SYMBOL_PARAMETER),
                 varSymbol = req.getParameter(VARIABLE_SYMBOL_PARAMETER),
                 specificSymbol = req.getParameter(SPECIFIC_SYMBOL_PARAMETER),
@@ -161,21 +163,29 @@ public class NewPaymentOrderController extends AbstractClientController {
         try {
             dueDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
         } catch (ParseException e) {
-            req.setAttribute(ERROR_ATTRIBUTE,e.getLocalizedMessage());
-            doGet(req,resp);
+            req.setAttribute(ERROR_ATTRIBUTE, e.getLocalizedMessage());
+            doGet(req, resp);
             return;
         }
         BigDecimal amount = null;
         try {
             amount = new BigDecimal(amountStr);
         } catch (NumberFormatException e) {
-            req.setAttribute(ERROR_ATTRIBUTE,"Invalid amount format.");
-            doGet( req, resp);
+            req.setAttribute(ERROR_ATTRIBUTE, "Invalid amount format.");
+            doGet(req, resp);
+            return;
+        }
+        Currency currency = null;
+        try {
+            currency = Currency.valueOf(currencyName);
+        } catch (IllegalArgumentException e) {
+            req.setAttribute(ERROR_ATTRIBUTE,"Unknown currency.");
+            doGet(req, resp);
             return;
         }
         PaymentTransaction transaction = new PaymentTransaction(
                 TransactionType.ONE_TIME_PAYMENT_ORDER,
-                dueDate, amount, new OffsetAccount(offset, bankCode),
+                dueDate, amount, currency, new OffsetAccount(offset, bankCode),
                 constSymbol, varSymbol, specificSymbol, message
         );
 
@@ -184,8 +194,8 @@ public class NewPaymentOrderController extends AbstractClientController {
         try {
             transactionManager.preparePayment(transaction, getAuthenticatedClient(req), accountNumber);
         } catch (PaymentTransactionValidationException | OffsetAccountValidationException | BankAccountValidationException e) {
-            req.setAttribute(ERROR_ATTRIBUTE,e.getLocalizedMessage());
-            doGet(req,resp);
+            req.setAttribute(ERROR_ATTRIBUTE, e.getLocalizedMessage());
+            doGet(req, resp);
             return;
         }
 
