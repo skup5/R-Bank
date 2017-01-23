@@ -25,9 +25,9 @@ mixin menu(activeMenuItems, activeItem)
                 ul#menuItems2.nav.collapse.nav-sidebar-items(class= activeMenuItems == 2 ? "in" : "")
                     li(class= activeItem.equals("paymentOrder") ? "active" : "")
                         a(href="payment-order") Jednorázový příkaz
-                    li: a(href="#") Hromadný příkaz
+                    li(class= activeItem.equals("payment-pattern") ? "active" : "")
+                        a(href="payment-pattern") Vytvořit vzor příkazu
                     li: a(href="#") Vzory příkazů
-                    li: a(href="#") Vytvořit vzor příkazu
             li
                 a.nav-menu.collapsed(href="#" data-toggle="collapse" data-target="#menuItems3")
                     | Nastavení

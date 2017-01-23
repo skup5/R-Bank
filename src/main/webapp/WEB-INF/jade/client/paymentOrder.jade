@@ -22,9 +22,9 @@ block content
                         span.required-input
                         | Povinná položka
                     if preparedTransaction
-                        +paymentOrderFromTransaction(requiredInputs, bankAccounts, bankCodes, currencies, preparedTransaction)
+                        +paymentOrderFromTransaction(true, bankAccounts, bankCodes, currencies, preparedTransaction)
                     else
-                        +paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes,
+                        +paymentOrder(true, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes,
                         inputAmount, selectCurrency, currencies, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
                     .form-group
                         .col-sm-offset-5.col-sm-7

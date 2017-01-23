@@ -54,7 +54,6 @@ public class ConfigurableOffsetAccountValidator implements OffsetAccountValidato
             throw new OffsetAccountValidationException("Offset account number must be a positive numeric value");
     }
 
-
     private void validateBankCode(String bankCode
     ) throws OffsetAccountValidationException {
         if (StringUtils.isBlank(bankCode))

@@ -16,12 +16,12 @@ import java.util.Date;
 @AttributeOverrides({
         @AttributeOverride(name = "dueDate", column = @Column(nullable = false)),
         @AttributeOverride(name = "amount", column = @Column(nullable = false)),
-        @AttributeOverride(name = "clientAccount", column = @Column(nullable = false)),
         @AttributeOverride(name = "currency", column = @Column(nullable = false))
 })
 @BatchSize(size = 100)
 public class PaymentTransaction extends AbstractPaymentOrder {
 
+    private BankAccount clientAccount;
     private TransactionState state;
     private TransactionType type;
 
@@ -43,6 +43,16 @@ public class PaymentTransaction extends AbstractPaymentOrder {
     /*
     ########### MAPPINGS #####################
      */
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    public BankAccount getClientAccount() {
+        return clientAccount;
+    }
+
+    public void setClientAccount(BankAccount clientAccount) {
+        this.clientAccount = clientAccount;
+    }
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

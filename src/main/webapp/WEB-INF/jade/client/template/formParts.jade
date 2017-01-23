@@ -10,8 +10,10 @@ mixin paymentOrderFromTransaction(requiredInputs, bankAccounts, bankCodes, curre
 mixin paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, selectCurrency, currencies, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
     .form-group
         label.control-label.col-sm-5(for="inputDate" class=requiredInputs ? "required-input" : "") Datum
-        .col-sm-7: input(type="date" id="inputDate" name="inputDate" value=inputDate class="form-control" placeholder="" required=requiredInputs autofocus
-        min=DateHelper.todayString())
+        .col-sm-7: .input-group
+            .input-group-addon: span.fa.fa-calendar.fa-only
+            input(type="date" id="inputDate" name="inputDate" value=inputDate class="form-control"  required=requiredInputs
+            min=DateHelper.todayString())
     .form-group
         label.control-label.col-sm-5(for="selectAccount" class=requiredInputs ? "required-input" : "") Účet
         .col-sm-7

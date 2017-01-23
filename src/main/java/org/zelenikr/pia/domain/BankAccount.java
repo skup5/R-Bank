@@ -137,7 +137,7 @@ public class BankAccount extends BaseObject {
      *
      * @return
      */
-    @OneToMany(mappedBy = "clientAccount")
+    @OneToMany(mappedBy = "clientAccount", orphanRemoval = true)
     @OrderColumn(name = "dueDate")
     public Set<PaymentTransaction> getPaymentTransactions() {
         return paymentTransactions;

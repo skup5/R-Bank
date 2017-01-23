@@ -43,8 +43,6 @@ public class DefaultBankAccountManager implements BankAccountManager {
             throw new BankAccountValidationException("Bank account number already taken!");
         }
 
-        bankAccountDao.save(newBankAccount);
-
         newBankAccount.setCreditCard(creditCard);
         bankAccountDao.save(newBankAccount);
     }

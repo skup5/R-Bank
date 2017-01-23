@@ -1,4 +1,4 @@
-package org.zelenikr.pia.domain.exception;
+package org.zelenikr.pia.validation.exception;
 
 import org.zelenikr.pia.validation.exception.ValidationException;
 

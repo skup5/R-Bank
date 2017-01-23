@@ -10,10 +10,10 @@ import org.zelenikr.pia.validation.exception.PaymentTransactionValidationExcepti
 public interface PaymentTransactionValidator extends DomainValidator<PaymentTransaction> {
 
     /**
-     * Validates that payment transaction instance is currently in a valid state.
+     * Validates that {@link PaymentTransaction} instance is currently in a valid state.
      *
      * @throws PaymentTransactionValidationException in case the payment transaction is not in valid state.
-     * @throws OffsetAccountValidationException       in case the payee account in transaction is not in valid state.
+     * @throws OffsetAccountValidationException      in case the payee account in transaction is not in valid state.
      */
     @Override
     void validate(PaymentTransaction transaction) throws PaymentTransactionValidationException, OffsetAccountValidationException;

@@ -11,20 +11,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * View servlet responsible for rendering client payment order (new order, verification)
+ * View servlet responsible for rendering client pattern of payment order (create, edit)
  *
  * @author Roman Zelenik
  */
-@WebServlet("/view/client/payment-order")
-public class PaymentOrderView extends AbstractClientView {
+@WebServlet("/view/client/payment-pattern")
+public class PatternPaymentOrderView extends AbstractClientView {
 
     private static final String
             BANK_CODES_ATTRIBUTE = "bankCodes",
             CURRENCIES_ATTRIBUTE = "currencies",
-            PREPARED_TRANSACTION_ATTRIBUTE = "preparedTransaction",
-            VERIFICATION_CODE_LENGTH_ATTRIBUTE = "verificationCodeLength",
-            VERIFICATION_CODE_TIMEOUT_ATTRIBUTE = "verificationCodeTimeout",
-            BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts";
+            BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts",
+            PREPARED_PATTERN_ATTRIBUTE = "preparedPatternOrder";
 
 
     @Override
@@ -47,21 +45,17 @@ public class PaymentOrderView extends AbstractClientView {
         }
         vars.put(BANK_CODES_ATTRIBUTE, req.getAttribute(BANK_CODES_ATTRIBUTE));
         vars.put(CURRENCIES_ATTRIBUTE, req.getAttribute(CURRENCIES_ATTRIBUTE));
-        vars.put(PREPARED_TRANSACTION_ATTRIBUTE, req.getAttribute(PREPARED_TRANSACTION_ATTRIBUTE));
-        vars.put(VERIFICATION_CODE_LENGTH_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE));
-        vars.put(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE));
         vars.put(BANK_ACCOUNTS_ATTRIBUTE, req.getAttribute(BANK_ACCOUNTS_ATTRIBUTE));
+        vars.put(PREPARED_PATTERN_ATTRIBUTE, req.getAttribute(PREPARED_PATTERN_ATTRIBUTE));
         vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
         vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
-        vars.put(WARNING_ATTRIBUTE, req.getAttribute(WARNING_ATTRIBUTE));
+//        vars.put(WARNING_ATTRIBUTE, req.getAttribute(WARNING_ATTRIBUTE));
         vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));
         try {
             resp.setContentType("text/html");
             renderTemplate(template, vars, resp.getWriter());
         } catch (TemplateParserException e) {
-//            throw new ServletException("Chyba při načítání požadované stránky");
             throw new ServletException(e);
         }
     }
-
 }

@@ -44,7 +44,7 @@ mixin bankAccount(inputCardNo, inputCardPinNo, inputBankAccountNo, selectCurrenc
     .form-group
         label.control-label.col-sm-5.required-input(for="inputCardNo") Číslo platební karty
         .col-sm-7: .input-group
-            .input-group-addon: span.fa.fa-credit-card
+            .input-group-addon: span.fa.fa-credit-card.fa-only
             input(type="text" id="inputCardNo" name="inputCardNo" value=inputCardNo class="form-control" placeholder="################" required
             autocomplete="off" pattern="\\d{16}" maxlength=16)
             span.input-group-btn

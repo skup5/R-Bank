@@ -56,8 +56,7 @@ public class Client extends Person {
      *
      * @return
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "owner_id")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "name")
     public Set<PatternPaymentOrder> getPaymentOrderPatterns() {
         return paymentOrderPatterns;

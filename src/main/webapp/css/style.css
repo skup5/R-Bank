@@ -101,11 +101,11 @@ html, body {
 .nav-menu[data-toggle="collapse"]:before {
     font-family: "FontAwesome";
     padding-right: 0.5em;
-    content: '\f0a9';
+    content: '\f0ab';
 }
 
 .nav-menu[data-toggle="collapse"].collapsed:before {
-    content: '\f0ab';
+    content: '\f0a9';
 }
 
 /*  Navbar  */

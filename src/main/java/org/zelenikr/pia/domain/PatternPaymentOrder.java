@@ -1,10 +1,5 @@
 package org.zelenikr.pia.domain;
 
-import org.apache.commons.lang3.StringUtils;
-import org.zelenikr.pia.domain.exception.PatternPaymentOrderValidationException;
-import org.zelenikr.pia.validation.Validable;
-import org.zelenikr.pia.validation.exception.ValidationException;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,12 +10,15 @@ import java.util.Date;
  * @author Roman Zelenik
  */
 @Entity
-@Table(name = "zelenikr_rbank_pattern_payment_order")
-public class PatternPaymentOrder extends AbstractPaymentOrder implements Validable {
+@Table(
+        name = "zelenikr_rbank_pattern_payment_order",
+        uniqueConstraints = @UniqueConstraint(columnNames={"name", "owner_id"})
+)
+public class PatternPaymentOrder extends AbstractPaymentOrder {
 
     private String name;
-
     private Client owner;
+    private BankAccount ownerAccount;
 
     public PatternPaymentOrder() {
         super();
@@ -31,31 +29,12 @@ public class PatternPaymentOrder extends AbstractPaymentOrder implements Validab
         this.name = name;
     }
 
-    /*
-    ########### API ##################
-     */
-
-    /**
-     * Validates that pattern payment order instance is currently in a valid state.
-     *
-     * @throws PatternPaymentOrderValidationException in case the pattern of payment order is not in valid state.
-     */
-    @Override
-    public void validate() throws ValidationException {
-        validateName();
-    }
-
-    private void validateName() throws PatternPaymentOrderValidationException {
-        if (StringUtils.isBlank(name)) throw new PatternPaymentOrderValidationException("Name is a required field");
-        if (!StringUtils.isAlpha(name))
-            throw new PatternPaymentOrderValidationException("Name can contain only Unicode letters");
-    }
 
     /*
     ########### MAPPINGS #####################
      */
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     public String getName() {
         return name;
     }
@@ -70,13 +49,22 @@ public class PatternPaymentOrder extends AbstractPaymentOrder implements Validab
      * @return
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
+    @JoinColumn(name = "owner_id")
     public Client getOwner() {
         return owner;
     }
 
     public void setOwner(Client owner) {
         this.owner = owner;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    public BankAccount getOwnerAccount() {
+        return ownerAccount;
+    }
+
+    public void setOwnerAccount(BankAccount ownerAccount) {
+        this.ownerAccount = ownerAccount;
     }
 
     @Override

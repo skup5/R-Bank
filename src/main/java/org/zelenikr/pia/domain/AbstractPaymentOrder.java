@@ -18,7 +18,6 @@ import java.util.Date;
 public abstract class AbstractPaymentOrder extends BaseObject {
 
     protected Date dueDate;
-    protected BankAccount clientAccount;
     protected OffsetAccount offsetAccount;
     protected BigDecimal amount;
     protected Currency currency;
@@ -31,6 +30,8 @@ public abstract class AbstractPaymentOrder extends BaseObject {
     }
 
     public AbstractPaymentOrder(Date dueDate, BigDecimal amount, Currency currency, OffsetAccount offsetAccount, String constSymbol, String variableSymbol, String specificSymbol, String message) {
+        if(amount == null)
+            amount = BigDecimal.ZERO;
         this.dueDate = dueDate;
         this.amount = amount;
         this.currency = currency;
@@ -52,15 +53,6 @@ public abstract class AbstractPaymentOrder extends BaseObject {
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    public BankAccount getClientAccount() {
-        return clientAccount;
-    }
-
-    public void setClientAccount(BankAccount clientAccount) {
-        this.clientAccount = clientAccount;
     }
 
     @Embedded

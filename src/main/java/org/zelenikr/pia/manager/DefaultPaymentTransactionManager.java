@@ -82,7 +82,6 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
 
         // insert payment
         newPaymentTransaction.setState(TransactionState.CREATED);
-        newPaymentTransaction = paymentTransactionDao.save(newPaymentTransaction);
         newPaymentTransaction.setClientAccount(payerAccount);
         newPaymentTransaction = paymentTransactionDao.save(newPaymentTransaction);
         sendNewCode(newPaymentTransaction);

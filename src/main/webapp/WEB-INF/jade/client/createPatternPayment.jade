@@ -1,0 +1,37 @@
+extends template/clientPageTemplate
+
+include template/formParts
+
+block content
+    .row
+        .col-lg-3.col-md-3.col-sm-3
+            +menu(2, "payment-pattern")
+
+        .col-lg-9.col-md-9.col-sm-9
+            main.main
+                if success
+                    +dismiss-alert("alert-success", success)
+                //-if warning
+                    +dismiss-alert("alert-warning", warning)
+                if err
+                    +dismiss-alert("alert-danger", err)
+
+                .page-header: h1: small Vzor platebního příkazu
+                form.form-horizontal.form(method="post" autocomplete="off")
+                    span.help-block#helpText
+                        span.required-input
+                        | Povinná položka
+                    .form-group
+                        label.col-sm-5.control-label.required-input(for="patternName") Název
+                        .col-sm-7: input.form-control(type="" id="patternName" name="patternName" value=patternName required autofocus
+                        pattern="[A-Za-z0-9 ]{1,50}" maxlength=50)
+                    if preparedPatternOrder
+                        +paymentOrderFromTransaction(false, bankAccounts, bankCodes, currencies, preparedPatternOrder)
+                    else
+                        +paymentOrder(false, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes,
+                        inputAmount, selectCurrency, currencies, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
+                    .form-group
+                        .col-sm-offset-5.col-sm-7
+                            input(type="hidden" name="action" value="create")
+                            button.btn.btn-success(type="submit") Vytvořit
+                            //-button.btn.btn-warning(type="submit" form="") Zrušit

@@ -108,7 +108,6 @@ public class NewPaymentOrderController extends AbstractClientController {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("doGet()");
-        req.setAttribute(REQUIRED_INPUTS_ATTRIBUTE, true);
         req.setAttribute(BANK_ACCOUNTS_ATTRIBUTE, getClientBankAccounts(req));
         req.setAttribute(BANK_CODES_ATTRIBUTE, bankCodeManager.getBankCodes());
         req.setAttribute(CURRENCIES_ATTRIBUTE, currencyManager.getAvailableCurrencies());
