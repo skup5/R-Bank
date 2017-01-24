@@ -33,4 +33,5 @@ mixin menu(activeMenuItems, activeItem)
                 a.nav-menu.collapsed(href="#" data-toggle="collapse" data-target="#menuItems3")
                     | Nastavení
                 ul#menuItems3.nav.collapse.nav-sidebar-items(class= activeMenuItems == 3 ? "in" : "")
-                    li: a(href="#") Moje údaje
+                    li(class= activeItem.equals("personalSettings") ? "active" : "")
+                        a(href="settings-personal") Moje údaje

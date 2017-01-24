@@ -1,6 +1,7 @@
-package org.zelenikr.pia.web.servlet.spring.controller.client;
+package org.zelenikr.pia.web.servlet.spring.controller.client.transaction;
 
 import org.zelenikr.pia.domain.BankAccount;
+import org.zelenikr.pia.web.servlet.spring.controller.client.transaction.AbstractTransactionListController;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,14 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Servlet handling list of all incoming payment transactions request.
+ * Servlet handling list of all transactions request.
  *
  * @author Roman Zelenik
  */
-@WebServlet("/client/incomes")
-public class RevenueTransactionsController extends AbstractTransactionListController {
+@WebServlet("/client/all-payments")
+public class AllTransactionListController extends AbstractTransactionListController {
 
-    private static final String TEMPLATE_PATH = "client/incomingPayments";
+    private static final String TEMPLATE_PATH = "client/allPayments";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,8 +30,8 @@ public class RevenueTransactionsController extends AbstractTransactionListContro
     }
 
     @Override
-    protected void loadStatement(HttpServletRequest req, BankAccount actualAccount) {
-        req.setAttribute(TRANSACTION_LIST_ATTRIBUTE, transactionManager.findAllRevenuesByClientAccount(actualAccount.getAccountNumber()));
+    protected void loadStatement(HttpServletRequest req, BankAccount actualAccount){
+        req.setAttribute(TRANSACTION_LIST_ATTRIBUTE, transactionManager.findAllByClientAccount(actualAccount.getAccountNumber()));
         req.setAttribute(ACTUAL_BANK_ACCOUNT_ATTRIBUTE, actualAccount);
     }
 

@@ -1,4 +1,4 @@
-package org.zelenikr.pia.web.servlet.spring.controller.client;
+package org.zelenikr.pia.web.servlet.spring.controller.client.transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.bankcode.BankCodeManager;
@@ -9,6 +9,7 @@ import org.zelenikr.pia.validation.exception.BankAccountValidationException;
 import org.zelenikr.pia.validation.exception.OffsetAccountValidationException;
 import org.zelenikr.pia.validation.exception.PaymentTransactionValidationException;
 import org.zelenikr.pia.verification.VerificationSettings;
+import org.zelenikr.pia.web.servlet.spring.controller.client.AbstractClientController;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

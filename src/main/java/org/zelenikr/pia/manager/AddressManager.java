@@ -15,13 +15,6 @@ public interface AddressManager {
     void create(Address newAddress);
 
     /**
-     * Saves existing modified address data.
-     *
-     * @param address already created address with modified data, expected not-null value
-     */
-    void save(Address address);
-
-    /**
      * Deletes address from data store, if exists.
      *
      * @param address address to delete

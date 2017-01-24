@@ -1,9 +1,10 @@
-package org.zelenikr.pia.web.servlet.spring.controller.client;
+package org.zelenikr.pia.web.servlet.spring.controller.client.transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.domain.BankAccount;
 import org.zelenikr.pia.manager.BankAccountManager;
 import org.zelenikr.pia.manager.PaymentTransactionManager;
+import org.zelenikr.pia.web.servlet.spring.controller.client.AbstractClientController;
 import org.zelenikr.pia.web.servlet.spring.view.client.TransactionListView;
 
 import javax.servlet.ServletException;

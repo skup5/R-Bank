@@ -21,6 +21,10 @@ mixin patternActions(pattern)
         form(method="post" id="formDelete" + patternId)
             input(type="hidden" name="action" value="delete")
             input(type="hidden" name="patternName" value=pattern.getName())
+
+block title
+    title Vzory platebních příkazů - R-Bank
+
 block content
     .row
         .col-lg-3.col-md-3.col-sm-3

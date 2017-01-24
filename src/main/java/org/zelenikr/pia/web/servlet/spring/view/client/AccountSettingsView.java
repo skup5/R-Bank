@@ -11,23 +11,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * View servlet responsible for rendering client's pattern of payment order (create, edit)
+ * View servlet responsible for rendering client's account settings
  *
  * @author Roman Zelenik
  */
-@WebServlet("/view/client/payment-pattern")
-public class PatternPaymentOrderView extends AbstractClientView {
+@WebServlet("/view/client/settings")
+public class AccountSettingsView extends AbstractClientView {
 
     private static final String
-            BANK_CODES_ATTRIBUTE = "bankCodes",
-            CURRENCIES_ATTRIBUTE = "currencies",
-            BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts",
-            PREPARED_PATTERN_ATTRIBUTE = "preparedPatternOrder";
-
+            CLIENT_ATTRIBUTE = "client",
+            ADDRESS_ATTRIBUTE = "address";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doPost(req, resp);
+        doPost(req,resp);
     }
 
     @Override
@@ -43,10 +40,9 @@ public class PatternPaymentOrderView extends AbstractClientView {
         } else {
             vars = new HashMap<>();
         }
-        vars.put(BANK_CODES_ATTRIBUTE, req.getAttribute(BANK_CODES_ATTRIBUTE));
-        vars.put(CURRENCIES_ATTRIBUTE, req.getAttribute(CURRENCIES_ATTRIBUTE));
-        vars.put(BANK_ACCOUNTS_ATTRIBUTE, req.getAttribute(BANK_ACCOUNTS_ATTRIBUTE));
-        vars.put(PREPARED_PATTERN_ATTRIBUTE, req.getAttribute(PREPARED_PATTERN_ATTRIBUTE));
+
+        vars.put(CLIENT_ATTRIBUTE, req.getAttribute(CLIENT_ATTRIBUTE));
+        vars.put(ADDRESS_ATTRIBUTE, req.getAttribute(ADDRESS_ATTRIBUTE));
         vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
         vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
         vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));

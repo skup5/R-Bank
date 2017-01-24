@@ -33,11 +33,6 @@ public class DefaultAddressManager implements AddressManager{
     }
 
     @Override
-    public void save(Address address) {
-        throw new IllegalStateException("Not implemented yet");
-    }
-
-    @Override
     public void delete(Address address) {
         addressDao.remove(address);
     }

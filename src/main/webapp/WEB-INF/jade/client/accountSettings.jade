@@ -1,0 +1,48 @@
+extends template/clientPageTemplate
+
+include ../template/formParts
+
+block title
+    title Nastavení - R-Bank
+
+block content
+    .row
+        .col-lg-3.col-md-3.col-sm-3
+            +menu(3, "personalSettings")
+
+        .col-lg-9.col-md-9.col-sm-9
+            main.main
+                if success
+                    +dismiss-alert("alert-success", success)
+                if err
+                    +dismiss-alert("alert-danger", err)
+
+                .page-header: h1: small Nastavení
+                form.form.form-horizontal(method="post" autocomplete="on")
+                    span.help-block#helpText
+                        span.required-input
+                        | Povinná položka
+                    fieldset
+                        legend.form-signin-heading Osobní údaje
+                        .form-group
+                            label.control-label.col-sm-5 Jméno
+                            .col-sm-7: p.form-control-static= client.getName()
+                        .form-group
+                            label.control-label.col-sm-5 Příjmení
+                            .col-sm-7: p.form-control-static= client.getSurname()
+                        .form-group
+                            label.control-label.col-sm-5 Rodné číslo
+                            .col-sm-7: p.form-control-static= client.getPersonalIdNumber()
+                    fieldset
+                        legend.form-signin-heading Kontaktní údaje
+                        - var _inputStreet = inputStreet ? inputStreet : address.getStreet()
+                        - var _inputBuildNo = inputBuildNo ? inputBuildNo : address.getHouseNumber()
+                        - var _inputCity = inputCity ? inputCity : address.getCity()
+                        - var _inputZipCode = inputZipCode ? inputZipCode : address.getZipCode()
+                        - var _inputEmail = inputEmail ? inputEmail : client.getEmail()
+                        - var _inputPhoneNumber = inputPhoneNumber ? inputPhoneNumber : client.getPhoneNumber()
+                        +contactInfo(_inputStreet, _inputBuildNo, _inputCity, _inputZipCode, _inputEmail, _inputPhoneNumber)
+                    fieldset
+                        legend
+                        .col-sm-offset-5.col-sm-7
+                                button.btn.btn-primary.btn-block(type="submit") Uložit změny
