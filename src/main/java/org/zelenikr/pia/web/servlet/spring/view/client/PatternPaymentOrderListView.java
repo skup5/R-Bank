@@ -11,23 +11,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * View servlet responsible for rendering client pattern of payment order (create, edit)
+ * View servlet responsible for rendering list of client patterns of payment order
  *
  * @author Roman Zelenik
  */
-@WebServlet("/view/client/payment-pattern")
-public class PatternPaymentOrderView extends AbstractClientView {
+@WebServlet("/view/client/payment-pattern-list")
+public class PatternPaymentOrderListView extends AbstractClientView {
 
-    private static final String
-            BANK_CODES_ATTRIBUTE = "bankCodes",
-            CURRENCIES_ATTRIBUTE = "currencies",
-            BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts",
-            PREPARED_PATTERN_ATTRIBUTE = "preparedPatternOrder";
-
+    private static final String PATTERNS_LIST_ATTRIBUTE = "paymentPatterns";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doPost(req, resp);
+        doPost(req,resp);
     }
 
     @Override
@@ -36,17 +31,8 @@ public class PatternPaymentOrderView extends AbstractClientView {
         if (template == null)
             throw new NullPointerException();
 
-        Map<String, Object> vars;
-
-        if (req.getAttribute(COPY_PARAMETERS_ATTRIBUTE) != null) {
-            vars = createVariablesFromParameters(req);
-        } else {
-            vars = new HashMap<>();
-        }
-        vars.put(BANK_CODES_ATTRIBUTE, req.getAttribute(BANK_CODES_ATTRIBUTE));
-        vars.put(CURRENCIES_ATTRIBUTE, req.getAttribute(CURRENCIES_ATTRIBUTE));
-        vars.put(BANK_ACCOUNTS_ATTRIBUTE, req.getAttribute(BANK_ACCOUNTS_ATTRIBUTE));
-        vars.put(PREPARED_PATTERN_ATTRIBUTE, req.getAttribute(PREPARED_PATTERN_ATTRIBUTE));
+        Map<String, Object> vars = new HashMap<>();
+        vars.put(PATTERNS_LIST_ATTRIBUTE, req.getAttribute(PATTERNS_LIST_ATTRIBUTE));
         vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
         vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
         vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));

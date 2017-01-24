@@ -27,7 +27,8 @@ mixin menu(activeMenuItems, activeItem)
                         a(href="payment-order") Jednorázový příkaz
                     li(class= activeItem.equals("payment-pattern") ? "active" : "")
                         a(href="payment-pattern") Vytvořit vzor příkazu
-                    li: a(href="#") Vzory příkazů
+                    li(class= activeItem.equals("payment-pattern-list") ? "active" : "")
+                        a(href="payment-pattern-list") Vzory příkazů
             li
                 a.nav-menu.collapsed(href="#" data-toggle="collapse" data-target="#menuItems3")
                     | Nastavení

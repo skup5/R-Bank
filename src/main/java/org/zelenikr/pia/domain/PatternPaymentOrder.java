@@ -58,7 +58,7 @@ public class PatternPaymentOrder extends AbstractPaymentOrder {
         this.owner = owner;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     public BankAccount getOwnerAccount() {
         return ownerAccount;
     }

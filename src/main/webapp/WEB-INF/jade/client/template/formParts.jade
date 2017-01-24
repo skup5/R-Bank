@@ -1,11 +1,21 @@
 mixin paymentOrderFromTransaction(requiredInputs, bankAccounts, bankCodes, currencies, transaction)
-    - var _selectedBankAccount = transaction.getClientAccount() ? transaction.getClientAccount().getAccountNumber() : ""
-    - var _offsetAccount = transaction.getOffsetAccount()
-    - var _offseetAccountNumber = _offsetAccount ? _offsetAccount.getOffsetAccountNumber() : ""
-    - var _bankCode = _offsetAccount ? _offsetAccount.getBankCode() : ""
-    - var _selectedCurrency = transaction.getCurrency() ? transaction.getCurrency().name() : ""
+    - var _selectedBankAccount = transaction.getClientAccount() ? transaction.getClientAccount().getAccountNumber() : "";
+    - var _offsetAccount = transaction.getOffsetAccount();
+    - var _offseetAccountNumber = _offsetAccount ? _offsetAccount.getOffsetAccountNumber() : "";
+    - var _bankCode = _offsetAccount ? _offsetAccount.getBankCode() : "";
+    - var _selectedCurrency = transaction.getCurrency() ? transaction.getCurrency().name() : "";
     +paymentOrder(requiredInputs, DateHelper.toString(transaction.getDueDate()), _selectedBankAccount, bankAccounts, _offseetAccountNumber, _bankCode,
     bankCodes, transaction.getAmount(), _selectedCurrency, currencies, transaction.getConstSymbol(), transaction.getVariableSymbol(), transaction.getSpecificSymbol(), transaction.getMessage())
+
+mixin paymentOrderFromPattern(requiredInputs, bankAccounts, bankCodes, currencies, pattern)
+    - var _selectedBankAccount = pattern.getOwnerAccount() ? pattern.getOwnerAccount().getAccountNumber() : "";
+    - var _offsetAccount = pattern.getOffsetAccount();
+    - var _offseetAccountNumber = _offsetAccount ? _offsetAccount.getOffsetAccountNumber() : "";
+    - var _bankCode = _offsetAccount ? _offsetAccount.getBankCode() : "";
+    - var _selectedCurrency = pattern.getCurrency() ? pattern.getCurrency().name() : "";
+    +paymentOrder(requiredInputs, DateHelper.toString(pattern.getDueDate()), _selectedBankAccount, bankAccounts, _offseetAccountNumber, _bankCode,
+    bankCodes, pattern.getAmount(), _selectedCurrency, currencies, pattern.getConstSymbol(), pattern.getVariableSymbol(), pattern.getSpecificSymbol(), pattern.getMessage())
+
 
 mixin paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes, inputAmount, selectCurrency, currencies, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
     .form-group

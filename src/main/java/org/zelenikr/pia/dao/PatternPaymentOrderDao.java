@@ -11,4 +11,8 @@ public interface PatternPaymentOrderDao extends GenericDao<PatternPaymentOrder> 
     PatternPaymentOrder findByNameAndOwner(String name, long ownerId);
 
     List<PatternPaymentOrder> findByOwner(long ownerId);
+
+    List<PatternPaymentOrder> findWithAccountByOwner(long ownerId);
+
+    int remove(String name, long ownerId);
 }

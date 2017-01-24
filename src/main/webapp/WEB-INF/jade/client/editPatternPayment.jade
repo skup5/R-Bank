@@ -3,7 +3,7 @@ extends template/clientPageTemplate
 block content
     .row
         .col-lg-3.col-md-3.col-sm-3
-            +menu(2, "payment-pattern")
+            +menu(2, "")
 
         .col-lg-9.col-md-9.col-sm-9
             main.main
@@ -12,6 +12,6 @@ block content
                 if err
                     +dismiss-alert("alert-danger", err)
 
-                .page-header: h1: small Nový vzor
-                - var patternActionLabel = "Vytvořit";
+                .page-header: h1: small Upravit vzor
+                - var patternActionLabel = "Uložit změny";
                 include template/paymentPatternFormTemplate

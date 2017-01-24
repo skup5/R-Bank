@@ -45,23 +45,13 @@ public class DefaultPatternPaymentOrderManager implements PatternPaymentOrderMan
 
     @Override
     public void create(PatternPaymentOrder newPattern, Client owner, String ownerBankAccountNumber) throws PatternPaymentOrderValidationException {
-        if(!newPattern.isNew()){
+        if (!newPattern.isNew()) {
             throw new RuntimeException("Pattern of payment order already exists!");
         }
         if (owner.isNew()) {
             throw new RuntimeException("Owner of pattern doesn't exist!");
         }
-        patternPaymentOrderValidator.validate(newPattern);
-
-        if(patternPaymentOrderDao.findByNameAndOwner(newPattern.getName(), owner.getId()) != null){
-            throw new PatternPaymentOrderValidationException("Pattern with this name already exists");
-        }
-
-        BankAccount ownerBankAccount = bankAccountDao.findByAccountNumber(ownerBankAccountNumber);
-
-        newPattern.setOwnerAccount(ownerBankAccount);
-        newPattern.setOwner(owner);
-        patternPaymentOrderDao.save(newPattern);
+        save(newPattern, owner, ownerBankAccountNumber, true);
     }
 
     @Override
@@ -70,12 +60,42 @@ public class DefaultPatternPaymentOrderManager implements PatternPaymentOrderMan
     }
 
     @Override
-    public boolean delete(String name) {
-        return false;
+    public boolean delete(String name, Client owner) {
+        if (owner.isNew()) {
+            throw new RuntimeException("Owner of pattern doesn't exist!");
+        }
+        return patternPaymentOrderDao.remove(name, owner.getId()) >= 1;
     }
 
     @Override
-    public List<PatternPaymentOrder> findClientPatterns(long clientId){
-        return patternPaymentOrderDao.findByOwner(clientId);
+    public List<PatternPaymentOrder> findClientPatterns(long clientId) {
+        return patternPaymentOrderDao.findWithAccountByOwner(clientId);
+    }
+
+    @Override
+    public void update(PatternPaymentOrder changedPattern, Client owner, String accountNumber) throws PatternPaymentOrderValidationException {
+        if (changedPattern.isNew()) {
+            throw new RuntimeException("Pattern of payment doesn't exists, use create method!");
+        }
+        if (owner.isNew()) {
+            throw new RuntimeException("Owner of pattern doesn't exist!");
+        }
+        save(changedPattern, owner, accountNumber, false);
+    }
+
+    private void save(PatternPaymentOrder pattern, Client owner, String ownerBankAccountNumber, boolean existingCheck) throws PatternPaymentOrderValidationException {
+        patternPaymentOrderValidator.validate(pattern);
+
+        if (existingCheck) {
+            if (patternPaymentOrderDao.findByNameAndOwner(pattern.getName(), owner.getId()) != null) {
+                throw new PatternPaymentOrderValidationException("Pattern with this name already exists");
+            }
+        }
+
+        BankAccount ownerBankAccount = bankAccountDao.findByAccountNumber(ownerBankAccountNumber);
+
+        pattern.setOwnerAccount(ownerBankAccount);
+        pattern.setOwner(owner);
+        patternPaymentOrderDao.save(pattern);
     }
 }

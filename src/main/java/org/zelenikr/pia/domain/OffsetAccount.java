@@ -30,8 +30,8 @@ public class OffsetAccount {
         return offsetAccountNumber;
     }
 
-    public void setOffsetAccountNumber(String payeeAccountNumber) {
-        this.offsetAccountNumber = payeeAccountNumber;
+    public void setOffsetAccountNumber(String offsetAccountNumber) {
+        this.offsetAccountNumber = offsetAccountNumber;
     }
 
     public String getBankCode() {

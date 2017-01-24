@@ -53,12 +53,6 @@ public class AccountListController extends AbstractAdminController {
         } catch (RuntimeException e) {
             err = e.getLocalizedMessage();
         }
-        for (int i = 0; i < 1; i++) {
-            //clientGenerator.newClientAccount();
-//            CreditCard card = dataGenerator.newCreditCard("4305504726854653", 4444);
-//            System.out.println(card);
-//            dataGenerator.deleteCrediCard(card);
-        }
 
         req.setAttribute(CLIENTS_ATTRIBUTE, clientManager.getClients());
 

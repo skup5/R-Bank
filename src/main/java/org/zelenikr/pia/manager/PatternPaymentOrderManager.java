@@ -16,7 +16,9 @@ public interface PatternPaymentOrderManager {
 
     void createFromTransaction(PaymentTransaction transaction);
 
-    boolean delete(String name);
+    boolean delete(String name, Client owner);
 
     List<PatternPaymentOrder> findClientPatterns(long clientId);
+
+    void update(PatternPaymentOrder changedPattern, Client owner, String accountNumber) throws PatternPaymentOrderValidationException;
 }

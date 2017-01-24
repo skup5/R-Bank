@@ -1,4 +1,4 @@
-package org.zelenikr.pia.web.servlet.spring.controller.client;
+package org.zelenikr.pia.web.servlet.spring.controller.client.pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.bankcode.BankCodeManager;
@@ -9,6 +9,7 @@ import org.zelenikr.pia.manager.CurrencyManager;
 import org.zelenikr.pia.manager.PatternPaymentOrderManager;
 import org.zelenikr.pia.validation.PatternPaymentOrderValidator;
 import org.zelenikr.pia.validation.exception.PatternPaymentOrderValidationException;
+import org.zelenikr.pia.web.servlet.spring.controller.client.AbstractClientController;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,14 +35,13 @@ public class NewPatternPaymentOrderController extends AbstractClientController {
     private static final String
             BANK_CODES_ATTRIBUTE = "bankCodes",
             CURRENCIES_ATTRIBUTE = "currencies",
-            BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts",
-            PREPARED_PATTERN_ATTRIBUTE = "preparedPatternOrder";
+            BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts";
 
     /*
      ### Form inputs ###
      */
     private static final String
-            NAME_PARAMETER = "patternName",
+            NAME_PARAMETER = "inputPatternName",
             DATE_PARAMETER = "inputDate",
             ACCOUNT_NUMBER_PARAMETER = "selectAccount",
             OFFSET_PARAMETER = "inputOffset",
@@ -55,18 +55,12 @@ public class NewPatternPaymentOrderController extends AbstractClientController {
 
 
     private PatternPaymentOrderManager patternPaymentOrderManager;
-    private PatternPaymentOrderValidator patternPaymentOrderValidator;
     private BankCodeManager bankCodeManager;
     private CurrencyManager currencyManager;
 
     @Autowired
     public void setPatternPaymentOrderManager(PatternPaymentOrderManager patternPaymentOrderManager) {
         this.patternPaymentOrderManager = patternPaymentOrderManager;
-    }
-
-    @Autowired
-    public void setPatternPaymentOrderValidator(PatternPaymentOrderValidator patternPaymentOrderValidator) {
-        this.patternPaymentOrderValidator = patternPaymentOrderValidator;
     }
 
     @Autowired

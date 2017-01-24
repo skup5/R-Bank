@@ -1,0 +1,22 @@
+include formParts
+
+form.form-horizontal.form(method="post" autocomplete="off")
+    span.help-block#helpText
+        span.required-input
+        | Povinná položka
+    .form-group
+        label.col-sm-5.control-label.required-input(for="inputPatternName") Název
+        .col-sm-7
+            - var _patternName = preparedPatternOrder ? preparedPatternOrder.getName() : inputPatternName;
+            input.form-control(type="" id="inputPatternName" name="inputPatternName" value=_patternName required autofocus
+        pattern="[A-Za-z0-9 ]{1,50}" maxlength=50)
+    if preparedPatternOrder
+        +paymentOrderFromPattern(false, bankAccounts, bankCodes, currencies, preparedPatternOrder)
+    else
+        +paymentOrder(false, inputDate, selectAccount, bankAccounts, inputOffset, inputBankCode, bankCodes,
+        inputAmount, selectCurrency, currencies, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
+    .form-group
+        .col-sm-offset-5.col-sm-7
+            //-input(type="hidden" name="action" value="create")
+            button.btn.btn-primary.btn-block(type="submit")= patternActionLabel
+            //-button.btn.btn-warning(type="submit" form="") Zrušit

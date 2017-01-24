@@ -139,7 +139,7 @@ html, body {
     background-color: #f5f5f5;
 }
 
-.table-responsive{
+.table-responsive {
     overflow-x: visible !important;
     overflow-y: visible !important;
 }
@@ -209,9 +209,29 @@ span.fa-only {
     padding-right: 0;
 }
 
-
 /*  Text    */
 
 p.bg-primary, p.bg-success, p.bg-info, p.bg-warning, p.bg-danger {
     padding: 15px;
+}
+
+/* Dropdown */
+
+.dropdown-menu > li > .btn-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 3px 20px;
+}
+
+.dropdown-menu > li > .btn-link:hover, .dropdown-menu > li > .btn-link:focus {
+    text-decoration: none;
+    color: #262626;
+    background-image: -webkit-linear-gradient(top, #f5f5f5 0, #e8e8e8 100%);
+    background-image: -o-linear-gradient(top, #f5f5f5 0, #e8e8e8 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f5f5f5), to(#e8e8e8));
+    background-image: linear-gradient(to bottom, #f5f5f5 0, #e8e8e8 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#ffe8e8e8', GradientType=0);
+    background-color: #e8e8e8;
 }

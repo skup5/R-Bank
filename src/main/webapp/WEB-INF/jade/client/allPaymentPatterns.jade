@@ -1,0 +1,47 @@
+extends template/clientPageTemplate
+
+mixin patternActions(pattern)
+    - var patternId = pattern.getId()
+    .dropdown
+        button.btn.btn-primary.dropdown-toggle(id='patternActions' + patternId type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+            | Vybrat
+            span.caret
+        ul.dropdown-menu.dropdown-menu-right(aria-labelledby='patternActions' + patternId)
+            li
+                button.btn.btn-link(form="formEdit" + patternId, type="submit")
+                    span.fa.fa-pencil
+                    | Upravit
+            li
+                button.btn.btn-link(form="formDelete" + patternId, type="submit" onclick="return confirm('Smazat vzor " + pattern.getName() + "?');")
+                    span.fa.fa-times.text-danger
+                    | Smazat
+        form(method="post" id="formEdit" + patternId)
+            input(type="hidden" name="action" value="edit")
+            input(type="hidden" name="patternId" value=patternId)
+        form(method="post" id="formDelete" + patternId)
+            input(type="hidden" name="action" value="delete")
+            input(type="hidden" name="patternName" value=pattern.getName())
+block content
+    .row
+        .col-lg-3.col-md-3.col-sm-3
+            +menu(2, "payment-pattern-list")
+
+        .col-lg-9.col-md-9.col-sm-9
+            main.main
+                if success
+                    +dismiss-alert("alert-success", success)
+                if err
+                    +dismiss-alert("alert-danger", err)
+                .page-header: h1: small Seznam vzorů platebních příkazů
+                .table-responsive
+                    table.table.table-striped
+                        thead: tr
+                            th Název
+                            th Účet
+                            th.text-right Akce
+                        tbody
+                            each paymentPattern in paymentPatterns
+                                tr
+                                    td= paymentPattern.getName()
+                                    td= paymentPattern.getOwnerAccount().getAccountNumber()
+                                    td.text-right: +patternActions(paymentPattern)
