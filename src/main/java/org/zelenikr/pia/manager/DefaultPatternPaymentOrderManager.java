@@ -8,7 +8,6 @@ import org.zelenikr.pia.dao.PatternPaymentOrderDao;
 import org.zelenikr.pia.domain.BankAccount;
 import org.zelenikr.pia.domain.Client;
 import org.zelenikr.pia.domain.PatternPaymentOrder;
-import org.zelenikr.pia.domain.PaymentTransaction;
 import org.zelenikr.pia.validation.PatternPaymentOrderValidator;
 import org.zelenikr.pia.validation.exception.PatternPaymentOrderValidationException;
 
@@ -52,11 +51,6 @@ public class DefaultPatternPaymentOrderManager implements PatternPaymentOrderMan
             throw new RuntimeException("Owner of pattern doesn't exist!");
         }
         save(newPattern, owner, ownerBankAccountNumber, true);
-    }
-
-    @Override
-    public void createFromTransaction(PaymentTransaction transaction) {
-
     }
 
     @Override
