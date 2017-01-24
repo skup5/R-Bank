@@ -35,41 +35,12 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
     }
 
     @Override
-    public Client findByUsernameFully(String username) {
-        TypedQuery<Client> q = em.createQuery("FROM Client c JOIN FETCH c.bankAccounts JOIN FETCH c.address WHERE c.username = :uname", Client.class);
-        q.setParameter("uname", username);
-        try {
-            return q.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    @Override
     public Client findOneFully(long id) {
         System.out.println("ClientDaoJpa.findOneFully");
         TypedQuery<Client> q = em.createQuery("SELECT c FROM Client c JOIN FETCH c.address JOIN FETCH c.bankAccounts WHERE c.id = :id", Client.class);
-//        Query q = em.createQuery("SELECT DISTINCT c, ba FROM Client c JOIN FETCH c.address LEFT JOIN c.bankAccounts ba WHERE c.id = :id");
         q.setParameter("id", id);
         try {
-//            List<Object[]> list = q.getResultList();
-//            List list = q.getResultList();
-//            for(Object[] objects : list ){
-//            for(Object objects : list ){
-//                for(Object o : objects){
-//                    System.out.println(o);
-//                }
-//            }
-            Client client;
-            client = q.getSingleResult();
-//            for (Object o : (Object[]) q.getSingleResult()) {
-//                System.out.println(client.getBankAccounts().size());
-//            }
-
-//             client = null;
-//                    (Client) clients.get(0);
-            client.getPaymentOrderPatterns().size();
-            return client;
+           return q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

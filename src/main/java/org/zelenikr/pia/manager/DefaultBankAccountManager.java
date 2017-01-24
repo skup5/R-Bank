@@ -48,11 +48,6 @@ public class DefaultBankAccountManager implements BankAccountManager {
     }
 
     @Override
-    public void save(BankAccount bankAccount) {
-        throw new IllegalStateException("Not implemented yet");
-    }
-
-    @Override
     public void delete(BankAccount bankAccount) {
         bankAccountDao.remove(bankAccount);
     }

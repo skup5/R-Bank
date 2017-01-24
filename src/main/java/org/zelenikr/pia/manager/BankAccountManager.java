@@ -18,13 +18,6 @@ public interface BankAccountManager {
     void create(BankAccount newBankAccount, CreditCard creditCard) throws BankAccountValidationException;
 
     /**
-     * Saves existing modified bank account.
-     *
-     * @param bankAccount already created bank account with modified data, expected not-null value
-     */
-    void save(BankAccount bankAccount);
-
-    /**
      * Deletes bank account from data store, if exists.
      *
      * @param bankAccount bank account to delete

@@ -24,7 +24,7 @@ public class CreditCardDaoJdbc extends AbstractDaoJdbc<CreditCard> implements Cr
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet set = null;
-        System.out.println("CreditCardDaoJdbc.save");
+//        System.out.println("CreditCardDaoJdbc.save");
         try {
             conn = openConnection();
             if (card.isNew()) {
@@ -62,7 +62,7 @@ public class CreditCardDaoJdbc extends AbstractDaoJdbc<CreditCard> implements Cr
         ResultSet set = null;
 
         CreditCard card = null;
-        System.out.println("CreditCardDaoJdbc.findOne");
+//        System.out.println("CreditCardDaoJdbc.findOne");
         try {
             conn = openConnection();
             stmt = conn.prepareStatement("SELECT * FROM " + TABLE + " WHERE " + ID + " = ?");
@@ -83,7 +83,7 @@ public class CreditCardDaoJdbc extends AbstractDaoJdbc<CreditCard> implements Cr
     public void remove(CreditCard toRemove) {
         Connection conn = null;
         PreparedStatement stmt = null;
-        System.out.println("CreditCardDaoJdbc.remove");
+//        System.out.println("CreditCardDaoJdbc.remove");
 
         if (!toRemove.isNew()) {
             try {
@@ -107,7 +107,7 @@ public class CreditCardDaoJdbc extends AbstractDaoJdbc<CreditCard> implements Cr
         ResultSet set = null;
 
         CreditCard card = null;
-        System.out.println("CreditCardDaoJdbc.findByCardNumber");
+//        System.out.println("CreditCardDaoJdbc.findByCardNumber");
         try {
             conn = openConnection();
             stmt = conn.prepareStatement("SELECT * FROM " + TABLE + " WHERE " + CARD_NUMBER + " = ?");

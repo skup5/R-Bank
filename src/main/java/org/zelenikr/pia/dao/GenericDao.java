@@ -13,6 +13,9 @@ public interface GenericDao<T extends BaseObject> {
 
     T save(T value);
 
+    /**
+     * @return entity T or null
+     */
     T findOne(Long id);
 
     void remove(T toRemove);

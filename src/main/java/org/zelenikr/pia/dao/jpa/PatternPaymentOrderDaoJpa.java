@@ -37,20 +37,6 @@ public class PatternPaymentOrderDaoJpa extends GenericDaoJpa<PatternPaymentOrder
     }
 
     @Override
-    public List<PatternPaymentOrder> findByOwner(long ownerId) {
-        TypedQuery<PatternPaymentOrder> q = em.createQuery(
-                "SELECT p FROM PatternPaymentOrder p " +
-                        "WHERE p.owner.id = :ownerId " +
-                        "ORDER BY p.name", PatternPaymentOrder.class);
-        q.setParameter("ownerId", ownerId);
-        try {
-            return q.getResultList();
-        } catch (NoResultException e) {
-            return Collections.emptyList();
-        }
-    }
-
-    @Override
     public List<PatternPaymentOrder> findWithAccountByOwner(long ownerId) {
         TypedQuery<PatternPaymentOrder> q = em.createQuery(
                 "SELECT p FROM PatternPaymentOrder p " +

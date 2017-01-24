@@ -20,7 +20,6 @@ import java.io.IOException;
 public class ClientInitFilter implements Filter {
 
     private static final String AUTHENTICATED_CLIENT_SESSION = "authenticatedClient";
-//    private static final String ERROR_CLIENT_ATTRIBUTE = "errorClient";
 
     private ClientManager clientManager;
 
@@ -42,11 +41,7 @@ public class ClientInitFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         Client client = (Client) httpServletRequest.getSession().getAttribute(AUTHENTICATED_CLIENT_SESSION);
         if (client == null) {
-            client = clientManager.loadWithBankAccounts(getAuthenticatedClient().getId());
-//            if(client == null){
-//                request.setAttribute(ERROR_CLIENT_ATTRIBUTE, "Sorry, but you don't own any bank account. Please contact our helpdesk.");
-//                request.getRequestDispatcher("/logout").forward(request, response);
-//            }
+            client = clientManager.loadDetail(getAuthenticatedClient().getId());
             httpServletRequest.getSession().setAttribute(AUTHENTICATED_CLIENT_SESSION, client);
         }
 

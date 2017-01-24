@@ -20,14 +20,6 @@ public interface ClientDao extends GenericDao<Client> {
     /**
      * Returns client with all association fields.
      *
-     * @param username the requested username
-     * @return client with the given username or null
-     */
-    Client findByUsernameFully(String username);
-
-    /**
-     * Returns client with all association fields.
-     *
      * @param id the requested id
      * @return client with the given id or null
      */

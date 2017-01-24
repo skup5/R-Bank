@@ -50,7 +50,7 @@ public interface ClientManager {
     Client loadDetail(Client client);
 
     /**
-     * Finds client instance with specific ID (include all information (bank accounts, address)).
+     * Finds client instance with specific ID (include detail information like bank accounts or address).
      *
      * @param clientIdNumber id of requested client
      * @return client with the given id or null
@@ -59,7 +59,6 @@ public interface ClientManager {
 
     /**
      * Finds client instance with specific ID (include his bank accounts).
-     * //If client doesn't exist or hasn't got any bank accounts, returns null.
      *
      * @param cliendIdNumber id of requested client
      * @return client with the given id or null
