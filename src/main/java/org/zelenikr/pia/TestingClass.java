@@ -3,6 +3,11 @@ package org.zelenikr.pia;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.FileTemplateLoader;
 import org.zelenikr.pia.bankcode.BankCode;
+import org.zelenikr.pia.domain.Currency;
+import org.zelenikr.pia.exchange.ExchangeRateManager;
+import org.zelenikr.pia.exchange.cnb.CNBExchangeRateManager;
+import org.zelenikr.pia.exchange.cnb.WebCNBExchangeRateLoader;
+import org.zelenikr.pia.manager.DefualtCurrencyManager;
 import org.zelenikr.pia.utils.*;
 
 import java.io.File;
@@ -21,7 +26,7 @@ public class TestingClass {
 
     public static void main(String[] args) {
 //        csv("https://www.cnb.cz/cs/platebni_styk/ucty_kody_bank/download/kody_bank_CR.csv");
-
+//        exchangeRate("https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt");
 //        printHash("0001");
 //        printHash("0002");
     }
@@ -64,5 +69,15 @@ public class TestingClass {
         for (BankCode code : codes) {
             System.out.println(code);
         }
+    }
+
+    static void exchangeRate(String file) {
+        ExchangeRateManager manager = new CNBExchangeRateManager(
+                file, new WebCNBExchangeRateLoader(), new DefualtCurrencyManager()
+        );
+        System.out.println(manager.exchange(Currency.CZK, Currency.EUR, 270));
+        System.out.println(manager.exchange(Currency.EUR, Currency.CZK, 100));
+        System.out.println(manager.exchange(Currency.EUR, Currency.USD, 100));
+        System.out.println(manager.exchange(Currency.CZK, Currency.CZK, 100));
     }
 }

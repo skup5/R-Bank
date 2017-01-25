@@ -15,9 +15,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collection;
 
-/*
- * www: http://www.baeldung.com/spring_redirect_after_login
- * author: Eugen Paraschiv
+/**
+ * @author Roman Zelenik
  */
 public class DefaultAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -34,6 +33,7 @@ public class DefaultAuthenticationSuccessHandler implements AuthenticationSucces
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(authentication);
         request.getSession().setAttribute(USER_HOME_URL, targetUrl);
+        targetUrl = "/" + targetUrl;
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
@@ -60,9 +60,9 @@ public class DefaultAuthenticationSuccessHandler implements AuthenticationSucces
         }
 
         if (isClient) {
-            return "/client";
+            return "client";
         } else if (isAdmin) {
-            return "/admin";
+            return "admin";
         } else {
             throw new IllegalStateException();
         }

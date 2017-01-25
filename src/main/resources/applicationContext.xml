@@ -116,4 +116,13 @@
         <constructor-arg name="source" value="https://www.cnb.cz/cs/platebni_styk/ucty_kody_bank/download/kody_bank_CR.csv"/>
     </bean>
 
+    <!-- Exchange rate list -->
+
+    <bean id="exchangeRateLoader" class="org.zelenikr.pia.exchange.cnb.WebCNBExchangeRateLoader"/>
+
+    <bean id="exchangeRateManager" class="org.zelenikr.pia.exchange.cnb.CNBExchangeRateManager">
+        <constructor-arg name="loader" ref="exchangeRateLoader"/>
+        <constructor-arg name="source" value="https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt"/>
+    </bean>
+
 </beans>

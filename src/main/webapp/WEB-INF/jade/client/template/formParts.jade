@@ -54,7 +54,7 @@ mixin paymentOrder(requiredInputs, inputDate, selectAccount, bankAccounts, input
                 .col-sm-5
                     select.form-control(id="selectCurrency" name="selectCurrency" required=requiredInputs)
                         each curr in currencies
-                            option(selected= curr.name().equals(_selectCurrency))= curr.name()
+                            option(selected= curr.name().equals(selectCurrency))= curr.name()
     .form-group
         label.control-label.col-sm-5(for="inputConstSymbol") Konstantní symbol
         .col-sm-7: input(type="text" id="inputConstSymbol" name="inputConstSymbol" value=inputConstSymbol class="form-control text-right" placeholder=""

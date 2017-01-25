@@ -4,9 +4,11 @@ import javafx.collections.transformation.SortedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.zelenikr.pia.bankcode.BankCodeManager;
 import org.zelenikr.pia.dao.BankAccountDao;
 import org.zelenikr.pia.dao.PaymentTransactionDao;
 import org.zelenikr.pia.domain.*;
+import org.zelenikr.pia.exchange.ExchangeRateManager;
 import org.zelenikr.pia.validation.exception.BankAccountValidationException;
 import org.zelenikr.pia.verification.TransactionVerifier;
 import org.zelenikr.pia.verification.VerificationCodeSender;
@@ -26,13 +28,13 @@ import java.util.*;
 @Transactional
 public class DefaultPaymentTransactionManager implements PaymentTransactionManager {
 
-    private static final String OUR_BANK_CODE = "6666";
-
     private TransactionVerifier transactionVerifier;
     private VerificationCodeSender codeSender;
     private PaymentTransactionDao paymentTransactionDao;
     private PaymentTransactionValidator paymentTransactionValidator;
     private BankAccountDao bankAccountDao;
+    private BankCodeManager bankCodeManager;
+    private ExchangeRateManager exchangeRateManager;
 
     @Autowired
     public void setTransactionVerifier(TransactionVerifier transactionVerifier) {
@@ -59,6 +61,16 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         this.bankAccountDao = bankAccountDao;
     }
 
+    @Autowired
+    public void setBankCodeManager(BankCodeManager bankCodeManager) {
+        this.bankCodeManager = bankCodeManager;
+    }
+
+    @Autowired
+    public void setExchangeRateManager(ExchangeRateManager exchangeRateManager) {
+        this.exchangeRateManager = exchangeRateManager;
+    }
+
     @Override
     public void preparePayment(PaymentTransaction newPaymentTransaction, Client payer, String payerAccountNumber) throws PaymentTransactionValidationException, OffsetAccountValidationException, BankAccountValidationException {
         // validate
@@ -76,9 +88,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
 
         paymentTransactionValidator.validate(newPaymentTransaction);
 
-        if (!payerAccount.hasEnough(newPaymentTransaction.getAmount())) {
-            throw new BankAccountValidationException("There isn't enough money in this bank account.");
-        }
+        checkAccountBalance(payerAccount, newPaymentTransaction);
 
         // insert payment
         newPaymentTransaction.setState(TransactionState.CREATED);
@@ -101,17 +111,24 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         if (!transaction.getType().isExpanses()) {
             throw new RuntimeException("Illegal type of payment transaction.");
         }
+
         BankAccount account = transaction.getClientAccount();
-        if (!account.hasEnough(transaction.getAmount())) {
-            throw new BankAccountValidationException("There isn't enough money in this bank account.");
-        }
+        checkAccountBalance(account, transaction);
 
         // verify code
         if (transactionVerifier.verifyObject(transaction, code)) {
             transactionVerifier.forgetObject(transaction);
 
-            account.deduct(transaction.getAmount());
+            // exchange amount
+            float exchangedAmountF = exchangeRateManager.exchange(
+                    transaction.getCurrency(),
+                    account.getCurrency(),
+                    transaction.getAmount().floatValue()
+            );
+            BigDecimal exchangedAmount = new BigDecimal(exchangedAmountF);
+            account.deduct(exchangedAmount);
             bankAccountDao.save(account);
+
             // money transfer
             transfer(transaction);
 
@@ -120,7 +137,8 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
             transaction.setState(TransactionState.SENT);
 
             // amount * (-1)
-            transaction.setAmount(transaction.getAmount().negate());
+            transaction.setAmount(exchangedAmount.negate());
+            transaction.setCurrency(account.getCurrency());
             paymentTransactionDao.save(transaction);
             return true;
         } else {
@@ -176,36 +194,32 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         }
     }
 
-//    public void sendNewCode(PaymentTransaction transaction, Client payer) {
-//        if (transaction.isNew()) {
-//            throw new RuntimeException("Payment transaction doesn't exist.");
-//        }
-//        if (payer.isNew()) {
-//            throw new RuntimeException("Payer of payment doesn't exist!");
-//        }
-//        // generate code
-//        String verifyCode = transactinVerifier.generateCode(transaction);
-//
-//        // send code
-//        if (codeSender.send(verifyCode, payer, transaction)) {
-//            // successfully sent
-//        } else {
-//            throw new RuntimeException("Could not send verify code.");
-//        }
-//    }
-
     private void transfer(PaymentTransaction transaction) {
+        if (!bankCodeManager.isOurBank(transaction.getOffsetAccount().getBankCode())) {
+            return;
+        }
         BankAccount payeeBankAccount = bankAccountDao.findByAccountNumber(transaction.getOffsetAccount().getOffsetAccountNumber());
+        if (payeeBankAccount == null) {
+            return;
+        }
         payeeBankAccount.add(transaction.getAmount());
         bankAccountDao.save(payeeBankAccount);
 
         BigDecimal amount = transaction.getAmount();
-        // TODO: přepočítat amount
+        if (!payeeBankAccount.getCurrency().equals(transaction.getCurrency())) {
+            // exchange amount
+            amount = new BigDecimal(
+                    exchangeRateManager.exchange(
+                            transaction.getCurrency(),
+                            payeeBankAccount.getCurrency(),
+                            amount.floatValue()
+                    ));
+        }
 
         PaymentTransaction payeeTransaction = new PaymentTransaction(
                 TransactionType.INCOMING_PAYMENT, TransactionState.RECEIVED,
                 transaction.getDueDate(), amount, payeeBankAccount.getCurrency(),
-                new OffsetAccount(transaction.getClientAccount().getAccountNumber(), OUR_BANK_CODE),
+                new OffsetAccount(transaction.getClientAccount().getAccountNumber(), bankCodeManager.getBankCode().getCode()),
                 transaction.getConstSymbol(), transaction.getVariableSymbol(), transaction.getSpecificSymbol(),
                 transaction.getMessage());
 
@@ -214,4 +228,17 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
 
     }
 
+    private void checkAccountBalance(BankAccount account, PaymentTransaction transaction) throws BankAccountValidationException {
+        // exchange amount
+        float exchangedAmount = exchangeRateManager.exchange(
+                transaction.getCurrency(),
+                account.getCurrency(),
+                transaction.getAmount().floatValue()
+        );
+
+        // check account state
+        if (!account.hasEnough(new BigDecimal(exchangedAmount))) {
+            throw new BankAccountValidationException("There isn't enough money in this bank account.");
+        }
+    }
 }

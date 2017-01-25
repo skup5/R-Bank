@@ -6,7 +6,11 @@ import org.zelenikr.pia.domain.Currency;
  * @author Roman Zelenik
  */
 public interface CurrencyManager {
-    Currency[] getAvailableCurrencies();
 
-    float getExchangeRate(Currency from, Currency to);
+    /**
+     * Returns array of supported currencies by this bank.
+     *
+     * @return
+     */
+    Currency[] getAvailableCurrencies();
 }

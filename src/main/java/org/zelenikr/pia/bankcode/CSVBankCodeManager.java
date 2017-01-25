@@ -44,6 +44,11 @@ public class CSVBankCodeManager implements BankCodeManager {
         return "";
     }
 
+    @Override
+    public boolean isOurBank(String bankCode) {
+        return localBankCode.getCode().equals(bankCode);
+    }
+
     private List<BankCode> load(String source) {
         List<BankCode> codes = new ArrayList<>();
         try(CSVFileReader reader = loader.getReader(source)) {
@@ -58,8 +63,6 @@ public class CSVBankCodeManager implements BankCodeManager {
         } catch (IOException e){
             e.printStackTrace();
         }
-//        codes.add(new BankCode("0100", "Komerční banka, a.s."));
-//        codes.add(new BankCode("0300", "Československá obchodní banka, a.s."));
         return codes;
     }
 }
