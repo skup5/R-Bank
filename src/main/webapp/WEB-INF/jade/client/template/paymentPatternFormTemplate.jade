@@ -17,4 +17,6 @@ form.form-horizontal.form(method="post" autocomplete="off")
         inputAmount, selectCurrency, currencies, inputConstSymbol, inputVarSymbol, inputSpecSymbol, inputMessage)
     .form-group
         .col-sm-offset-5.col-sm-7
-            button.btn.btn-primary.btn-block(type="submit")= patternActionLabel
+            .btn-group.btn-group-justified(aria-label="form submit buttons")
+                .btn-group(role="group"): button.btn.btn-primary(type="submit")= patternActionLabel
+                .btn-group(role="group"): button.btn.btn-info(type="submit" formaction="payment-order" formnovalidate) Použít jako příkaz

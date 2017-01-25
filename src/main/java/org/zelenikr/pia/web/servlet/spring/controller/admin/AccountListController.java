@@ -41,7 +41,7 @@ public class AccountListController extends AbstractAdminController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log("doGet(" + req.getRequestURL().toString() + ")");
+        log("doGet()");
         String err = null;
         String success = null;
         String action = req.getParameter(ACTION_PARAMETER);

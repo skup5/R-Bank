@@ -32,4 +32,6 @@ block content
                     .form-group
                         .col-sm-offset-5.col-sm-7
                             input(type="hidden" name="action" value="pay")
-                            button.btn.btn-primary.btn-block(type="submit") Zaplatit
+                            .btn-group.btn-group-justified(aria-label="form submit buttons")
+                                .btn-group(role="group"): button.btn.btn-primary(type="submit") Zaplatit
+                                .btn-group(role="group"): button.btn.btn-info(type="submit" formaction="payment-pattern" formnovalidate) Uložit jako vzor

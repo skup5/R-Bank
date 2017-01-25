@@ -37,12 +37,9 @@ public class NewPaymentOrderController extends AbstractClientController {
 
     private static final String PREPARED_TRANSACTION_SESSION = "preparedTransaction";
 
-
-    //    private static final String BANK_ACCOUNTS_ATTRIBUTE = "bankAccounts";
     private static final String
             BANK_CODES_ATTRIBUTE = "bankCodes",
             CURRENCIES_ATTRIBUTE = "currencies",
-            REQUIRED_INPUTS_ATTRIBUTE = "requiredInputs",
             PREPARED_TRANSACTION_ATTRIBUTE = "preparedTransaction",
             VERIFICATION_CODE_LENGTH_ATTRIBUTE = "verificationCodeLength",
             VERIFICATION_CODE_TIMEOUT_ATTRIBUTE = "verificationCodeTimeout";
@@ -119,7 +116,7 @@ public class NewPaymentOrderController extends AbstractClientController {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String formAction = req.getParameter(ACTION_PARAMETER);
         if (formAction == null) {
-            req.setAttribute(ERROR_ATTRIBUTE, "Invalid action!");
+            req.setAttribute(COPY_PARAMETERS_ATTRIBUTE, true);
             doGet(req, resp);
         } else {
             doAction(formAction, req, resp);

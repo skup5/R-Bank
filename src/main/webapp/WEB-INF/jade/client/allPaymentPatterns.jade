@@ -10,7 +10,7 @@ mixin patternActions(pattern)
             li
                 button.btn.btn-link(form="formEdit" + patternId, type="submit")
                     span.fa.fa-pencil
-                    | Upravit
+                    | Zobrazit / Upravit
             li
                 button.btn.btn-link(form="formDelete" + patternId, type="submit" onclick="return confirm('Smazat vzor " + pattern.getName() + "?');")
                     span.fa.fa-times.text-danger
