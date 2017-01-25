@@ -1,7 +1,6 @@
 package org.zelenikr.pia.exchange.cnb;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.zelenikr.pia.domain.Currency;
 import org.zelenikr.pia.exchange.ExchangeRateManager;
 import org.zelenikr.pia.manager.CurrencyManager;

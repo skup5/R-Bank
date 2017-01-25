@@ -1,8 +1,5 @@
 package org.zelenikr.pia.web.servlet.spring.view;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.zelenikr.pia.manager.UserManager;
 import org.zelenikr.pia.web.template.TemplateParserException;
 
 import javax.servlet.ServletException;

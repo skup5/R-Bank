@@ -186,8 +186,6 @@ public class NewPaymentOrderController extends AbstractClientController {
                 constSymbol, varSymbol, specificSymbol, message
         );
 
-        // TODO: check - is offset account our bank account ?
-
         try {
             transactionManager.preparePayment(transaction, getAuthenticatedClient(req), accountNumber);
         } catch (PaymentTransactionValidationException | OffsetAccountValidationException | BankAccountValidationException e) {
@@ -195,6 +193,8 @@ public class NewPaymentOrderController extends AbstractClientController {
             doGet(req, resp);
             return;
         }
+
+        // TODO: set verification timeout
 
         req.removeAttribute(COPY_PARAMETERS_ATTRIBUTE);
         req.getSession().setAttribute(PREPARED_TRANSACTION_SESSION, transaction);
@@ -207,6 +207,9 @@ public class NewPaymentOrderController extends AbstractClientController {
     private void doVerifyTransaction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PaymentTransaction transaction = (PaymentTransaction) req.getSession().getAttribute(PREPARED_TRANSACTION_SESSION);
         String code = req.getParameter(VERIFICATION_CODE_PARAMETER);
+
+        // TODO: check verification timeout
+
         try {
             if (transactionManager.verifyPayment(transaction.getId(), code)) {
                 req.getSession().removeAttribute(PREPARED_TRANSACTION_SESSION);
