@@ -25,7 +25,7 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
 
     @Override
     public User findByUsername(String username) {
-        TypedQuery<User> q = em.createQuery("SELECT u FROM User u WHERE u.username = :uname", User.class);
+        TypedQuery<User> q = em.createQuery("SELECT u FROM User u JOIN FETCH u.roles WHERE u.username = :uname", User.class);
         q.setParameter("uname", username);
         try {
             return q.getSingleResult();
@@ -39,10 +39,6 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-        if (user == null)
-            throw new UsernameNotFoundException(username);
-        user.getRoles().size();
-        return user;
+        return findByUsername(username);
     }
 }

@@ -36,7 +36,6 @@ public class ClientDaoJpa extends GenericDaoJpa<Client> implements ClientDao {
 
     @Override
     public Client findOneFully(long id) {
-        System.out.println("ClientDaoJpa.findOneFully");
         TypedQuery<Client> q = em.createQuery("SELECT c FROM Client c JOIN FETCH c.address JOIN FETCH c.bankAccounts WHERE c.id = :id", Client.class);
         q.setParameter("id", id);
         try {

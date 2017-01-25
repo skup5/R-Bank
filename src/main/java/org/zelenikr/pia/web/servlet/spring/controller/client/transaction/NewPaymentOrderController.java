@@ -1,5 +1,6 @@
 package org.zelenikr.pia.web.servlet.spring.controller.client.transaction;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zelenikr.pia.bankcode.BankCodeManager;
 import org.zelenikr.pia.domain.*;
@@ -35,7 +36,9 @@ public class NewPaymentOrderController extends AbstractClientController {
             VERIFY_TEMPLATE_PATH = "client/verifyOrder",
             SUCCESS_TEMPLATE_PATH = "client/successfulTransaction";
 
-    private static final String PREPARED_TRANSACTION_SESSION = "preparedTransaction";
+    private static final String
+            PREPARED_TRANSACTION_SESSION = "preparedTransaction",
+            VERIFICATION_CODE_TIMEOUT_SESSION = "verificationCodeTimeout";
 
     private static final String
             BANK_CODES_ATTRIBUTE = "bankCodes",
@@ -176,7 +179,7 @@ public class NewPaymentOrderController extends AbstractClientController {
         try {
             currency = Currency.valueOf(currencyName);
         } catch (IllegalArgumentException e) {
-            req.setAttribute(ERROR_ATTRIBUTE,"Unknown currency.");
+            req.setAttribute(ERROR_ATTRIBUTE, "Unknown currency.");
             doGet(req, resp);
             return;
         }
@@ -194,10 +197,10 @@ public class NewPaymentOrderController extends AbstractClientController {
             return;
         }
 
-        // TODO: set verification timeout
-
+        Date timeout = DateUtils.addMinutes(new Date(), verificationSettings.getCodeTimeout());
         req.removeAttribute(COPY_PARAMETERS_ATTRIBUTE);
         req.getSession().setAttribute(PREPARED_TRANSACTION_SESSION, transaction);
+        req.getSession().setAttribute(VERIFICATION_CODE_TIMEOUT_SESSION, timeout);
         req.setAttribute(PREPARED_TRANSACTION_ATTRIBUTE, transaction);
         req.setAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE, verificationSettings.getCodeLength());
         req.setAttribute(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE, verificationSettings.getCodeTimeout());
@@ -206,9 +209,20 @@ public class NewPaymentOrderController extends AbstractClientController {
 
     private void doVerifyTransaction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PaymentTransaction transaction = (PaymentTransaction) req.getSession().getAttribute(PREPARED_TRANSACTION_SESSION);
+        Date timeout = (Date) req.getSession().getAttribute(VERIFICATION_CODE_TIMEOUT_SESSION);
         String code = req.getParameter(VERIFICATION_CODE_PARAMETER);
 
-        // TODO: check verification timeout
+        // check verification timeout
+        Date currentDateTime = new Date();
+        try {
+            if (currentDateTime.after(timeout)) {
+                req.setAttribute(ERROR_ATTRIBUTE, "Timeout expired");
+                doCancelTransaction(req, resp);
+            }
+        } catch (NullPointerException e) {
+            req.setAttribute(ERROR_ATTRIBUTE, "Timeout expired");
+            doCancelTransaction(req, resp);
+        }
 
         try {
             if (transactionManager.verifyPayment(transaction.getId(), code)) {
