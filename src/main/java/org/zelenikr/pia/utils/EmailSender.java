@@ -5,5 +5,5 @@ package org.zelenikr.pia.utils;
  */
 public interface EmailSender {
 
-    void send(String from, String to, String subject, String message);
+    void send(String to, String subject, String message);
 }

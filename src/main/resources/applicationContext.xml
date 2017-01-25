@@ -113,7 +113,8 @@
     <bean id="bankCodeManager" class="org.zelenikr.pia.bankcode.CSVBankCodeManager">
         <constructor-arg name="loader" ref="csvLoader"/>
         <constructor-arg name="localBankCode" ref="rbankBankCode"/>
-        <constructor-arg name="source" value="https://www.cnb.cz/cs/platebni_styk/ucty_kody_bank/download/kody_bank_CR.csv"/>
+        <constructor-arg name="source"
+                         value="https://www.cnb.cz/cs/platebni_styk/ucty_kody_bank/download/kody_bank_CR.csv"/>
     </bean>
 
     <!-- Exchange rate list -->
@@ -122,7 +123,27 @@
 
     <bean id="exchangeRateManager" class="org.zelenikr.pia.exchange.cnb.CNBExchangeRateManager">
         <constructor-arg name="loader" ref="exchangeRateLoader"/>
-        <constructor-arg name="source" value="https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt"/>
+        <constructor-arg name="source"
+                         value="https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt"/>
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="port" value="587"/>
+        <property name="username" value="rbank.pia.kiv"/>
+        <property name="password" value="zelenikr1234"/>
+
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="emailSender" class="org.zelenikr.pia.utils.DefaultEmailSender">
+        <constructor-arg name="mailSender" ref="mailSender"/>
     </bean>
 
 </beans>
