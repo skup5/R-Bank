@@ -29,10 +29,10 @@ public class CreditCardDaoJdbc extends AbstractDaoJdbc<CreditCard> implements Cr
             conn = openConnection();
             if (card.isNew()) {
                 stmt = insertStatement(conn, card);
-                System.out.println("insert: " + card);
+                //System.out.println("insert: " + card);
             } else {
                 stmt = updateStatement(conn, card);
-                System.out.println("update: " + card);
+                //System.out.println("update: " + card);
             }
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {

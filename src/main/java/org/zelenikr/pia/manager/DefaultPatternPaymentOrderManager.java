@@ -27,20 +27,11 @@ public class DefaultPatternPaymentOrderManager implements PatternPaymentOrderMan
     private BankAccountDao bankAccountDao;
 
     @Autowired
-    public void setPatternPaymentOrderDao(PatternPaymentOrderDao patternPaymentOrderDao) {
+    public DefaultPatternPaymentOrderManager(PatternPaymentOrderDao patternPaymentOrderDao, PatternPaymentOrderValidator patternPaymentOrderValidator, BankAccountDao bankAccountDao) {
         this.patternPaymentOrderDao = patternPaymentOrderDao;
-    }
-
-    @Autowired
-    public void setPatternPaymentOrderValidator(PatternPaymentOrderValidator patternPaymentOrderValidator) {
         this.patternPaymentOrderValidator = patternPaymentOrderValidator;
-    }
-
-    @Autowired
-    public void setBankAccountDao(BankAccountDao bankAccountDao) {
         this.bankAccountDao = bankAccountDao;
     }
-
 
     @Override
     public void create(PatternPaymentOrder newPattern, Client owner, String ownerBankAccountNumber) throws PatternPaymentOrderValidationException {

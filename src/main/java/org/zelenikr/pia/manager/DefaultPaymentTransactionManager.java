@@ -36,37 +36,16 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
     private ExchangeRateManager exchangeRateManager;
 
     @Autowired
-    public void setTransactionVerifier(TransactionVerifier transactionVerifier) {
+    public DefaultPaymentTransactionManager(
+            TransactionVerifier transactionVerifier, VerificationCodeSender codeSender,
+            PaymentTransactionDao paymentTransactionDao, PaymentTransactionValidator paymentTransactionValidator,
+            BankAccountDao bankAccountDao, BankCodeManager bankCodeManager, ExchangeRateManager exchangeRateManager) {
         this.transactionVerifier = transactionVerifier;
-    }
-
-    @Autowired
-    public void setCodeSender(VerificationCodeSender codeSender) {
         this.codeSender = codeSender;
-    }
-
-    @Autowired
-    public void setPaymentTransactionDao(PaymentTransactionDao paymentTransactionDao) {
         this.paymentTransactionDao = paymentTransactionDao;
-    }
-
-    @Autowired
-    public void setPaymentTransactionValidator(PaymentTransactionValidator paymentTransactionValidator) {
         this.paymentTransactionValidator = paymentTransactionValidator;
-    }
-
-    @Autowired
-    public void setBankAccountDao(BankAccountDao bankAccountDao) {
         this.bankAccountDao = bankAccountDao;
-    }
-
-    @Autowired
-    public void setBankCodeManager(BankCodeManager bankCodeManager) {
         this.bankCodeManager = bankCodeManager;
-    }
-
-    @Autowired
-    public void setExchangeRateManager(ExchangeRateManager exchangeRateManager) {
         this.exchangeRateManager = exchangeRateManager;
     }
 

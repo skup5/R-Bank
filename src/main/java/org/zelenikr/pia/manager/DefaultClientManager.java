@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.zelenikr.pia.dao.BankAccountDao;
 import org.zelenikr.pia.dao.ClientDao;
 import org.zelenikr.pia.domain.*;
+import org.zelenikr.pia.utils.EmailSender;
 import org.zelenikr.pia.validation.ClientValidator;
 import org.zelenikr.pia.validation.exception.BankAccountValidationException;
 import org.zelenikr.pia.validation.exception.ClientValidationException;
@@ -29,13 +30,15 @@ public class DefaultClientManager implements ClientManager {
     private ClientDao clientDao;
     private ClientValidator clientValidator;
     private BankAccountDao bankAccountDao;
+    private EmailSender emailSender;
 
     @Autowired
-    public DefaultClientManager(UserManager userManager, ClientDao clientDao, BankAccountDao bankAccountDao, ClientValidator clientValidator) {
+    public DefaultClientManager(UserManager userManager, ClientDao clientDao, BankAccountDao bankAccountDao, ClientValidator clientValidator, EmailSender emailSender) {
         this.userManager = userManager;
         this.clientDao = clientDao;
         this.bankAccountDao = bankAccountDao;
         this.clientValidator = clientValidator;
+        this.emailSender = emailSender;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -74,6 +77,7 @@ public class DefaultClientManager implements ClientManager {
         newClient.getBankAccounts().add(clientBankAccount);
         newClient.setAddress(clientAddress);
         clientDao.save(newClient);
+        sendRegistrationInfoMail(generatedUser, newClient.getEmail());
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -142,5 +146,15 @@ public class DefaultClientManager implements ClientManager {
             client.getBankAccounts().remove(account);
             bankAccountDao.remove(account);
         }
+    }
+
+    private void sendRegistrationInfoMail(User user, String emailAddress){
+        StringBuilder message = new StringBuilder("R-Bank - new account\n");
+        message.append("Welcome, this is your username: ");
+        message.append(user.getUsername());
+        message.append(" and password: ");
+        message.append(user.getPassword());
+        message.append(" for e-banking.");
+        emailSender.send(emailAddress, "Welcome", message.toString());
     }
 }
