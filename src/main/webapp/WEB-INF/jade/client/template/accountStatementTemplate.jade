@@ -24,3 +24,33 @@
                 tr
                     td(scope="row")= transaction.getConstSymbol()
                     td(scope="row")= transaction.getSpecificSymbol()
+if transactionCount > 0
+    - var pages = (transactionCount / selectTransactionPagination) + ((transactionCount % selectTransactionPagination) == 0 ? 0 : 1)
+    nav(aria-label="pagination"): .text-center
+        ul.pagination
+            - var i = 1
+            if actualPage == 1
+                li.disabled
+                    span
+                        span(aria-hidden="true") &laquo;
+            else
+                li
+                    a(href="?page=" + (actualPage - 1), aria-label="Previous")
+                        span(aria-hidden="true") &laquo;
+            while i <= pages
+                if actualPage == i
+                    li.active
+                        span
+                            | #{i}
+                            span.sr-only (current)
+                else
+                    li: a(href="?page=" + i)= i
+                - i++
+            if actualPage == pages
+                li.disabled
+                    span
+                        span(aria-hidden="true") &raquo;
+            else
+                li
+                    a(href="?page=" + (actualPage + 1), aria-label="Next")
+                        span(aria-hidden="true") &raquo;

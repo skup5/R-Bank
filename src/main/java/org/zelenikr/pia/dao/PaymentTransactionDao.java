@@ -21,6 +21,8 @@ public interface PaymentTransactionDao extends GenericDao<PaymentTransaction> {
      */
     List<PaymentTransaction> findByClientAccountNumber(String accountNumber, TransactionState state);
 
+    List<PaymentTransaction> findByClientAccountNumber(String accountNumber, TransactionState state, int startRow, int maxRows);
+
     /**
      * Returns list of payments in one of specific {@link TransactionState} and
      * belonging to {@link BankAccount} with specific account number.
@@ -31,4 +33,9 @@ public interface PaymentTransactionDao extends GenericDao<PaymentTransaction> {
      */
     List<PaymentTransaction> findByClientAccountNumber(String accountNumber, List<TransactionState> states);
 
+    List<PaymentTransaction> findByClientAccountNumber(String accountNumber, List<TransactionState> states, int startRow, int maxRows);
+
+    long countByClientAccountNumber(String accountNumber, TransactionState state);
+
+    long countByClientAccountNumber(String accountNumber, List<TransactionState> states);
 }

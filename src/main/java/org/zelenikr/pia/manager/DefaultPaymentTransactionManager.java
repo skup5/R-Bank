@@ -142,8 +142,31 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
     }
 
     @Override
+    public long countAllByClientAccount(String accountNumber) {
+        return paymentTransactionDao.countByClientAccountNumber(accountNumber, getClientVisibleStates());
+    }
+
+    @Override
+    public long countAllExpensesByClientAccount(String accountNumber) {
+        return paymentTransactionDao.countByClientAccountNumber(accountNumber, TransactionState.SENT);
+    }
+
+    @Override
+    public long countAllRevenuesByClientAccount(String accountNumber) {
+        return paymentTransactionDao.countByClientAccountNumber(accountNumber, TransactionState.RECEIVED);
+    }
+
+    @Override
     public List<PaymentTransaction> findAllByClientAccount(String accountNumber) {
-        return paymentTransactionDao.findByClientAccountNumber(accountNumber, Arrays.asList(TransactionState.RECEIVED, TransactionState.SENT));
+        return paymentTransactionDao.findByClientAccountNumber(accountNumber, getClientVisibleStates());
+    }
+
+    @Override
+    public List<PaymentTransaction> findAllByClientAccount(String accountNumber, int pageSize, int pageNumber) {
+        checkPageSize(pageSize);
+        checkPageNumber(pageNumber);
+        int startRow = (pageNumber - 1) * pageSize;
+        return paymentTransactionDao.findByClientAccountNumber(accountNumber, getClientVisibleStates(), startRow, pageSize);
     }
 
     @Override
@@ -152,8 +175,24 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
     }
 
     @Override
+    public List<PaymentTransaction> findAllRevenuesByClientAccount(String accountNumber, int pageSize, int pageNumber) {
+        checkPageSize(pageSize);
+        checkPageNumber(pageNumber);
+        int startRow = (pageNumber - 1) * pageSize;
+        return paymentTransactionDao.findByClientAccountNumber(accountNumber, TransactionState.RECEIVED, startRow, pageSize);
+    }
+
+    @Override
     public List<PaymentTransaction> findAllExpensesByClientAccount(String accountNumber) {
         return paymentTransactionDao.findByClientAccountNumber(accountNumber, TransactionState.SENT);
+    }
+
+    @Override
+    public List<PaymentTransaction> findAllExpensesByClientAccount(String accountNumber, int pageSize, int pageNumber) {
+        checkPageSize(pageSize);
+        checkPageNumber(pageNumber);
+        int startRow = (pageNumber - 1) * pageSize;
+        return paymentTransactionDao.findByClientAccountNumber(accountNumber, TransactionState.SENT, startRow, pageSize);
     }
 
     public void sendNewCode(PaymentTransaction transaction) {
@@ -218,5 +257,17 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
         if (!account.hasEnough(new BigDecimal(exchangedAmount))) {
             throw new BankAccountValidationException("There isn't enough money in this bank account.");
         }
+    }
+
+    private void checkPageSize(int pageSize) {
+        if (pageSize < 1) throw new IllegalArgumentException("Argument pageSize cannot be smaller then 1");
+    }
+
+    private void checkPageNumber(int pageNumber) {
+        if (pageNumber < 1) throw new IllegalArgumentException("Argument pageNumber cannot be smaller then 1");
+    }
+
+    private List<TransactionState> getClientVisibleStates() {
+        return Arrays.asList(TransactionState.RECEIVED, TransactionState.SENT);
     }
 }

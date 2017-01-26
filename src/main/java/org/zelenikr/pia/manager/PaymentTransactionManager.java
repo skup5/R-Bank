@@ -47,6 +47,12 @@ public interface PaymentTransactionManager {
      */
     void cancelPayment(long transaction);
 
+    long countAllByClientAccount(String accountNumber);
+
+    long countAllExpensesByClientAccount(String accountNumber);
+
+    long countAllRevenuesByClientAccount(String accountNumber);
+
     /**
      * Finds all incoming and outcoming payments belonging to specific {@link BankAccount} sorted by date.
      *
@@ -54,6 +60,8 @@ public interface PaymentTransactionManager {
      * @return list of payments or empty list
      */
     List<PaymentTransaction> findAllByClientAccount(String accountNumber);
+
+    List<PaymentTransaction> findAllByClientAccount(String accountNumber, int pageSize, int pageNumber);
 
     /**
      * Finds all incoming payments and revenues belonging to specific {@link BankAccount} sorted by date.
@@ -63,6 +71,8 @@ public interface PaymentTransactionManager {
      */
     List<PaymentTransaction> findAllRevenuesByClientAccount(String accountNumber);
 
+    List<PaymentTransaction> findAllRevenuesByClientAccount(String accountNumber, int pageSize, int pageNumber);
+
     /**
      * Finds all outcoming payments and expenses belonging to specific {@link BankAccount} sorted by date.
      *
@@ -71,4 +81,5 @@ public interface PaymentTransactionManager {
      */
     List<PaymentTransaction> findAllExpensesByClientAccount(String accountNumber);
 
+    List<PaymentTransaction> findAllExpensesByClientAccount(String accountNumber, int pageSize, int pageNumber);
 }

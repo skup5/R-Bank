@@ -18,6 +18,12 @@ import java.io.IOException;
 public class ExpenseTransactionsController extends AbstractTransactionListController {
 
     private static final String TEMPLATE_PATH = "client/outcomingPayments";
+    private static final String TRANSACTION_COUNT_SESSION = "expenseTransactionCount";
+
+    @Override
+    protected String getDefaultTemplatePath() {
+        return TEMPLATE_PATH;
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,17 +32,22 @@ public class ExpenseTransactionsController extends AbstractTransactionListContro
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req,resp);
+        super.doPost(req, resp);
     }
 
     @Override
-    protected void loadStatement(HttpServletRequest req, BankAccount actualAccount) {
-        req.setAttribute(TRANSACTION_LIST_ATTRIBUTE, transactionManager.findAllExpensesByClientAccount(actualAccount.getAccountNumber()));
+    protected void loadStatement(HttpServletRequest req, BankAccount actualAccount, int pageSize, int pageNumber) {
+        req.setAttribute(TRANSACTION_LIST_ATTRIBUTE, transactionManager.findAllExpensesByClientAccount(actualAccount.getAccountNumber(), pageSize, pageNumber));
         req.setAttribute(ACTUAL_BANK_ACCOUNT_ATTRIBUTE, actualAccount);
     }
 
     @Override
-    protected String getDefaultTemplatePath() {
-        return TEMPLATE_PATH;
+    protected long getTransactionCount(BankAccount actualAccount) {
+        return transactionManager.countAllExpensesByClientAccount(actualAccount.getAccountNumber());
+    }
+
+    @Override
+    protected String getTransactionCountSessionName() {
+        return TRANSACTION_COUNT_SESSION;
     }
 }

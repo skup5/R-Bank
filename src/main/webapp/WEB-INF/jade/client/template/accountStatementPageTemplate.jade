@@ -1,7 +1,7 @@
 extends clientPageTemplate
 
 block title
-    title Výpis účtu  - R-Bank
+    title Výpis účtu - R-Bank
 
 block content
     .row
@@ -12,8 +12,8 @@ block content
                 .page-header: h1: small Přehled
                 .page-header: h2
                     small="Zůstatek "
-                        if actualAccount
-                            | #{actualAccount.getSum()} #{actualAccount.getCurrency().name()}
+                    if actualAccount
+                        | #{actualAccount.getSum()} #{actualAccount.getCurrency().name()}
                 form.form-inline(method="post")
                     .form-group
                         label.control-label(for="selectAccount") Účet
@@ -21,7 +21,11 @@ block content
                             each account in bankAccounts
                                 option(value=account.getAccountNumber() selected=actualAccount && account.getAccountNumber() == actualAccount.getAccountNumber())
                                     | #{account.getAccountNumber()} (#{account.getCurrency().name()})
-                        .form-group
-                            button.btn.btn-primary(type="submit") Zobrazit
+                    .form-group
+                        label.control-label(for="selectTransactionPagination" data-toggle="tooltip" data-placement="top" title="Počet položek zobrazených na stránce") Položek
+                        select.form-control(id="selectTransactionPagination" name="selectTransactionPagination" required)
+                            each val in [2,5,10,25,50]
+                                option(selected=val == selectTransactionPagination)= val
+                    button.btn.btn-primary(type="submit") Zobrazit
                 if transactions != null
                     include accountStatementTemplate
