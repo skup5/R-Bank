@@ -31,11 +31,9 @@ public class PatternPaymentOrderListView extends AbstractClientView {
         if (template == null)
             throw new NullPointerException();
 
-        Map<String, Object> vars = new HashMap<>();
+        Map<String, Object> vars = initVariables(req);
         vars.put(PATTERNS_LIST_ATTRIBUTE, req.getAttribute(PATTERNS_LIST_ATTRIBUTE));
-        vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
-        vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
-        vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));
+
         try {
             resp.setContentType("text/html");
             renderTemplate(template, vars, resp.getWriter());

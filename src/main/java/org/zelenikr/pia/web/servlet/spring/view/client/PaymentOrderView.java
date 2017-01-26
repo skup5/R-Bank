@@ -38,23 +38,19 @@ public class PaymentOrderView extends AbstractClientView {
         if (template == null)
             throw new NullPointerException();
 
-        Map<String, Object> vars;
+        Map<String, Object> vars = initVariables(req);
 
         if (req.getAttribute(COPY_PARAMETERS_ATTRIBUTE) != null) {
-            vars = createVariablesFromParameters(req);
-        } else {
-            vars = new HashMap<>();
+            copyParametersToVariables(req, vars);
         }
+
         vars.put(BANK_CODES_ATTRIBUTE, req.getAttribute(BANK_CODES_ATTRIBUTE));
         vars.put(CURRENCIES_ATTRIBUTE, req.getAttribute(CURRENCIES_ATTRIBUTE));
         vars.put(PREPARED_TRANSACTION_ATTRIBUTE, req.getAttribute(PREPARED_TRANSACTION_ATTRIBUTE));
         vars.put(VERIFICATION_CODE_LENGTH_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE));
         vars.put(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE));
         vars.put(BANK_ACCOUNTS_ATTRIBUTE, req.getAttribute(BANK_ACCOUNTS_ATTRIBUTE));
-        vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
-        vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
         vars.put(WARNING_ATTRIBUTE, req.getAttribute(WARNING_ATTRIBUTE));
-        vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));
         try {
             resp.setContentType("text/html");
             renderTemplate(template, vars, resp.getWriter());

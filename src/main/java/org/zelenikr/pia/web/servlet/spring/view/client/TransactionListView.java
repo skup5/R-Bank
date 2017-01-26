@@ -38,12 +38,10 @@ public class TransactionListView extends AbstractClientView {
         if (template == null)
             throw new NullPointerException();
 
-        Map<String, Object> vars;
+        Map<String, Object> vars = initVariables(req);
 
         if (req.getAttribute(COPY_PARAMETERS_ATTRIBUTE) != null) {
-            vars = createVariablesFromParameters(req);
-        } else {
-            vars = new HashMap<>();
+            copyParametersToVariables(req, vars);
         }
 
         vars.put(TRANSACTION_LIST_ATTRIBUTE, req.getAttribute(TRANSACTION_LIST_ATTRIBUTE));
@@ -52,9 +50,6 @@ public class TransactionListView extends AbstractClientView {
         vars.put(ACTUAL_PAGE_ATTRIBUTE, req.getAttribute(ACTUAL_PAGE_ATTRIBUTE));
         vars.put(PAGE_SIZE_ATTRIBUTE, req.getAttribute(PAGE_SIZE_ATTRIBUTE));
         vars.put(TRANSACTION_COUNT_ATTRIBUTE, req.getAttribute(TRANSACTION_COUNT_ATTRIBUTE));
-        vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
-        vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
-        vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));
         try {
             resp.setContentType("text/html");
             renderTemplate(template, vars, resp.getWriter());

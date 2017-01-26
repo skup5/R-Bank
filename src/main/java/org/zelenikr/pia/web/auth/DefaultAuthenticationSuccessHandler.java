@@ -4,34 +4,71 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
-import org.springframework.security.web.WebAttributes;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collection;
 
 /**
+ * Sends redirecting to previously url or to default url after successful authentication.
+ * Also sets to user authentication timeout.
+ *
  * @author Roman Zelenik
  */
-public class DefaultAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    public static final int UNKNOWN_TIMEOUT = -1;
+    protected Log logger = LogFactory.getLog(this.getClass());
 
     private static final String USER_HOME_URL = "displayNameUrl";
-    protected Log logger = LogFactory.getLog(this.getClass());
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+    private RequestCache requestCache = new HttpSessionRequestCache();
+
+    private int clientAuthTimeout = UNKNOWN_TIMEOUT;
+    private int adminAuthTimeout = UNKNOWN_TIMEOUT;
+    private String clientDefaultTargetUrl = null;
+    private String adminDefaultTargetUrl = null;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        handle(request, response, authentication);
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+        if (savedRequest == null) {
+            handle(request, response, authentication);
+            return;
+        }
+        String targetUrlParameter = getTargetUrlParameter();
+        if (isAlwaysUseDefaultTargetUrl()
+                || (targetUrlParameter != null && StringUtils.hasText(request
+                .getParameter(targetUrlParameter)))) {
+            requestCache.removeRequest(request, response);
+            handle(request, response, authentication);
+            return;
+        }
+
         clearAuthenticationAttributes(request);
+
+        // Use the DefaultSavedRequest URL
+        String targetUrl = savedRequest.getRedirectUrl();
+        logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
+        changeSessionTimeout(request, authentication);
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
-    protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String targetUrl = determineTargetUrl(authentication);
+        changeSessionTimeout(request, authentication);
+        if (targetUrl == null) {
+            super.onAuthenticationSuccess(request, response, authentication);
+            return;
+        }
         request.getSession().setAttribute(USER_HOME_URL, targetUrl);
         targetUrl = "/" + targetUrl;
         if (response.isCommitted()) {
@@ -39,48 +76,73 @@ public class DefaultAuthenticationSuccessHandler implements AuthenticationSucces
             return;
         }
 
-        redirectStrategy.sendRedirect(request, response, targetUrl);
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+    }
+
+    private void changeSessionTimeout(HttpServletRequest request, Authentication authentication) {
+        int sessionTimeout = determineSessionTimeout(authentication);
+        if (sessionTimeout >= 0) {
+            request.getSession().setMaxInactiveInterval(sessionTimeout);
+        }
     }
 
     /**
-     * Builds the target URL.
+     * Determines the target URL by {@link GrantedAuthority}
+     *
+     * @return url or null
      */
     protected String determineTargetUrl(Authentication authentication) {
-        boolean isClient = false;
-        boolean isAdmin = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals("ROLE_CLIENT")) {
-                isClient = true;
-                break;
+                return clientDefaultTargetUrl;
             } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
-                isAdmin = true;
-                break;
+                return adminDefaultTargetUrl;
             }
         }
+        return null;
+    }
 
-        if (isClient) {
-            return "client";
-        } else if (isAdmin) {
-            return "admin";
-        } else {
-            throw new IllegalStateException();
+    /**
+     * Determines the session max inactive interval by {@link GrantedAuthority}
+     *
+     * @return time in seconds or UNKNOWN_TIMEOUT
+     */
+    protected int determineSessionTimeout(Authentication authentication) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        for (GrantedAuthority grantedAuthority : authorities) {
+            if (grantedAuthority.getAuthority().equals("ROLE_CLIENT")) {
+                return clientAuthTimeout * 60;
+            } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+                return adminAuthTimeout * 60;
+            }
         }
+        return UNKNOWN_TIMEOUT;
     }
 
-    protected void clearAuthenticationAttributes(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return;
-        }
-        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+    public void setRequestCache(RequestCache requestCache) {
+        this.requestCache = requestCache;
     }
 
-    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
-        this.redirectStrategy = redirectStrategy;
+    /**
+     * @param adminAuthTimeout minutes
+     */
+    public void setAdminAuthTimeout(int adminAuthTimeout) {
+        this.adminAuthTimeout = adminAuthTimeout;
     }
 
-    protected RedirectStrategy getRedirectStrategy() {
-        return redirectStrategy;
+    /**
+     * @param clientAuthTimeout minutes
+     */
+    public void setClientAuthTimeout(int clientAuthTimeout) {
+        this.clientAuthTimeout = clientAuthTimeout;
+    }
+
+    public void setAdminDefaultTargetUrl(String adminDefaultTargetUrl) {
+        this.adminDefaultTargetUrl = adminDefaultTargetUrl;
+    }
+
+    public void setClientDefaultTargetUrl(String clientDefaultTargetUrl) {
+        this.clientDefaultTargetUrl = clientDefaultTargetUrl;
     }
 }

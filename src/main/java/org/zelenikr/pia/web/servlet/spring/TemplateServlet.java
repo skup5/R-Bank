@@ -68,16 +68,26 @@ public abstract class TemplateServlet extends AbstractServlet {
     }
 
     /**
-     * Create template variables from request parameters.
+     * Creates new template variables from request parameters.
      *
      * @param request
-     * @return
+     * @return new variables or empty {@link Map}
      */
-    protected Map<String, Object> createVariablesFromParameters(HttpServletRequest request) {
-        //log("createVariablesFromParameters");
+    protected Map<String, Object> copyParametersToVariables(HttpServletRequest request) {
+        Map<String, Object> variables = new HashMap<>();
+        copyParametersToVariables(request, variables);
+        return variables;
+    }
+
+    /**
+     * Copies request parameters into the existing variables.
+     *
+     * @param request
+     * @param variables
+     */
+    protected void copyParametersToVariables(HttpServletRequest request, Map<String, Object> variables) {
         String name;
         String[] paramArray;
-        Map<String, Object> variables = new HashMap<>();
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             name = parameterNames.nextElement();
@@ -86,9 +96,7 @@ public abstract class TemplateServlet extends AbstractServlet {
                 variables.put(name, paramArray[0]);
             else
                 variables.put(name, paramArray);
-//            System.out.println(name+":"+request.getParameter(name));
         }
-        return variables;
     }
 
 }

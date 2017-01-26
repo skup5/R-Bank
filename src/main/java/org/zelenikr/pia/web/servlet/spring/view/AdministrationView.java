@@ -43,7 +43,7 @@ public class AdministrationView extends AbstractView {
         Map<String, Object> vars;
 
         if (req.getAttribute(COPY_PARAMETERS_ATTRIBUTE) != null) {
-            vars = createVariablesFromParameters(req);
+            vars = copyParametersToVariables(req);
         } else {
             vars = new HashMap<>();
         }

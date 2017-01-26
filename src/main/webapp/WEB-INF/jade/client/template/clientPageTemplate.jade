@@ -6,6 +6,10 @@ block title
 block prepend rightNavbar
     include clientNavbarTemplate
 
+block append script
+    script.
+        countdown(#{authenticationTimeout}, "clientAuthTimeout");
+
 mixin menu(activeMenuItems, activeItem)
     nav.sidebar
         ul.nav.nav-sidebar

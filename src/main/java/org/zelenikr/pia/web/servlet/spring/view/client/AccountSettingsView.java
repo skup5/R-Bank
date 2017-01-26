@@ -33,19 +33,15 @@ public class AccountSettingsView extends AbstractClientView {
         if (template == null)
             throw new NullPointerException();
 
-        Map<String, Object> vars;
+        Map<String, Object> vars = initVariables(req);
 
         if (req.getAttribute(COPY_PARAMETERS_ATTRIBUTE) != null) {
-            vars = createVariablesFromParameters(req);
-        } else {
-            vars = new HashMap<>();
+            copyParametersToVariables(req, vars);
         }
 
         vars.put(CLIENT_ATTRIBUTE, req.getAttribute(CLIENT_ATTRIBUTE));
         vars.put(ADDRESS_ATTRIBUTE, req.getAttribute(ADDRESS_ATTRIBUTE));
-        vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
-        vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
-        vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));
+
         try {
             resp.setContentType("text/html");
             renderTemplate(template, vars, resp.getWriter());
