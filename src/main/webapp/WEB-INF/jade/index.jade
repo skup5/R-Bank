@@ -64,3 +64,7 @@ block content
                     .panel-body
                         p: strong Aktualizujte si svůj prohlížeč Internet Explorer
                         p Dne 12. ledna 2016 ukončila společnost Microsoft podporu svého internetového prohlížeče Internet Explorer pro verze 10 a starší. Všechny tyto starší verze prohlížeče Internet Explorer přestal Microsoft bezpečnostně podporovat.
+block append script
+    if authenticationTimeout
+        script.
+            countdown(#{authenticationTimeout}, "userAuthTimeout");

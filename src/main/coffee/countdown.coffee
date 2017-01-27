@@ -4,7 +4,7 @@ countdown = (minutes, id) ->
 
   tick = ->
     counter = document.getElementById(id)
-    if counter?
+    if not counter?
       return
     current_minutes = mins - 1
     seconds--

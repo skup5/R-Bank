@@ -7,7 +7,7 @@ countdown = function(minutes, id) {
   tick = function() {
     var counter, current_minutes;
     counter = document.getElementById(id);
-    if (counter != null) {
+    if (counter == null) {
       return;
     }
     current_minutes = mins - 1;

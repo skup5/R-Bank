@@ -15,7 +15,7 @@ public abstract class AbstractView extends TemplateServlet {
     protected static final String TEMPLATE_ATTRIBUTE = "templateName";
     protected static final String DISPLAY_NAME_SESSION = "displayName";
     protected static final String DISPLAY_NAME_URL_SESSION = "displayNameUrl";
-    protected static final String AUTHENTICATION_TIMEOUT_ATTRIBUTE = "authenticationTimeout";
+    protected static final String AUTHENTICATION_TIMEOUT_SESSION = "authenticationTimeout";
 
     /**
      * The name of the logged in user or null, if the user isn't logged in.
@@ -37,11 +37,9 @@ public abstract class AbstractView extends TemplateServlet {
     }
 
     /**
-     *
-     * @param request
-     * @return time interval in seconds
+     * @return time interval in minutes
      */
-    protected int getAuthenticationTimeout(HttpServletRequest request){
-        return request.getSession().getMaxInactiveInterval();
+    protected Integer getAuthenticationTimeout(HttpServletRequest request) {
+        return (Integer) request.getSession().getAttribute(AUTHENTICATION_TIMEOUT_SESSION);
     }
 }

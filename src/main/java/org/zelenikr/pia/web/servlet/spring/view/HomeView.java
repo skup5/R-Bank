@@ -29,7 +29,7 @@ public class HomeView extends AbstractView {
             String url;
             Map<String, Object> vars = emptyVariables();
             vars.put(DISPLAY_NAME_SESSION, getDisplayName(req));
-            vars.put(AUTHENTICATION_TIMEOUT_ATTRIBUTE, getAuthenticationTimeout(req)/60);
+            vars.put(AUTHENTICATION_TIMEOUT_SESSION, getAuthenticationTimeout(req));
             if ((url = getDisplayNameUrl(req)) == null)
                 url = "login";
             vars.put(DISPLAY_NAME_URL_SESSION, url);

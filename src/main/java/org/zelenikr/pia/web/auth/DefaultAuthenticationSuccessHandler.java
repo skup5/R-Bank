@@ -27,7 +27,8 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
     public static final int UNKNOWN_TIMEOUT = -1;
     protected Log logger = LogFactory.getLog(this.getClass());
 
-    private static final String USER_HOME_URL = "displayNameUrl";
+    private static final String USER_HOME_URL_SESSION = "displayNameUrl";
+    private static final String USER_AUTHENTICATION_TIMEOUT = "authenticationTimeout";
 
     private RequestCache requestCache = new HttpSessionRequestCache();
 
@@ -59,17 +60,20 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
         String targetUrl = savedRequest.getRedirectUrl();
         logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
         changeSessionTimeout(request, authentication);
+        if (request.getSession().getAttribute(USER_HOME_URL_SESSION) == null)
+            request.getSession().setAttribute(USER_HOME_URL_SESSION, determineDefaultUrl(authentication));
+
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String targetUrl = determineTargetUrl(authentication);
+        String targetUrl = determineDefaultUrl(authentication);
         changeSessionTimeout(request, authentication);
         if (targetUrl == null) {
             super.onAuthenticationSuccess(request, response, authentication);
             return;
         }
-        request.getSession().setAttribute(USER_HOME_URL, targetUrl);
+        request.getSession().setAttribute(USER_HOME_URL_SESSION, targetUrl);
         targetUrl = "/" + targetUrl;
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
@@ -82,7 +86,8 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
     private void changeSessionTimeout(HttpServletRequest request, Authentication authentication) {
         int sessionTimeout = determineSessionTimeout(authentication);
         if (sessionTimeout >= 0) {
-            request.getSession().setMaxInactiveInterval(sessionTimeout);
+            request.getSession().setMaxInactiveInterval(sessionTimeout * 60);
+            request.getSession().setAttribute(USER_AUTHENTICATION_TIMEOUT, sessionTimeout);
         }
     }
 
@@ -91,7 +96,7 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
      *
      * @return url or null
      */
-    protected String determineTargetUrl(Authentication authentication) {
+    protected String determineDefaultUrl(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals("ROLE_CLIENT")) {
@@ -106,15 +111,15 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
     /**
      * Determines the session max inactive interval by {@link GrantedAuthority}
      *
-     * @return time in seconds or UNKNOWN_TIMEOUT
+     * @return time in minutes or UNKNOWN_TIMEOUT
      */
     protected int determineSessionTimeout(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals("ROLE_CLIENT")) {
-                return clientAuthTimeout * 60;
+                return clientAuthTimeout;
             } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
-                return adminAuthTimeout * 60;
+                return adminAuthTimeout;
             }
         }
         return UNKNOWN_TIMEOUT;
