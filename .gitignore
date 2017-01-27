@@ -18,3 +18,8 @@ node_modules/
 
 *.html
 *.zip
+
+# tex
+doc/*
+!doc/*.tex
+!doc/*.png

@@ -1,0 +1,115 @@
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+%\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim float
+% These packages are all incorporated in the memoir class to one degree or another...
+\usepackage{listings}
+\usepackage[usenames,dvipsnames]{xcolor}
+%\usepackage{svg}
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{url}
+%\usepackage{bera}
+
+%Eliska
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{tocloft}
+\usepackage{secdot}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage[left=3.5cm,right=3.5cm,top=3.5cm,bottom=3.5cm]{geometry}
+%--------------------------------------
+
+
+\begin{document}
+
+% Úvodní strana
+\includegraphics[width = 4cm]{LOGO.png} 
+\\[8\baselineskip]
+
+\begin{center}
+
+\LARGE\textbf{Semestrální práce z předmětu KIV/PIA}\linebreak\linebreak
+\normalsize\textbf{Elektronické bankovnictví}\\[20\baselineskip]
+\end{center}
+
+\begin{center}
+\begin{tabular}{rll}
+Vypracoval: & Roman Zeleník \\ 
+Studijní číslo: & A12B0212P \\ 
+Orion login: & zelenikr \\ 
+Datum: & \multicolumn{2}{l}{27.1.2017} \\ 
+\end{tabular} 
+\end{center}
+\thispagestyle{empty}
+\pagebreak 
+
+% Obsah
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\tableofcontents
+\thispagestyle{empty}
+\pagebreak
+
+\clearpage
+\setcounter{page}{1}
+
+% Zadání
+\section{Zadání}
+Předmětem práce je vytvořit jednoduchou aplikaci pro elektronické bankovnictví s jistou volností funkčnosti.
+
+
+% stručný popis architektury aplikace, včetně případů užití, datového modelu, popis jednotlivých modulů/souborů, častou chybou je zapomínání na příslušné diagramy
+\section{Architektura}
+Jedná se o webovou J2EE MVC aplikaci. V implementaci jsou použity Spring a Hibernate frameworky. 
+
+\subsection{Vzhled a zpracování požadavků}
+Webové stránky jsou dynamicky generovány pomocí JADE. Je to šablonovací nástroj pro psaní a generování HTML stránek.  Části webových stránek jsou uloženy v \texttt{.jade} šablonách. O načítání a předávání dat šablonám se starají VIEW servlety. VIEW jsou většinou mapována na skrytá url. Data jim předávají Controller servlety. 
+
+Controller servlety přijímají a zpracovávají GET požadavky na stránky a POST požadavky z formulářů. 
+
+\subsection{Logika}
+\subsubsection{Spring security}
+Spring security zajišťuje přihlašování uživatelů a kontroluje přístup ke všem url adresám.
+\subsubsection{Manager}
+Controller servlety využívají pro získávání, práci nebo ukládání dat Manager třídy. Každý Manager umožňuje práci se specifickým typem dat (klient, bankovní účet, platební transakce, atd.), tzv. doménovým objektem (viz. Datový model).
+\subsubsection{Validace}
+K validaci doménových objektů se používají validátory. Pro každý doménový objekt existuje konkrétní validátor. Validaci je možné částečně měnit pomocí souboru \texttt{validation.properties}. Jedná se o validaci na straně serveru a používá se hlavně k validování vstupních dat před uložením do databáze. Na straně klienta probíhá validace vstupních dat pomocí specifických atributů v HTML5 elementech.
+\subsubsection{Verifikace}
+V aplikaci se používají dva jednoduché verifikátory. Jeden pro ověřování klienta při přihlašování a druhý pro ověření při odesílání platební transakce.
+
+Verifikátor nejprve vygeneruje ověřovací kód pro konkrétní objekt. Kód je pak odeslán klientovy. Po zadání kódu klientem je kód předán k vyhodnocení verifikátoru společně s objektem, kterému má patřit. V souboru \texttt{verification.properties} lze nastavit délku kódu, či jeho platnost.
+
+Ověřovací kódy se posílají klientovi emailem na jeho adresu. Pro ověření a demonstrování funkčnosti byl vytvořen emailový účet, přes který jsou zprávy posílány. 
+
+\subsection{Datový model}
+\paragraph{EER}
+
+\subsubsection{Databáze}
+Údaje pro připojení k databázi jsou v souboru \texttt{db.properties}. Data jsou uložena v MySQL databázi. S daty se manipuluje prostřednictvím Hibernate ORM frameworku a příslušných DAO tříd. Každý doménový objekt má své DAO.
+
+\subsubsection{DAO}
+Téměř všechna DAO jsou implementována jako JPA. Pro splnění zadání bylo jedno DAO implementováno jako JDBC. DAO jsou využívána Manager třídami pro ukládní nebo získávání dat z databáze.
+
+
+% příručka pro instalaci/nasazení systému
+\section{Uživatelská dokumentace}
+
+\subsection{Instalace}
+
+
+
+\end{document}
