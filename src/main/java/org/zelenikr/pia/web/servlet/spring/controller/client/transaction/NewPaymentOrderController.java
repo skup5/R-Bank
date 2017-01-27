@@ -38,7 +38,7 @@ public class NewPaymentOrderController extends AbstractClientController {
 
     private static final String
             PREPARED_TRANSACTION_SESSION = "preparedTransaction",
-            VERIFICATION_CODE_TIMEOUT_SESSION = "verificationCodeTimeout";
+            VERIFICATION_CODE_TIMEOUT_SESSION = "transactionVerificationCodeTimeout";
 
     private static final String
             BANK_CODES_ATTRIBUTE = "bankCodes",
@@ -197,13 +197,13 @@ public class NewPaymentOrderController extends AbstractClientController {
             return;
         }
 
-        Date timeout = DateUtils.addMinutes(new Date(), verificationSettings.getCodeTimeout());
+        Date timeout = DateUtils.addMinutes(new Date(), verificationSettings.getTransactionCodeTimeout());
         req.removeAttribute(COPY_PARAMETERS_ATTRIBUTE);
         req.getSession().setAttribute(PREPARED_TRANSACTION_SESSION, transaction);
         req.getSession().setAttribute(VERIFICATION_CODE_TIMEOUT_SESSION, timeout);
         req.setAttribute(PREPARED_TRANSACTION_ATTRIBUTE, transaction);
-        req.setAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE, verificationSettings.getCodeLength());
-        req.setAttribute(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE, verificationSettings.getCodeTimeout());
+        req.setAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE, verificationSettings.getTransactionCodeLength());
+        req.setAttribute(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE, verificationSettings.getTransactionCodeTimeout());
         dispatch(VERIFY_TEMPLATE_PATH, req, resp);
     }
 
@@ -218,10 +218,12 @@ public class NewPaymentOrderController extends AbstractClientController {
             if (currentDateTime.after(timeout)) {
                 req.setAttribute(ERROR_ATTRIBUTE, "Timeout expired");
                 doCancelTransaction(req, resp);
+                return;
             }
         } catch (NullPointerException e) {
             req.setAttribute(ERROR_ATTRIBUTE, "Timeout expired");
             doCancelTransaction(req, resp);
+            return;
         }
 
         try {

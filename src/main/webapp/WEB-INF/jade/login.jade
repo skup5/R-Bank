@@ -1,15 +1,15 @@
 extends template/pageTemplate
 
 block title
-    title R-Bank
+    title Přihlášení - R-Bank
 
 block prepend rightNavbar
     include template/defaultNavbarTemplate
 
 block content
     .row
-        main.main
-            .col-md-12
+        .col-md-12
+            main.main
                 if success
                     +dismiss-alert("alert-success", success)
                 if err
@@ -18,4 +18,15 @@ block content
                     +dismiss-alert("alert-success", "Byl(a) jste úspěšně odlhášen(a).")
                 if error
                     +dismiss-alert("alert-danger", "Neplatné přihlašovací jméno nebo pin.")
-                include template/loginFormTemplate
+                .page-header: h1.text-center: small Přihlášení
+                form.form-horizontal.form-signin(action="login" method="post")
+                    .form-group
+                        label.col-sm-6.control-label(for="inputUserNo") Přihlašovací jméno (kód)
+                        .col-sm-6: input.form-control(type="text" name="username" id="inputUserNo" class="form-control" placeholder="id" required autofocus
+                        maxlength=8 pattern="[a-zA-Z0-9]{8}")
+                    .form-group
+                        label.col-sm-6.control-label(for="inputPin") Pin
+                        .col-sm-6: input.form-control(type="password" name="password" id="inputPin" class="form-control" placeholder="pin" required
+                        maxlength=4 pattern="\\d{4}")
+                    .form-group
+                        .col-sm-offset-6.col-sm-6: button.btn.btn-block.btn-primary(type="submit") Přihlásit

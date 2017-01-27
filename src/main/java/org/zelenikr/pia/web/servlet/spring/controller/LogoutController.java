@@ -1,8 +1,10 @@
 package org.zelenikr.pia.web.servlet.spring.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.zelenikr.pia.web.auth.LogoutService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +20,13 @@ import java.io.IOException;
 @WebServlet("/logout")
 public class LogoutController extends AbstractController {
 
+    private LogoutService logoutService;
+
+    @Autowired
+    public void setLogoutService(LogoutService logoutService) {
+        this.logoutService = logoutService;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -25,11 +34,7 @@ public class LogoutController extends AbstractController {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            log(auth.toString());
-            new SecurityContextLogoutHandler().logout(req, resp, auth);
-        }
+        logoutService.logout(req);
         resp.sendRedirect("login?logout");
     }
 

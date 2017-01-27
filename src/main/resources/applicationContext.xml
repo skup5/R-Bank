@@ -82,12 +82,13 @@
 
     <security:global-method-security pre-post-annotations="enabled"/>
 
-    <bean id="authSuccessListener" class="org.zelenikr.pia.web.auth.AuthenticationSuccessListener"/>
+    <bean id="userVisibleNameListener" class="org.zelenikr.pia.web.auth.AuthenticatedUserVisibleNameListener"/>
     <bean id="authSuccessHandler" class="org.zelenikr.pia.web.auth.DefaultAuthenticationSuccessHandler">
         <property name="adminAuthTimeout" value="0"/>
         <property name="adminDefaultTargetUrl" value="admin/account-list"/>
-        <property name="clientAuthTimeout" value="1"/>
+        <property name="clientAuthTimeout" value="2"/>
         <property name="clientDefaultTargetUrl" value="client/all-payments"/>
+        <property name="clientVerificationUrl" value="login-verification"/>
     </bean>
 
     <!-- Jade template -->

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 /**
  * @author Roman Zelenik
  */
-public class AuthenticationSuccessListener implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
+public class AuthenticatedUserVisibleNameListener implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
     private static final String DISPLAY_NAME_PARAMETER = "displayName";
 
@@ -21,7 +21,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
     public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
         User user = (User) event.getAuthentication().getPrincipal();
         httpSession.setAttribute(DISPLAY_NAME_PARAMETER, user.displayName());
-        //System.out.println("AuthenticationSuccessListener.onAuthenticationSuccess");
+        //System.out.println("AuthenticatedUserVisibleNameListener.onAuthenticationSuccess");
     }
 
 }

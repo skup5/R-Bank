@@ -11,20 +11,38 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConfigurableVerificationSettings implements VerificationSettings {
 
-    @Value("${verification.code.length}")
-    private int codeLength;
+    @Value("${verification.transaction.code.length}")
+    private int transactionCodeLength;
 
-    @Value("${verification.code.timeout}")
-    private int codeTimeout;
+    @Value("${verification.transaction.code.timeout}")
+    private int transactionCodeTimeout;
+
+    @Value("${verification.authentication.code.length}")
+    private int authenticationCodeLength;
+
+    @Value("${verification.authentication.code.timeout}")
+    private int authenticationCodeTimeout;
 
 
     @Override
-    public int getCodeLength() {
-        return codeLength;
+    public int getTransactionCodeLength() {
+        return transactionCodeLength;
     }
 
     @Override
-    public int getCodeTimeout() {
-        return codeTimeout;
+    public int getTransactionCodeTimeout() {
+        return transactionCodeTimeout;
     }
+
+    @Override
+    public int getAuthenticationCodeLength() {
+        return authenticationCodeLength;
+    }
+
+    @Override
+    public int getAuthenticationCodeTimeout() {
+        return authenticationCodeTimeout;
+    }
+
+
 }

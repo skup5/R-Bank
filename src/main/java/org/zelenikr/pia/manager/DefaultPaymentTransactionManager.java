@@ -9,8 +9,8 @@ import org.zelenikr.pia.dao.PaymentTransactionDao;
 import org.zelenikr.pia.domain.*;
 import org.zelenikr.pia.exchange.ExchangeRateManager;
 import org.zelenikr.pia.validation.exception.BankAccountValidationException;
-import org.zelenikr.pia.verification.TransactionVerifier;
-import org.zelenikr.pia.verification.VerificationCodeSender;
+import org.zelenikr.pia.verification.transaction.TransactionVerifier;
+import org.zelenikr.pia.verification.transaction.TransactionVerificationCodeSender;
 import org.zelenikr.pia.validation.PaymentTransactionValidator;
 import org.zelenikr.pia.validation.exception.OffsetAccountValidationException;
 import org.zelenikr.pia.validation.exception.PaymentTransactionValidationException;
@@ -28,7 +28,7 @@ import java.util.*;
 public class DefaultPaymentTransactionManager implements PaymentTransactionManager {
 
     private TransactionVerifier transactionVerifier;
-    private VerificationCodeSender codeSender;
+    private TransactionVerificationCodeSender codeSender;
     private PaymentTransactionDao paymentTransactionDao;
     private PaymentTransactionValidator paymentTransactionValidator;
     private BankAccountDao bankAccountDao;
@@ -37,7 +37,7 @@ public class DefaultPaymentTransactionManager implements PaymentTransactionManag
 
     @Autowired
     public DefaultPaymentTransactionManager(
-            TransactionVerifier transactionVerifier, VerificationCodeSender codeSender,
+            TransactionVerifier transactionVerifier, TransactionVerificationCodeSender codeSender,
             PaymentTransactionDao paymentTransactionDao, PaymentTransactionValidator paymentTransactionValidator,
             BankAccountDao bankAccountDao, BankCodeManager bankCodeManager, ExchangeRateManager exchangeRateManager) {
         this.transactionVerifier = transactionVerifier;

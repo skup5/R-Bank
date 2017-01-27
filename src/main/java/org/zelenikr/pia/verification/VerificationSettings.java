@@ -8,10 +8,20 @@ public interface VerificationSettings {
     /**
      * characters count
      */
-    int getCodeLength();
+    int getTransactionCodeLength();
 
     /**
      * minutes
      */
-    int getCodeTimeout();
+    int getTransactionCodeTimeout();
+
+    /**
+     * characters count
+     */
+    int getAuthenticationCodeLength();
+
+    /**
+     * minutes
+     */
+    int getAuthenticationCodeTimeout();
 }

@@ -5,5 +5,12 @@ package org.zelenikr.pia.utils;
  */
 public interface EmailSender {
 
-    void send(String to, String subject, String message);
+    /**
+     *
+     * @param to email address of recipient
+     * @param subject mail subject
+     * @param message mail content
+     * @return true if mail was successfully sent
+     */
+    boolean send(String to, String subject, String message);
 }

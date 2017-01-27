@@ -1,9 +1,10 @@
-package org.zelenikr.pia.verification;
+package org.zelenikr.pia.verification.transaction;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zelenikr.pia.domain.PaymentTransaction;
+import org.zelenikr.pia.verification.VerificationSettings;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class AlphaNumericTransactionVerifier implements TransactionVerifier {
 
     @Override
     public String generateCode(PaymentTransaction transaction) {
-        String newCode = RandomStringUtils.randomAlphanumeric(settings.getCodeLength());
+        String newCode = RandomStringUtils.randomAlphanumeric(settings.getTransactionCodeLength());
         codes.put(transaction.getId(), newCode);
         return newCode;
     }

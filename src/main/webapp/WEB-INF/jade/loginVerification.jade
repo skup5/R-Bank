@@ -1,0 +1,37 @@
+extends template/pageTemplate
+
+block title
+    title Přihlášení - R-Bank
+
+block prepend rightNavbar
+    include template/defaultNavbarTemplate
+
+block content
+    .row
+        .col-md-12
+            main.main
+                if err
+                    +dismiss-alert("alert-danger", err)
+                .page-header: h1.text-center: small Potvrzení přihlášení
+                if err
+                    a.btn.btn-primary(href="login") Zpět na přihlášení
+                else
+                    form#verifyForm.form-signin.form-inline(method="post")
+                        .form-group
+                            input.form-control.text-center(type="text" name="verificationCode" required
+                            maxlength=verificationCodeLength size=verificationCodeLength)
+                        .form-group
+                            input(type="hidden" name="action" value="verify")
+                            button.btn.btn-success(type="submit" form="verifyForm") Potvrdit
+                            button.btn.btn-warning(type="submit" form="cancelForm") Zrušit
+                        .form-group
+                            p.form-control-static
+                                | Zbývající čas: &nbsp;
+                                span#loginVerifyCounter
+                    form#cancelForm(method="post")
+                        input(type="hidden" name="action" value="cancel")
+
+block append script
+    if verificationCodeTimeout
+        script.
+            countdown(#{verificationCodeTimeout}, "loginVerifyCounter");

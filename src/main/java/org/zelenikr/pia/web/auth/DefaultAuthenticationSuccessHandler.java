@@ -9,6 +9,7 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.util.StringUtils;
+import org.zelenikr.pia.domain.RoleType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,8 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * Sends redirecting to previously url or to default url after successful authentication.
+ * Determines url where sends redirecting (to previously url,
+ * to default url or to verification login url) after successful spring authentication.
  * Also sets to user authentication timeout.
  *
  * @author Roman Zelenik
@@ -29,6 +31,7 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
 
     private static final String USER_HOME_URL_SESSION = "displayNameUrl";
     private static final String USER_AUTHENTICATION_TIMEOUT = "authenticationTimeout";
+    private static final String USER_TARGET_URL_SESSION = "userRequestedUrl";
 
     private RequestCache requestCache = new HttpSessionRequestCache();
 
@@ -36,6 +39,7 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
     private int adminAuthTimeout = UNKNOWN_TIMEOUT;
     private String clientDefaultTargetUrl = null;
     private String adminDefaultTargetUrl = null;
+    private String clientVerificationUrl = null;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -57,29 +61,44 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
         clearAuthenticationAttributes(request);
 
         // Use the DefaultSavedRequest URL
+        handle(request, response, authentication, savedRequest);
+    }
+
+    protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication, SavedRequest savedRequest) throws IOException {
         String targetUrl = savedRequest.getRedirectUrl();
+        String verificationUrl = determineVerificationUrl(authentication);
         logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
         changeSessionTimeout(request, authentication);
         if (request.getSession().getAttribute(USER_HOME_URL_SESSION) == null)
             request.getSession().setAttribute(USER_HOME_URL_SESSION, determineDefaultUrl(authentication));
 
+        if (verificationUrl != null) {
+            targetUrl = org.apache.commons.lang3.StringUtils.removeStart(targetUrl, "/");
+            request.getSession().setAttribute(USER_TARGET_URL_SESSION, targetUrl);
+            targetUrl = "/" + verificationUrl;
+        }
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String targetUrl = determineDefaultUrl(authentication);
+        String verificationUrl = determineVerificationUrl(authentication);
         changeSessionTimeout(request, authentication);
         if (targetUrl == null) {
             super.onAuthenticationSuccess(request, response, authentication);
             return;
         }
         request.getSession().setAttribute(USER_HOME_URL_SESSION, targetUrl);
-        targetUrl = "/" + targetUrl;
+
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
-
+        if (verificationUrl != null) {
+            request.getSession().setAttribute(USER_TARGET_URL_SESSION, targetUrl);
+            targetUrl = verificationUrl;
+        }
+        targetUrl = "/" + targetUrl;
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
@@ -92,6 +111,22 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
     }
 
     /**
+     * Determines the verification URL by {@link GrantedAuthority}
+     *
+     * @param authentication
+     * @return url or null
+     */
+    private String determineVerificationUrl(Authentication authentication) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        for (GrantedAuthority grantedAuthority : authorities) {
+            if (grantedAuthority.getAuthority().equals(RoleType.ROLE_CLIENT.name())) {
+                return clientVerificationUrl;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Determines the target URL by {@link GrantedAuthority}
      *
      * @return url or null
@@ -99,9 +134,9 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
     protected String determineDefaultUrl(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals("ROLE_CLIENT")) {
+            if (grantedAuthority.getAuthority().equals(RoleType.ROLE_CLIENT.name())) {
                 return clientDefaultTargetUrl;
-            } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+            } else if (grantedAuthority.getAuthority().equals(RoleType.ROLE_ADMIN.name())) {
                 return adminDefaultTargetUrl;
             }
         }
@@ -116,9 +151,9 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
     protected int determineSessionTimeout(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals("ROLE_CLIENT")) {
+            if (grantedAuthority.getAuthority().equals(RoleType.ROLE_CLIENT.name())) {
                 return clientAuthTimeout;
-            } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+            } else if (grantedAuthority.getAuthority().equals(RoleType.ROLE_ADMIN.name())) {
                 return adminAuthTimeout;
             }
         }
@@ -149,5 +184,9 @@ public class DefaultAuthenticationSuccessHandler extends SimpleUrlAuthentication
 
     public void setClientDefaultTargetUrl(String clientDefaultTargetUrl) {
         this.clientDefaultTargetUrl = clientDefaultTargetUrl;
+    }
+
+    public void setClientVerificationUrl(String clientVerificationUrl) {
+        this.clientVerificationUrl = clientVerificationUrl;
     }
 }

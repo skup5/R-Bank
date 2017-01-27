@@ -1,5 +1,7 @@
 package org.zelenikr.pia.domain;
 
+import org.zelenikr.pia.verification.MessageRecipient;
+
 import javax.persistence.*;
 
 
@@ -10,9 +12,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "zelenikr_rbank_person")
-public class Person extends User {
+public class Person extends User implements MessageRecipient {
 
-     protected String name;
+    protected String name;
 
     protected String surname;
     /**
@@ -45,7 +47,19 @@ public class Person extends User {
 
     @Override
     public String displayName() {
-        return getName()+" "+getSurname();
+        return getName() + " " + getSurname();
+    }
+
+    @Transient
+    @Override
+    public String getEmailAddress() {
+        return getEmail();
+    }
+
+    @Transient
+    @Override
+    public String getMobileNumber() {
+       return getPhoneNumber();
     }
 
     /*

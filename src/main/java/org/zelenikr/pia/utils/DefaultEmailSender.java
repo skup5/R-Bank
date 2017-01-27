@@ -1,5 +1,6 @@
 package org.zelenikr.pia.utils;
 
+import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -15,12 +16,18 @@ public class DefaultEmailSender implements EmailSender {
     }
 
     @Override
-    public void send(String to, String subject, String message) {
+    public boolean send(String to, String subject, String message) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(to);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
-        mailSender.send(mailMessage);
+        try {
+            mailSender.send(mailMessage);
+            return true;
+        } catch (MailException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
