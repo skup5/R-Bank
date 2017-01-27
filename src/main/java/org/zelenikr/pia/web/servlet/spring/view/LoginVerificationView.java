@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
+ * View servlet responsible for rendering page containing login verification form
+ *
  * @author Roman Zelenik
  */
 @WebServlet("/view/login-verification")
@@ -33,7 +35,6 @@ public class LoginVerificationView extends AbstractView {
         Map<String, Object> vars = emptyVariables();
         vars.put(VERIFICATION_CODE_LENGTH_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE));
         vars.put(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE, req.getAttribute(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE));
-//        vars.put(SUCCESS_ATTRIBUTE, req.getAttribute(SUCCESS_ATTRIBUTE));
         vars.put(ERROR_ATTRIBUTE, req.getAttribute(ERROR_ATTRIBUTE));
         try {
             resp.setContentType("text/html");

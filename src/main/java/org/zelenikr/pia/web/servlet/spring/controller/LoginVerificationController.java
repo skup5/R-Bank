@@ -20,6 +20,8 @@ import java.util.Date;
 
 
 /**
+ * Servlet handling user login verification request
+ *
  * @author Roman Zelenik
  */
 @WebServlet("/login-verification")
@@ -33,7 +35,7 @@ public class LoginVerificationController extends AbstractController {
     private static final String
             USER_TARGET_URL_SESSION = "userRequestedUrl",
             VERIFICATION_CODE_TIMEOUT_SESSION = "loginVerificationCodeTimeout",
-            VERIFICATED_USER_SESSION = "verificatedLoginUser";
+            VERIFIED_USER_SESSION = "verifiedLoginUser";
 
     private static final String
             VERIFICATION_CODE_LENGTH_ATTRIBUTE = "verificationCodeLength",
@@ -119,8 +121,6 @@ public class LoginVerificationController extends AbstractController {
                 break;
             default:
                 doCancel(request, response);
-//                request.setAttribute(ERROR_ATTRIBUTE, "Invalid action!");
-//                doGet(request, response);
                 break;
         }
     }
@@ -132,7 +132,7 @@ public class LoginVerificationController extends AbstractController {
 
     private void doVerify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("LoginVerificationController.doVerify");
-        User user = (User) request.getSession().getAttribute(VERIFICATED_USER_SESSION);
+        User user = (User) request.getSession().getAttribute(VERIFIED_USER_SESSION);
         Date timeout = (Date) request.getSession().getAttribute(VERIFICATION_CODE_TIMEOUT_SESSION);
         String code = request.getParameter(VERIFICATION_CODE_PARAMETER);
 
@@ -146,17 +146,11 @@ public class LoginVerificationController extends AbstractController {
         Date currentDateTime = new Date();
         try {
             if (currentDateTime.after(timeout)) {
-                System.out.println("timeout");
-                request.setAttribute(ERROR_ATTRIBUTE, "Timeout expired");
-//                sendCode(request, response, user);
-                dispatch(request, response);
+                errorDispatch("Timeout expired", request, response);
                 return;
             }
         } catch (NullPointerException e) {
-            System.out.println("timeout");
-            request.setAttribute(ERROR_ATTRIBUTE, "Timeout expired");
-//            sendCode(request, response, user);
-            dispatch(request, response);
+            errorDispatch("Timeout expired", request, response);
             return;
         }
 
@@ -173,7 +167,7 @@ public class LoginVerificationController extends AbstractController {
 
     private void sendCode(HttpServletRequest req, HttpServletResponse resp, Object principal) throws ServletException, IOException {
         String code = verifier.generateCode((User) principal);
-        if(!codeSender.send(code, (MessageRecipient) principal)){
+        if (!codeSender.send(code, (MessageRecipient) principal)) {
             logoutService.logout(req);
             errorDispatch("Sorry, error while sending code", req, resp);
             return;
@@ -181,7 +175,7 @@ public class LoginVerificationController extends AbstractController {
 
         Date timeout = DateUtils.addMinutes(new Date(), verificationSettings.getAuthenticationCodeTimeout());
         req.getSession().setAttribute(VERIFICATION_CODE_TIMEOUT_SESSION, timeout);
-        req.getSession().setAttribute(VERIFICATED_USER_SESSION, principal);
+        req.getSession().setAttribute(VERIFIED_USER_SESSION, principal);
 
         req.setAttribute(VERIFICATION_CODE_LENGTH_ATTRIBUTE, verificationSettings.getAuthenticationCodeLength());
         req.setAttribute(VERIFICATION_CODE_TIMEOUT_ATTRIBUTE, verificationSettings.getAuthenticationCodeTimeout());
