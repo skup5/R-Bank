@@ -24,8 +24,8 @@ public class DefaultTransactionCodeSender implements TransactionVerificationCode
         String message = createCSMessage(code, transaction);
         System.out.println("DefaultCodeSenderTransaction.send");
         System.out.println(message);
-        return true;
-//        return emailSender.send(recipient.getEmailAddress(), "Payment verification", message);
+//        return true;
+        return emailSender.send(recipient.getEmailAddress(), "Payment verification", message);
     }
 
     private String createCSMessage(String code, PaymentTransaction transaction) {

@@ -23,8 +23,8 @@ public class DefualtAuthenticationCodeSender implements AuthenticationVerificati
         String message = createCSMessage(code);
         System.out.println("DefualtAuthenticationCodeSender.send");
         System.out.println(message);
-        return true;
-//        return emailSender.send(recipient.getEmailAddress(), "Login verification", message);
+//        return true;
+        return emailSender.send(recipient.getEmailAddress(), "Login verification", message);
     }
 
     private String createCSMessage(String code) {

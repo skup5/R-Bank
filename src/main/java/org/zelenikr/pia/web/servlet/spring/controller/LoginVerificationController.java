@@ -131,7 +131,6 @@ public class LoginVerificationController extends AbstractController {
     }
 
     private void doVerify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("LoginVerificationController.doVerify");
         User user = (User) request.getSession().getAttribute(VERIFIED_USER_SESSION);
         Date timeout = (Date) request.getSession().getAttribute(VERIFICATION_CODE_TIMEOUT_SESSION);
         String code = request.getParameter(VERIFICATION_CODE_PARAMETER);

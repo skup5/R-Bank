@@ -1,11 +1,6 @@
 package org.zelenikr.pia.web.servlet.spring.controller.admin;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.zelenikr.pia.domain.BankAccount;
-import org.zelenikr.pia.domain.Client;
-import org.zelenikr.pia.manager.DataGenerator;
-import org.zelenikr.pia.validation.exception.ClientValidationException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,13 +21,6 @@ public class AccountListController extends AbstractAdminController {
     private static final String ACTION_PARAMETER = "action";
     private static final String ACTION_DELETE = "delete";
     private static final String CLIENT_PARAMETER = "client";
-
-    DataGenerator dataGenerator;
-
-    @Autowired
-    public void setDataGenerator(DataGenerator dataGenerator) {
-        this.dataGenerator = dataGenerator;
-    }
 
     @Override
     protected String getDefaultTemplatePath() {
@@ -89,22 +77,4 @@ public class AccountListController extends AbstractAdminController {
         }
     }
 
-    private void clientTest() {
-        log("generating client...");
-        Client client = dataGenerator.newClientAccount();
-        log("client was generated");
-        for (Client c : clientManager.getClients()) {
-            log("loading client details...");
-            c = clientManager.loadDetail(c);
-            System.out.println(c);
-            System.out.println("--Bank accounts--");
-            for (BankAccount ba : c.getBankAccounts()) {
-                System.out.println(ba);
-            }
-            System.out.println("----------------------------");
-        }
-
-        clientManager.delete(client.getId());
-        for (Client c : clientManager.getClients()) System.out.println("* " + c);
-    }
 }
