@@ -47,10 +47,28 @@ public interface PaymentTransactionManager {
      */
     void cancelPayment(long transaction);
 
+    /**
+     * Returns count of incoming and outcoming payments belonging to specific {@link BankAccount}.
+     *
+     * @param accountNumber account number requested BankAccount
+     * @return count of payments or 0
+     */
     long countAllByClientAccount(String accountNumber);
 
+    /**
+     * Returns count of outcoming payments belonging to specific {@link BankAccount}.
+     *
+     * @param accountNumber account number requested BankAccount
+     * @return count of payments or 0
+     */
     long countAllExpensesByClientAccount(String accountNumber);
 
+    /**
+     * Returns count of incoming payments belonging to specific {@link BankAccount}.
+     *
+     * @param accountNumber account number requested BankAccount
+     * @return count of payments or 0
+     */
     long countAllRevenuesByClientAccount(String accountNumber);
 
     /**
@@ -61,6 +79,14 @@ public interface PaymentTransactionManager {
      */
     List<PaymentTransaction> findAllByClientAccount(String accountNumber);
 
+    /**
+     * Returns limited count incoming and outcoming payments belonging to specific {@link BankAccount} sorted by date using pagination.
+     *
+     * @param accountNumber account number requested BankAccount
+     * @param pageSize      items count
+     * @param pageNumber    number of page due to {@code pageSize}
+     * @return list of payments or empty list
+     */
     List<PaymentTransaction> findAllByClientAccount(String accountNumber, int pageSize, int pageNumber);
 
     /**
@@ -71,6 +97,14 @@ public interface PaymentTransactionManager {
      */
     List<PaymentTransaction> findAllRevenuesByClientAccount(String accountNumber);
 
+    /**
+     * Returns limited count incoming payments belonging to specific {@link BankAccount} sorted by date using pagination.
+     *
+     * @param accountNumber account number requested BankAccount
+     * @param pageSize      items count
+     * @param pageNumber    number of page due to {@code pageSize}
+     * @return list of payments or empty list
+     */
     List<PaymentTransaction> findAllRevenuesByClientAccount(String accountNumber, int pageSize, int pageNumber);
 
     /**
@@ -81,5 +115,13 @@ public interface PaymentTransactionManager {
      */
     List<PaymentTransaction> findAllExpensesByClientAccount(String accountNumber);
 
+    /**
+     * Returns limited count outcoming payments belonging to specific {@link BankAccount} sorted by date using pagination.
+     *
+     * @param accountNumber account number requested BankAccount
+     * @param pageSize      items count
+     * @param pageNumber    number of page due to {@code pageSize}
+     * @return list of payments or empty list
+     */
     List<PaymentTransaction> findAllExpensesByClientAccount(String accountNumber, int pageSize, int pageNumber);
 }
