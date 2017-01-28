@@ -21,12 +21,21 @@
 \usepackage{url}
 %\usepackage{bera}
 
+\usepackage[pdftex]{hyperref}
+\hypersetup{colorlinks=true,
+  unicode=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black,
+  bookmarksopen=true}
+
 %Eliska
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{tocloft}
 \usepackage{secdot}
 \usepackage{indentfirst}
@@ -44,14 +53,15 @@
 \begin{center}
 
 \LARGE\textbf{Semestrální práce z předmětu KIV/PIA}\linebreak\linebreak
-\normalsize\textbf{Elektronické bankovnictví}\\[20\baselineskip]
+\normalsize\textbf{R-Bank}\\(elektronické bankovnictví)\\[20\baselineskip]
 \end{center}
 
 \begin{center}
 \begin{tabular}{rll}
 Vypracoval: & Roman Zeleník \\ 
-Studijní číslo: & A12B0212P \\ 
+Studijní číslo: & A16N0067P \\ 
 Orion login: & zelenikr \\ 
+Email: & zelenikr@students.zcu.cz \\
 Datum: & \multicolumn{2}{l}{27.1.2017} \\ 
 \end{tabular} 
 \end{center}
@@ -77,39 +87,104 @@ Předmětem práce je vytvořit jednoduchou aplikaci pro elektronické bankovnic
 Jedná se o webovou J2EE MVC aplikaci. V implementaci jsou použity Spring a Hibernate frameworky. 
 
 \subsection{Vzhled a zpracování požadavků}
-Webové stránky jsou dynamicky generovány pomocí JADE. Je to šablonovací nástroj pro psaní a generování HTML stránek.  Části webových stránek jsou uloženy v \texttt{.jade} šablonách. O načítání a předávání dat šablonám se starají VIEW servlety. VIEW jsou většinou mapována na skrytá url. Data jim předávají Controller servlety. 
+Všechny stránky jsou stylizovány pomocí frameworku Bootstrap (v3.3.7), který mimo jiné zaručuje responzivní zobrazení na mobilních zařízeních.
+
+Webové stránky jsou dynamicky generovány pomocí JADE. Je to šablonovací nástroj pro psaní a generování HTML stránek.  Části webových stránek jsou uloženy v \texttt{.jade} šablonách. O načítání a předávání dat šablonám se starají View servlety. View jsou většinou mapována na skrytá url. Data jim předávají Controller servlety. 
 
 Controller servlety přijímají a zpracovávají GET požadavky na stránky a POST požadavky z formulářů. 
 
 \subsection{Logika}
-\subsubsection{Spring security}
-Spring security zajišťuje přihlašování uživatelů a kontroluje přístup ke všem url adresám.
+Na následujícím zjednodušeném UML diagramu (obrázek \ref{web_packages_diagram}) jsou závislosti mezi třídami a \uv{subpackages} ve web package.
+
+\begin{figure}[H]	
+	\centering
+	\includegraphics[scale=0.8]{web_package_diagram.png}
+  	\caption{Závislosti ve \uv{web} package}
+  	\label{web_packages_diagram}
+\end{figure}
+
+Další diagram zobrazuje zjednodušené závislosti na úrovni hlavních \uv{packages} aplikace.
+\begin{figure}[H]	
+	\centering
+	\includegraphics[scale=0.94]{packages_diagram.png}
+  	\caption{Závislosti mezi \uv{packages}}
+  	\label{web_packages_diagram}
+\end{figure}
+
+\subsubsection{Přihlašovaní a zabezpečení přístupu}
+Spring security zajišťuje přihlašování uživatelů a kontroluje přístup ke všem url adresám. Uživatelská jména i hesla se generují náhodně dle zadání a novému uživateli jsou po založení účtu odeslány emailem.
 \subsubsection{Manager}
 Controller servlety využívají pro získávání, práci nebo ukládání dat Manager třídy. Každý Manager umožňuje práci se specifickým typem dat (klient, bankovní účet, platební transakce, atd.), tzv. doménovým objektem (viz. Datový model).
+
+Mezi hlavní Managery patří
+\begin{itemize}
+\item UserManager - Generuje přihlašovací údaje pro nové uživatele, nastaví jim požadované role a uloží.
+\item ClientManager - Slouží k registraci nových klientů, ukládání změn, jejich mazaní, přidávání a odebírání bankovních účtů a poskytuje jejich seznam.
+\item PaymentManager - Připravuje nové transakce k ověření, ověřuje a potvrzuje odeslání plateb. Poskytuje seznamy plateb patřící k jednotlivým bankovním účtům.
+\end{itemize}
 \subsubsection{Validace}
 K validaci doménových objektů se používají validátory. Pro každý doménový objekt existuje konkrétní validátor. Validaci je možné částečně měnit pomocí souboru \texttt{validation.properties}. Jedná se o validaci na straně serveru a používá se hlavně k validování vstupních dat před uložením do databáze. Na straně klienta probíhá validace vstupních dat pomocí specifických atributů v HTML5 elementech.
 \subsubsection{Verifikace}
 V aplikaci se používají dva jednoduché verifikátory. Jeden pro ověřování klienta při přihlašování a druhý pro ověření při odesílání platební transakce.
 
-Verifikátor nejprve vygeneruje ověřovací kód pro konkrétní objekt. Kód je pak odeslán klientovy. Po zadání kódu klientem je kód předán k vyhodnocení verifikátoru společně s objektem, kterému má patřit. V souboru \texttt{verification.properties} lze nastavit délku kódu, či jeho platnost.
+Verifikátor nejprve vygeneruje ověřovací kód pro konkrétní objekt. Kód je pak odeslán klientovy. Po zadání kódu klientem je kód předán k vyhodnocení verifikátoru společně s objektem, kterému má patřit. V souboru \linebreak \texttt{verification.properties} lze nastavit délku kódu, či jeho platnost.
 
-Ověřovací kódy se posílají klientovi emailem na jeho adresu. Pro ověření a demonstrování funkčnosti byl vytvořen emailový účet, přes který jsou zprávy posílány. 
+Ověřovací kódy se posílají klientovi emailem na jeho adresu. Pro ověření a demonstrování funkčnosti byl vytvořen emailový účet banky, ze kterého jsou zprávy posílány. 
+\subsubsection{Platby}
+Klient může posílat z účtů platby v různých měnách. Pokud nastaví jinou měnu než je ta, pro kterou má účet, na výpisu bude posílaná částka přepočítaná do měny daného účtu.
+\paragraph{Kurzovní lístek\\}
+Aplikace si při startu stáhne aktuální kurzovní lístek ze serveru České národní banky, podle kterého přepočítává částky v transakcích.
+\paragraph{Bankovní kódy\\}
+Klient může vybrat kód banky protiúčtu ze seznamu českých bank, který si aplikace stáhne také ze stránek České národní banky.
 
 \subsection{Datový model}
-\paragraph{EER}
+\subsubsection{Doménové objekty}
+Doménové třídy představují jednotlivé tabulky v databázi (kromě rozkladových tabulek). Jejich instance pak jednotlivé záznamy v tabulce. Jsou to
+\begin{itemize}
+\item Role - Role přihlášeného uživatele. Zda je to administrátor či klient. Jeho hodnotou může být pouze jeden typ třídy RoleType.
+\item User - Představuje obecného uživatele, který se může do aplikace přihlásit. Obsahuje pouze přihlašovací jméno a heslo. Uživatel může mít teoreticky více rolí, avšak v aplikace nebyl takový uživatel potřeba. Dle zadání aplikace obsahuje pouze klienty a administrátora(y).
+\item Person - Rozšiřuje třídu User a představuje obecnou osobu (např. klient, zaměstnanec, atd.). Obsahuje osobní a kontaktní informace jako emailová adresa nebo telefonní číslo. Adresa dané osoby je v samostatné třídě Address. Osoba může mít uloženou pouze jednu adresu.
+\item Address - Představuje adresu osoby a obsahuje číslo domu, název ulice, město a PSČ.
+\item Client - Rozšiřuje a konkretizuje třídu Person na klienta banky. Obsahuje seznam bankovních účtů a vzorů platebních příkazů.
+\item BankAccount - Představuje klientů bankovní účet a obsahuje číslo účtu, měnu, aktuální zůstatek a platební kartu. Podrobnosti o kartě jsou v samostatné třídě CrediCard. K bankovnímu účtu může být přiřazena jen jedna platební karta.
+\item CreditCard - Představuje platební kartu a obsahuje číslo karty a pin.
+\item PaymentTransaction - Představuje jednu platební transakci a obsahuje datum splatnosti, peněžní částku a měnu, konstantní, variabilní a specifický symbol a zprávu. Dále typ a stav v jaké se nachází, kterému klientovi a bankovnímu účtu náleží a informace o proti účtu. Proti účet představuje třída OffsetAccount.
+\item PatternPaymentOrder - Představuje vzor platebního příkazu a obsahuje většinu položek jak platební transakce. Od data spatnosti až po zprávu. Navíc má své jméno. Klient nemůže mít dva vzory stejného jména.
+\end{itemize}
+
+Některé z nich využívají ještě tyto \uv{pomocné} třídy
+\begin{itemize}
+\item RoleType - Výčtový typ, který obsahuje povolené role (admin, klient) přihlášených uživatelů.
+\item Currency - Výčtový typ, který obsahuje bankou podporované měny.
+\item OffsetAccount - Pomocný objekt, který obsahuje číslo účtu a kód banky na který (případně ze kterého) byly poslány peníze.
+\item TransactionState - Výčtový typ, který představuje jednotlivé stavy, ve kterých se transakce nachází (nová, potvrzená, odeslaná).
+\item TransactionType - Výčtový typ, který představuje druh platební transakce (došlá, jednorázový příkaz, platba kartou, atd.).
+\end{itemize}
+
+Viz EER diagram na obrázku \ref{eer}.
 
 \subsubsection{Databáze}
 Údaje pro připojení k databázi jsou v souboru \texttt{db.properties}. Data jsou uložena v MySQL databázi. S daty se manipuluje prostřednictvím Hibernate ORM frameworku a příslušných DAO tříd. Každý doménový objekt má své DAO.
 
 \subsubsection{DAO}
-Téměř všechna DAO jsou implementována jako JPA. Pro splnění zadání bylo jedno DAO implementováno jako JDBC. DAO jsou využívána Manager třídami pro ukládní nebo získávání dat z databáze.
+Téměř všechna DAO jsou implementována jako JPA. Pro splnění zadání bylo jedno DAO implementováno jako JDBC. DAO používají Manager třídy pro ukládání nebo získávání dat z databáze. Dotazy jsou optimalizovány a sestavovány s využitím JPQL. 
 
+\begin{figure}[H]	
+	\centering
+	\includegraphics[scale=0.92]{eer_db_model.png}
+  	\caption{EER diagram}
+  	\label{eer}
+\end{figure}
 
 % příručka pro instalaci/nasazení systému
 \section{Uživatelská dokumentace}
 
 \subsection{Instalace}
+Aplikace pro svůj běh potřebuje Java 8, Tomcat server (testováno na verzi 7) a MySQL server (testováno na verzi 5.6.15). Součástí práce je sestavená war aplikace připravená na nasazení na Tomcat server a SQL skript pro vygenerování databáze, tabulek a jejich naplnění cvičnými daty. Obsahuje jednoho administrátora (přihlašovací jméno \textbf{Admin001}, heslo \textbf{1234}) a několik klientů. Přihlašovací údaje pro 2 z nich jsou (přihl. jméno, heslo) \textbf{User0001}, \textbf{0001} a \textbf{User0002}, \textbf{0002}. 
 
+\subsection{Před spuštěním}
+Před spuštěním je ještě třeba vytvořit na databázovém serveru uživatele \textbf{pia} s heslem \textbf{pia} a nastavit mu plná práva pro vytvořenou databázi.
 
+Potvrzovací kódy jsou posílány na skutečné emailové adresy. Nastavte jej tedy uživatelům, se kterými se budete přihlašovat (nebo posílat platby).
 
 \end{document}
